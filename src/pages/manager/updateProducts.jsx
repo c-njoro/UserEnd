@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const axios = require("axios");
 
-const UpdateProducts = ({ data }) => {
+const UpdateProducts = () => {
   const [filteredProduct, setProducts] = useState([]);
   const searched = useRef();
   const [formData, setFormData] = useState({});
@@ -25,6 +25,16 @@ const UpdateProducts = ({ data }) => {
     id: "",
     images: [],
   });
+
+  //data from server manageent
+  const getAllProducts = async () => {
+    const res = await axios.get("http://localhost:3000/api/products");
+    setProducts(res.data);
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
   //logic to update a product information -images
 
@@ -70,14 +80,11 @@ const UpdateProducts = ({ data }) => {
         draggable: true,
         progress: undefined,
       });
+      getAllProducts();
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    setProducts(data);
-  }, []);
 
   const handleSearch = () => {
     const message = document.getElementById("message");
@@ -167,7 +174,6 @@ const UpdateProducts = ({ data }) => {
         test
       );
       imagesRef.current.value = "";
-      console.log(completeProduct.data);
       setTest((previousState) => ({
         ...previousState,
         id: "",
@@ -176,7 +182,7 @@ const UpdateProducts = ({ data }) => {
       setId("");
       setImage([]);
       waitIdRef.current.value = "";
-      toast.success("Images Added Successfully!", {
+      toast.success(`Images(s) Added To ${completeProduct.data.name}.`, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -226,6 +232,7 @@ const UpdateProducts = ({ data }) => {
 
                 <p>Price: {product.price}</p>
                 <p>Stock: {product.stock}</p>
+                <p>Category: {product.category}</p>
               </div>
             </div>
           ))}
@@ -332,13 +339,3 @@ const UpdateProducts = ({ data }) => {
 };
 
 export default UpdateProducts;
-
-export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/products");
-  const products = await res.json();
-  return {
-    props: {
-      data: products,
-    },
-  };
-}

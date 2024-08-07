@@ -104,7 +104,15 @@ export default function Cart({}) {
       }
 
       if (count <= 1) {
-        console.log("Cannot reduce less than 1");
+        toast.warn("One Count Remaining!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
         return;
       }
 
@@ -143,8 +151,7 @@ export default function Cart({}) {
         id,
       });
 
-      console.log("Succesfully removed");
-      toast.warn("Item removed", {
+      toast.warn(`Removed From Cart!`, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,

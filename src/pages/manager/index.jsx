@@ -11,6 +11,9 @@ const Dashboard = () => {
         <Link href="/manager/updateProducts">
           <h3>Update Existing Product</h3>
         </Link>
+        <Link href="/manager/stockManagement">
+          <h3>Stock Management</h3>
+        </Link>
       </div>
     </>
   );

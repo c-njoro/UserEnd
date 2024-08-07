@@ -29,7 +29,7 @@ const ProductsList = ({ data }) => {
 
   return (
     <>
-      {filteredProduct ? (
+      {filteredProduct.length > 0 ? (
         <div>
           <input
             type="text"
@@ -43,12 +43,23 @@ const ProductsList = ({ data }) => {
           </h1>
           {filteredProduct?.map((product) => (
             <div key={product._id}>
+              {product.images.length > 0 ? (
+                <img
+                  src={`http://localhost:3000/${product.images[0].url}`}
+                  alt="Profile Picture"
+                  width="200"
+                  height="200"
+                />
+              ) : (
+                ""
+              )}
+
               <Link href={`/product/${product._id}`} className="each-product">
                 {" "}
                 <div>
                   <h1>{product.name}</h1>
                   <p>{product.description}</p>
-                  <p>{product.price}</p>
+                  <p>Price: ${product.price}</p>
                 </div>
               </Link>
             </div>

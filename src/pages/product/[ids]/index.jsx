@@ -1,6 +1,7 @@
 "use client";
 
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,6 +17,7 @@ const checkAuthStatus = async () => {
 };
 
 export default function OneProduct({ currentData }) {
+  const [photos, setPhotos] = useState([]);
   const addToCart = async (objectId) => {
     try {
       const wholeUser = await checkAuthStatus();
@@ -27,7 +29,7 @@ export default function OneProduct({ currentData }) {
           id: objectId,
         }
       );
-      toast.success("Added to Cart", {
+      toast.success(`${currentData.name} added to Cart!`, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -38,7 +40,7 @@ export default function OneProduct({ currentData }) {
       });
     } catch (error) {
       if (error.response.status == 408) {
-        toast.warn("Product Already in Cart", {
+        toast.warn(`${currentData.name} already to Cart!`, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: true,
@@ -62,9 +64,28 @@ export default function OneProduct({ currentData }) {
     }
   };
 
+  useEffect(() => {
+    if (currentData.images.length > 0) {
+      setPhotos(currentData.images);
+    }
+  }, []);
+
   return (
     <div>
       <h1>{currentData.name}</h1>
+      <div>
+        {photos.length > 0
+          ? photos.map((photo) => (
+              <img
+                src={`http://localhost:3000/${photo.url}`}
+                alt="Profile Picture"
+                width="200"
+                height="200"
+                key={photo._id}
+              />
+            ))
+          : ""}
+      </div>
       <p>{currentData.description}</p>
       <button
         onClick={() => {
@@ -96,13 +117,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  console.log(context);
   const id = context?.params.ids;
-  console.log(id);
   const res = await fetch("http://localhost:3000/api/products");
   const products = await res.json();
   const currentData = products.find((pr) => pr._id === id);
-  console.log(currentData);
-
   return { props: { currentData } };
 }

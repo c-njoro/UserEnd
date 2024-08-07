@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductForm = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +48,15 @@ const ProductForm = () => {
         category: formData.category,
         stock: formData.stock,
       });
-      setSuccessMessage(`${formData.name} created successfully`);
+      toast.success(`${formData.name} Created Successfully`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       setFormData({
         name: "",
         description: "",

@@ -3,6 +3,9 @@ import bcrypt from "bcryptjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const UserForm = () => {
   const router = useRouter();
@@ -39,6 +42,20 @@ const UserForm = () => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
+    const apiKey = "fe7ca7611a034352aa4008d2ea7a3ca1";
+    const email = formData.email;
+    console.log(email);
+
+    // try {
+    //   const verificationData = await axios.get(
+    //     `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${email}`
+    //   );
+    //   console.log(verificationData.data);
+    //   return;
+    // } catch (error) {
+    //   console.log("Error verifying", error);
+    //   return;
+    // }
 
     try {
       const hashedPass = bcrypt.hashSync(formData.password, 10);
@@ -66,6 +83,8 @@ const UserForm = () => {
           setErrorMessage("User already exists");
         } else if (error.response.status === 400) {
           setErrorMessage("Missing information");
+        } else if (error.response.status === 401) {
+          setErrorMessage("The Email Entered is Invalid");
         } else {
           setErrorMessage("Unable to add user");
         }
