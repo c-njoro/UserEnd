@@ -22,7 +22,8 @@
     "**/*.tsx",
     "src/components/ProductList.jsx",
     "src/pages/product/[ids].jsx/index.jsx",
-    "src/pages/_app.tsx"
+    "src/pages/_app.tsx",
+    "src/pages/admin/AdminPanel.jsx"
   ],
   "exclude": ["node_modules"]
 }

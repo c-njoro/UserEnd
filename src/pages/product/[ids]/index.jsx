@@ -77,10 +77,10 @@ export default function OneProduct({ currentData }) {
         {photos.length > 0
           ? photos.map((photo) => (
               <img
-                src={`http://localhost:3000/${photo.url}`}
+                src={`${photo.url}`}
                 alt="Profile Picture"
-                width="200"
-                height="200"
+                width="300"
+                height="300"
                 key={photo._id}
               />
             ))

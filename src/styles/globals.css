@@ -38,3 +38,8 @@
 .profile-form {
   display: flex;
 }
+
+img {
+  object-fit: cover;
+  margin: 5px;
+}

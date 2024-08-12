@@ -178,8 +178,19 @@ export default function Cart({}) {
         {cart.length > 0 ? (
           Object.values(counts).map((pr) => (
             <div key={pr._id}>
+              <h2>{pr.name}</h2>
+
               <Link href={`/product/${pr._id}`} className="each-product">
-                <h1>{pr.name}</h1>
+                {pr.images.length > 0 ? (
+                  <img
+                    src={`http://localhost:3000/${pr.images[0].url}`}
+                    alt="Profile Picture"
+                    width="200"
+                    height="200"
+                  />
+                ) : (
+                  ""
+                )}
                 <p>{pr.description}</p>
                 <p>{pr.price}</p>
               </Link>
