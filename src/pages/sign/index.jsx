@@ -104,7 +104,9 @@ const UserForm = () => {
             },
           }
         );
-        setUploadedProfile(response.data.filename);
+        setUploadedProfile(
+          `http://localhost:3000/uploader/${response.data.filename}`
+        );
       } catch (error) {
         console.log("Could not upload profile picture", error);
       }
@@ -114,7 +116,7 @@ const UserForm = () => {
   const addTheProfile = async () => {
     try {
       const completeUser = await axios.put(
-        `http://localhost:3000/api/users/updateUser/${newId}`,
+        `http://localhost:3000/api/users/update/${newId}`,
         {
           profilePicture: uploadedProfile,
         }

@@ -1,9 +1,22 @@
 // dataProvider.js
 import axios from "axios";
+import { stringify } from "querystring";
 
 const customDataProvider = {
   getList: (resource, params) => {
-    const url = `http://localhost:3000/api/${resource}`;
+    const { page, perPage } = params.pagination;
+    const { field, order } = params.sort;
+    const filters = params.filter; // Grab filters
+
+    const query = {
+      _sort: field,
+      _order: order,
+      _start: (page - 1) * perPage,
+      _end: page * perPage,
+      ...filters, // Spread filters into the query
+    };
+
+    const url = `http://localhost:3000/api/${resource}?${stringify(query)}`;
     return axios
       .get(url)
       .then((response) => {

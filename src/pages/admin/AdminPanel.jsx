@@ -1,17 +1,19 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Admin, Resource } from "react-admin";
-import CustomLayout from "./adminComponents/CustomLayout";
-import ProductCreate from "./adminComponents/ProductCreate";
-import ProductEdit from "./adminComponents/ProductEdit";
-import ProductShow from "./adminComponents/ProductShow";
-import UserCreate from "./adminComponents/UserCreate";
-import UserEdit from "./adminComponents/UserEdit";
-import UserShow from "./adminComponents/UserShow";
+import CustomLayout from "../../components/adminComponents/CustomLayout";
+import OrderEdit from "../../components/adminComponents/OrderEdit";
+import OrderShow from "../../components/adminComponents/OrderShow";
+import ProductCreate from "../../components/adminComponents/ProductCreate";
+import ProductEdit from "../../components/adminComponents/ProductEdit";
+import ProductShow from "../../components/adminComponents/ProductShow";
+import UserEdit from "../../components/adminComponents/UserEdit";
+import UserShow from "../../components/adminComponents/UserShow";
 
 import customDataProvider from "./customDataProvider";
 
-import ProductList from "./adminComponents/ProductList";
-import UserList from "./adminComponents/UsersList";
+import OrderList from "../../components/adminComponents/OrderList";
+import ProductList from "../../components/adminComponents/ProductList";
+import UserList from "../../components/adminComponents/UsersList";
 
 const theme = createTheme({
   components: {
@@ -42,7 +44,13 @@ const Page = () => {
           list={UserList}
           show={UserShow}
           edit={UserEdit}
-          create={UserCreate}
+        />
+
+        <Resource
+          name="orders"
+          list={OrderList}
+          edit={OrderEdit}
+          show={OrderShow}
         />
       </Admin>
     </ThemeProvider>

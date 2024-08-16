@@ -27,7 +27,6 @@ export default function Cart({}) {
 
   const getCart = async () => {
     try {
-      setLoading(false);
       const wholeUser = await checkAuthStatus();
       const { email } = wholeUser;
       const response = await axios.get("http://localhost:3000/api/users/find", {
@@ -44,6 +43,7 @@ export default function Cart({}) {
         );
 
         setCart(await resData.data);
+        setLoading(false);
       } catch (error) {
         console.error("There was an error!", error);
       }
@@ -55,6 +55,7 @@ export default function Cart({}) {
   };
 
   useEffect(() => {
+    setLoading(true);
     getCart();
   }, []);
 
@@ -183,7 +184,7 @@ export default function Cart({}) {
               <Link href={`/product/${pr._id}`} className="each-product">
                 {pr.images.length > 0 ? (
                   <img
-                    src={`http://localhost:3000/${pr.images[0].url}`}
+                    src={`${pr.images[0].url}`}
                     alt="Profile Picture"
                     width="200"
                     height="200"

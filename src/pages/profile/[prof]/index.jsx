@@ -16,8 +16,10 @@ const checkAuthStatus = async () => {
 export default function Profile() {
   const [userInfo, setInfo] = useState();
   const [profile, setProfile] = useState("/images/profile.webp");
+  const [loading, setLoading] = useState(false);
 
   const getUser = async () => {
+    setLoading(true);
     const wholeUser = await checkAuthStatus();
     const { email } = wholeUser;
     const response = await axios.get("http://localhost:3000/api/users/find", {
@@ -27,8 +29,9 @@ export default function Profile() {
     setInfo(foundUser);
 
     if (foundUser.profilePicture) {
-      setProfile(`http://localhost:3000/uploader/${foundUser.profilePicture}`);
+      setProfile(foundUser.profilePicture);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,6 +40,9 @@ export default function Profile() {
   useEffect(() => {}, [userInfo]);
 
   if (!userInfo) {
+    if (loading) {
+      return <div>Loading</div>;
+    }
     return <div>No User</div>;
   }
 
@@ -50,7 +56,8 @@ export default function Profile() {
       <p>Email: {userInfo.email}</p>
       <p>Role: {userInfo.role}</p>
       <br />
-
+      <Link href="/orders">My Orders</Link>
+      <br />
       {userInfo.role === "admin" ? (
         <Link href="/manager">Manager</Link>
       ) : (

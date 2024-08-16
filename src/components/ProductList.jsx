@@ -17,9 +17,16 @@ const ProductsList = ({ data }) => {
     "Sports",
   ];
   const [checkedCategory, setChecked] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const initialSetUp = () => {
+    setProducts(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    setProducts(data);
+    setLoading(true);
+    initialSetUp();
   }, []);
 
   const categoryCheck = (e) => {
@@ -102,68 +109,79 @@ const ProductsList = ({ data }) => {
     setProducts(data);
   };
 
+  if (loading) {
+    return <div>Loading</div>;
+  }
+
   return (
     <>
-      {filteredProduct.length > 0 ? (
-        <div>
+      {data.length > 0 ? (
+        filteredProduct.length > 0 ? (
           <div>
-            <input
-              type="text"
-              ref={searched}
-              style={{ color: "black" }}
-              onChange={handleSearch}
-              placeholder="Search..."
-            />
-            <p className="search-message hide" id="message">
-              Showing relatable to the search
-            </p>
-          </div>
+            <div>
+              <input
+                type="text"
+                ref={searched}
+                style={{ color: "black" }}
+                onChange={handleSearch}
+                placeholder="Search..."
+              />
+              <p className="search-message hide" id="message">
+                Showing relatable to the search
+              </p>
+            </div>
 
-          <div>
-            {categories.map((category) => (
-              <div key={category}>
-                <label htmlFor={category}>
-                  <input
-                    type="radio"
-                    value={category}
-                    onChange={categoryCheck}
-                    checked={checkedCategory === category}
-                    name="category"
-                    id={category}
-                  />
-                  {category}
-                </label>
-              </div>
-            ))}
-            <button onClick={clearFilters}>Clear</button>
-          </div>
+            <div>
+              {categories.map((category) => (
+                <div key={category}>
+                  <label htmlFor={category}>
+                    <input
+                      type="radio"
+                      value={category}
+                      onChange={categoryCheck}
+                      checked={checkedCategory === category}
+                      name="category"
+                      id={category}
+                    />
+                    {category}
+                  </label>
+                </div>
+              ))}
+              <button onClick={clearFilters}>Clear</button>
+            </div>
 
-          <div>
-            {filteredProduct?.map((product) => (
-              <div key={product._id}>
-                <h2>{product.name}</h2>
+            <div>
+              {filteredProduct?.map((product) => (
+                <div key={product._id}>
+                  <h2>{product.name}</h2>
 
-                <Link href={`/product/${product._id}`} className="each-product">
-                  {" "}
-                  <div>
-                    {product.images.length > 0 ? (
-                      <img
-                        src={`${product.images[0].url}`}
-                        alt="Profile Picture"
-                        width="400"
-                        height="250"
-                      />
-                    ) : (
-                      ""
-                    )}
-                    <p>{product.description}</p>
-                    <p>Price: ${product.price}</p>
-                  </div>
-                </Link>
-              </div>
-            ))}
+                  <Link
+                    href={`/product/${product._id}`}
+                    className="each-product"
+                  >
+                    {" "}
+                    <div>
+                      {product.images.length > 0 ? (
+                        <img
+                          src={`${product.images[0].url}`}
+                          alt="Profile Picture"
+                          width="400"
+                          height="250"
+                        />
+                      ) : (
+                        ""
+                      )}
+                      <p>{product.description}</p>
+                      <p>Price: ${product.price}</p>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <h5>Loading...</h5>
+        )
       ) : (
         <h1>No Products in our shop</h1>
       )}

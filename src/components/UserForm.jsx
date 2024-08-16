@@ -1,5 +1,4 @@
 import axios from "axios";
-import bcrypt from "bcryptjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
@@ -36,6 +35,7 @@ const UserForm = () => {
   const onUpload = (e) => {
     const value = e.target.files[0];
     setProfPic(value);
+    console.log("file detected");
   };
 
   const handleSubmit = async (e) => {
@@ -108,7 +108,10 @@ const UserForm = () => {
             },
           }
         );
-        setUploadedProfile(response.data.filename);
+        setUploadedProfile(
+          `http://localhost:3000/uploader/${response.data.filename}`
+        );
+        console.log("Upload directory", uploadedProfile);
       } catch (error) {
         console.log("Could not upload profile picture", error);
       }
@@ -118,7 +121,7 @@ const UserForm = () => {
   const addTheProfile = async () => {
     try {
       const completeUser = await axios.put(
-        `http://localhost:3000/api/users/updateUser/${newId}`,
+        `http://localhost:3000/api/users/update/${newId}`,
         {
           profilePicture: uploadedProfile,
         }

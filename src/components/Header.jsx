@@ -2,6 +2,8 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { AiFillHome } from "react-icons/ai";
+import { BsCart3 } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa6";
 
 const checkAuthStatus = async () => {
@@ -61,6 +63,8 @@ const Header = () => {
       <div className="logo"></div>
       <div className="links">
         <Link href="/" className="link">
+          <AiFillHome />
+          {`  `}
           Home
         </Link>
         <Link href="/about" className="link">
@@ -73,6 +77,7 @@ const Header = () => {
 
         {isAuthenticated ? (
           <Link href="/cart" className="link">
+            <BsCart3 /> {`  `}
             Cart
           </Link>
         ) : (
