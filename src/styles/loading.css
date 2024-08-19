@@ -1,0 +1,74 @@
+/* background-color: rgb(224, 236, 247);
+background-color: rgba(174, 213, 250, 0.11); 
+background-color: rgba(240, 39, 39, 0.616);*/
+
+.loader {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  .bouncing {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    .dots {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+    }
+    .one {
+      background-color: black;
+      animation: loading 800ms linear infinite;
+      animation-delay: 0ms;
+    }
+
+    .two {
+      background-color: rgba(240, 39, 39, 0.616);
+      animation: loading 800ms linear infinite;
+      animation-delay: 200ms;
+    }
+    .three {
+      background-color: rgb(174, 213, 250);
+      animation: loading 800ms linear infinite;
+      animation-delay: 400ms;
+    }
+  }
+  .name {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    h4 {
+      font-family: "Poppins", monospace;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+  }
+}
+
+@keyframes loading {
+  0%,
+  100%,
+  50% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateY(8px);
+  }
+  75% {
+    transform: translateY(-8px);
+  }
+}

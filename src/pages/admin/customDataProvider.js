@@ -1,24 +1,48 @@
 // dataProvider.js
 import axios from "axios";
-import { stringify } from "querystring";
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const customDataProvider = {
   getList: (resource, params) => {
-    const { page, perPage } = params.pagination;
-    const { field, order } = params.sort;
-    const filters = params.filter; // Grab filters
+    const {
+      name,
+      price,
+      stock,
+      category,
+      role,
+      orderStatus,
+      paymentStatus,
+      trackingNumber,
+    } = params.filter;
+    let query = `${apiUrl}/${resource}?`;
 
-    const query = {
-      _sort: field,
-      _order: order,
-      _start: (page - 1) * perPage,
-      _end: page * perPage,
-      ...filters, // Spread filters into the query
-    };
+    if (name) {
+      query += `name=${name}&`;
+    }
+    if (price) {
+      query += `price=${price}&`;
+    }
+    if (stock) {
+      query += `stock=${stock}&`;
+    }
+    if (role) {
+      query += `role=${role}&`;
+    }
+    if (category) {
+      query += `category=${category}&`;
+    }
+    if (orderStatus) {
+      query += `orderStatus=${orderStatus}&`;
+    }
+    if (paymentStatus) {
+      query += `paymentStatus=${paymentStatus}&`;
+    }
+    if (trackingNumber) {
+      query += `trackingNumber=${trackingNumber}&`;
+    }
 
-    const url = `http://localhost:3000/api/${resource}?${stringify(query)}`;
     return axios
-      .get(url)
+      .get(query.slice(0, -1))
       .then((response) => {
         const data = response.data;
 
@@ -45,7 +69,7 @@ const customDataProvider = {
   getOne: async (resource, params) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/${resource}/findById/${params.id}`
+        `${apiUrl}/${resource}/findById/${params.id}`
       );
       const data = response.data;
 
@@ -63,7 +87,7 @@ const customDataProvider = {
   },
 
   create: (resource, params) => {
-    const url = `http://localhost:3000/api/${resource}`;
+    const url = `${apiUrl}/${resource}`;
     return axios
       .post(url, { ...params.data, _id: params.data.id }) // Map id to _id
       .then((response) => {
@@ -79,7 +103,7 @@ const customDataProvider = {
   },
 
   update: (resource, params) => {
-    const url = `http://localhost:3000/api/${resource}/update/${params.id}`;
+    const url = `${apiUrl}/${resource}/update/${params.id}`;
     return axios
       .put(url, params.data)
       .then((response) => {
@@ -95,7 +119,7 @@ const customDataProvider = {
   },
 
   delete: (resource, params) => {
-    const url = `http://localhost:3000/api/${resource}/delete/${params.id}`;
+    const url = `${apiUrl}/${resource}/delete/${params.id}`;
     return axios
       .delete(url)
       .then((response) => {

@@ -51,16 +51,19 @@ export default function Checkout() {
       setLoading(false);
       const wholeUser = await checkAuthStatus();
       const { email } = wholeUser;
-      const response = await axios.get("http://localhost:3000/api/users/find", {
-        params: { email },
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+        {
+          params: { email },
+        }
+      );
       const foundUser = await response.data;
       const cartP = await foundUser.favoriteProducts;
       const ids = [...cartP];
 
       try {
         const resData = await axios.post(
-          "http://localhost:3000/api/products/bulk",
+          `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/bulk`,
           { ids }
         );
 
@@ -141,6 +144,16 @@ export default function Checkout() {
     });
   };
 
+  const updateStock = () => {
+    Object.values(counts).map(async (co) => {
+      const newStock = co.stock - co.count;
+      const updateStock = await axios.put(
+        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/update/${co._id}`,
+        { stock: newStock }
+      );
+    });
+  };
+
   const makingTheOrder = async (e) => {
     e.preventDefault();
 
@@ -151,19 +164,30 @@ export default function Checkout() {
       !formData.method ||
       !formData.note
     ) {
-      alert("NO Full Data");
+      toast.error("Please fill ot the form correctly", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
 
     const wholeUser = await checkAuthStatus();
     const { email } = wholeUser;
-    const response = await axios.get("http://localhost:3000/api/users/find", {
-      params: { email },
-    });
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+      {
+        params: { email },
+      }
+    );
     const foundUser = await response.data;
 
     try {
-      const order = await axios.post("http://localhost:3000/api/orders", {
+      const order = await axios.post(`${process.env.NEXT_PUBLIC_ORDERS_URL}`, {
         customerId: foundUser._id,
         shippingAddress: formData.address,
         contactInfo: {
@@ -171,7 +195,7 @@ export default function Checkout() {
           email: foundUser.email,
         },
         paymentMethod: formData.payment,
-        transactionId: "RESAOUN",
+        transactionId: "TEST_ID",
         totalAmount: total,
         products: orderProducts,
         shippingMethod: formData.method,
@@ -181,6 +205,11 @@ export default function Checkout() {
         orderNotes: formData.note,
         internalNotes: "New customer, verify address first.",
       });
+
+      updateStock();
+
+      setOrderProducts([]);
+
       toast.success("Your Order Was Placed Successfully", {
         position: "top-right",
         autoClose: 2000,
@@ -197,14 +226,15 @@ export default function Checkout() {
         payment: "default",
         note: "",
       });
-      setOrderProducts([]);
 
       const clearTheCart = axios.put(
-        `http://localhost:3000/api/users/update/${foundUser._id}`,
+        `${process.env.NEXT_PUBLIC_USERS_URL}/update/${foundUser._id}`,
         {
           favoriteProducts: [],
         }
       );
+
+      router.push("/");
     } catch (error) {
       toast.error("An error occured, Please Try Again!!", {
         position: "top-right",

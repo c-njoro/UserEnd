@@ -33,7 +33,7 @@ const AddProductImagesButton = () => {
       });
 
       const uploadResponse = await axios.post(
-        "http://localhost:3000/uploadProducts",
+        `${process.env.NEXT_PUBLIC_PRODUCT_IMAGES_UPLOADER_URL}`,
         formData
       );
 
@@ -44,7 +44,7 @@ const AddProductImagesButton = () => {
       }
 
       const addImagesResponse = await axios.post(
-        "http://localhost:3000/api/products/addImages",
+        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/addImages`,
         {
           id: record._id,
           images: uploadedImages,

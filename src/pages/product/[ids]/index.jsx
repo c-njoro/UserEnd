@@ -25,6 +25,15 @@ export default function OneProduct({ currentData }) {
     payment: "",
     note: "",
   });
+  const [quickOrder, setQuickOrder] = useState("hide");
+
+  const toggleQuickOrder = () => {
+    if (quickOrder === "hide") {
+      setQuickOrder("quick-order");
+    } else {
+      setQuickOrder("hide");
+    }
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -53,13 +62,16 @@ export default function OneProduct({ currentData }) {
 
     const wholeUser = await checkAuthStatus();
     const { email } = wholeUser;
-    const response = await axios.get("http://localhost:3000/api/users/find", {
-      params: { email },
-    });
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+      {
+        params: { email },
+      }
+    );
     const foundUser = await response.data;
 
     try {
-      const order = await axios.post("http://localhost:3000/api/orders", {
+      const order = await axios.post(`${process.env.NEXT_PUBLIC_ORDERS_URL}`, {
         customerId: foundUser._id,
         shippingAddress: formData.address,
         contactInfo: {
@@ -87,7 +99,7 @@ export default function OneProduct({ currentData }) {
       });
       const newStock = currentData.stock - 1;
       const updateStock = await axios.put(
-        `http://localhost:3000/api/products/update/${currentData._id}`,
+        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/update/${currentData._id}`,
         { stock: newStock }
       );
       toast.success("Your Order Was Placed Successfully", {
@@ -126,7 +138,7 @@ export default function OneProduct({ currentData }) {
       const wholeUser = await checkAuthStatus();
       const { email } = wholeUser;
       const response = await axios.put(
-        "http://localhost:3000/api/users/addFavorite",
+        `${process.env.NEXT_PUBLIC_USERS_URL}/addFavorite`,
         {
           email: email,
           id: objectId,
@@ -197,16 +209,13 @@ export default function OneProduct({ currentData }) {
       >
         Add To Cart
       </button>
+      {quickOrder === "hide" ? (
+        <button onClick={toggleQuickOrder}>Make Quick Order</button>
+      ) : (
+        <button onClick={toggleQuickOrder}>Cancel</button>
+      )}
 
-      <button
-        onClick={() => {
-          console.log(formData);
-        }}
-      >
-        Check form
-      </button>
-
-      <div>
+      <div className={quickOrder}>
         <form method="post" onSubmit={orderTheProduct}>
           <h1>Quick Order</h1>
 
@@ -289,7 +298,8 @@ export default function OneProduct({ currentData }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch("http://localhost:3000/api/products");
+  const productsUrl = process.env.NEXT_PUBLIC_PRODUCTS_URL;
+  const res = await fetch(`${productsUrl}`);
   const products = await res.json();
 
   const allPaths = products.map((pr) => {
@@ -307,8 +317,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
+  const productsUrl = process.env.NEXT_PUBLIC_PRODUCTS_URL;
   const id = context?.params.ids;
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch(`${productsUrl}`);
   const products = await res.json();
   const currentData = products.find((pr) => pr._id === id);
   return { props: { currentData } };

@@ -79,7 +79,8 @@ const Orders = ({ orders }) => {
 export default Orders;
 
 export async function getServerSideProps() {
-  const res = await fetch("http://localhost:3000/api/orders");
+  const ordersUrl = process.env.NEXT_PUBLIC_ORDERS_URL;
+  const res = await fetch(`${ordersUrl}`);
   const orders = await res.json();
   return {
     props: {

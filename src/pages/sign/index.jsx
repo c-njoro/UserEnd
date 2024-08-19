@@ -47,7 +47,7 @@ const UserForm = () => {
 
     try {
       const hashedPass = bcrypt.hashSync(formData.password, 10);
-      const res = await axios.post("http://localhost:3000/api/users", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}`, {
         name: formData.name,
         email: formData.email,
         username: formData.username,
@@ -94,7 +94,7 @@ const UserForm = () => {
     if (profPic) {
       try {
         const response = await axios.post(
-          "http://localhost:3000/upload",
+          `${process.env.NEXT_PUBLIC_PROFILE_UPLOAD_URL}`,
           {
             profilePicture: profPic,
           },
@@ -105,7 +105,7 @@ const UserForm = () => {
           }
         );
         setUploadedProfile(
-          `http://localhost:3000/uploader/${response.data.filename}`
+          `${process.env.NEXT_PUBLIC_PROFILE_UPLOADER_URL}/${response.data.filename}`
         );
       } catch (error) {
         console.log("Could not upload profile picture", error);
@@ -116,7 +116,7 @@ const UserForm = () => {
   const addTheProfile = async () => {
     try {
       const completeUser = await axios.put(
-        `http://localhost:3000/api/users/update/${newId}`,
+        `${process.env.NEXT_PUBLIC_USERS_URL}/update/${newId}`,
         {
           profilePicture: uploadedProfile,
         }
@@ -240,6 +240,7 @@ const UserForm = () => {
           />
         </label>
         <input type="submit" value="Set Picture" />
+        <Link href="/api/auth/signin">Skip</Link>
       </form>
     </>
   );

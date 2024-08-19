@@ -4,18 +4,32 @@ import {
   DeleteButton,
   EditButton,
   EmailField,
+  Filter,
   List,
   Pagination,
   TextField,
+  TextInput,
 } from "react-admin";
 
 const ProductPagination = (props) => (
   <Pagination rowsPerPageOptions={[5]} {...props} />
 );
 
+const UserFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="Search by name" source="name" alwaysOn />
+    <TextInput label="Search by role" source="role" />
+  </Filter>
+);
+
 const UserList = (props) => {
   return (
-    <List {...props} pagination={<ProductPagination />} perPage={5}>
+    <List
+      {...props}
+      pagination={<ProductPagination />}
+      perPage={5}
+      filters={<UserFilter />}
+    >
       <Datagrid>
         <TextField source="_id" />
         <TextField source="name" />

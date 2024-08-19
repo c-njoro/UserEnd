@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "./Loading";
 
 const ProductsList = ({ data }) => {
   const [filteredProduct, setProducts] = useState([]);
@@ -180,7 +181,7 @@ const ProductsList = ({ data }) => {
             </div>
           </div>
         ) : (
-          <h5>Loading...</h5>
+          <Loading />
         )
       ) : (
         <h1>No Products in our shop</h1>

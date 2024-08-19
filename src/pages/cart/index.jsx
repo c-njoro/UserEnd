@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loading from "../../components/Loading";
+
 require("dotenv").config();
 
 const checkAuthStatus = async () => {
@@ -29,16 +31,19 @@ export default function Cart({}) {
     try {
       const wholeUser = await checkAuthStatus();
       const { email } = wholeUser;
-      const response = await axios.get("http://localhost:3000/api/users/find", {
-        params: { email },
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+        {
+          params: { email },
+        }
+      );
       const foundUser = await response.data;
       const cartP = await foundUser.favoriteProducts;
       const ids = [...cartP];
 
       try {
         const resData = await axios.post(
-          "http://localhost:3000/api/products/bulk",
+          `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/bulk`,
           { ids }
         );
 
@@ -92,9 +97,12 @@ export default function Cart({}) {
       const wholeUser = await checkAuthStatus();
       const { email } = wholeUser;
       let count = 0;
-      const response = await axios.get("http://localhost:3000/api/users/find", {
-        params: { email },
-      });
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+        {
+          params: { email },
+        }
+      );
       const foundUser = await response.data;
       const cartP = await foundUser.favoriteProducts;
 
@@ -117,7 +125,7 @@ export default function Cart({}) {
         return;
       }
 
-      await axios.post("http://localhost:3000/api/users/reduceFavorite", {
+      await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}/reduceFavorite`, {
         email,
         id,
       });
@@ -132,7 +140,7 @@ export default function Cart({}) {
     const { email } = wholeUser;
 
     try {
-      await axios.put("http://localhost:3000/api/users/increaseFavorite", {
+      await axios.put(`${process.env.NEXT_PUBLIC_USERS_URL}/increaseFavorite`, {
         email,
         id,
       });
@@ -147,7 +155,7 @@ export default function Cart({}) {
     const { email } = wholeUser;
 
     try {
-      await axios.post("http://localhost:3000/api/users/removeFavorite", {
+      await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}/removeFavorite`, {
         email,
         id,
       });
@@ -168,7 +176,12 @@ export default function Cart({}) {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <>
+        <Loading />
+      </>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (

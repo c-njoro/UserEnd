@@ -2,9 +2,9 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AiFillHome } from "react-icons/ai";
 import { BsCart3 } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa6";
+import { RiHomeSmileLine } from "react-icons/ri";
 
 const checkAuthStatus = async () => {
   try {
@@ -63,7 +63,7 @@ const Header = () => {
       <div className="logo"></div>
       <div className="links">
         <Link href="/" className="link">
-          <AiFillHome />
+          <RiHomeSmileLine />
           {`  `}
           Home
         </Link>

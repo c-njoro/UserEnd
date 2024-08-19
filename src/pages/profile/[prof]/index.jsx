@@ -1,6 +1,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Loading from "../../../components/Loading";
 
 const checkAuthStatus = async () => {
   try {
@@ -20,9 +21,10 @@ export default function Profile() {
 
   const getUser = async () => {
     setLoading(true);
+    const userUrl = process.env.NEXT_PUBLIC_USERS_URL;
     const wholeUser = await checkAuthStatus();
     const { email } = wholeUser;
-    const response = await axios.get("http://localhost:3000/api/users/find", {
+    const response = await axios.get(`${userUrl}/find`, {
       params: { email },
     });
     const foundUser = await response.data;
@@ -41,7 +43,11 @@ export default function Profile() {
 
   if (!userInfo) {
     if (loading) {
-      return <div>Loading</div>;
+      return (
+        <>
+          <Loading />
+        </>
+      );
     }
     return <div>No User</div>;
   }

@@ -63,7 +63,7 @@ export default async function auth(req, res) {
           try {
             const { email, password } = credentials;
             const response = await axios.get(
-              "http://localhost:3000/api/users/find",
+              `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
               {
                 params: { email },
               }
