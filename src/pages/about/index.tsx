@@ -1,7 +1,3 @@
 export default function About() {
-  return (
-    <div>
-      <h1>About</h1>
-    </div>
-  );
+  return <h1 className="text-4xl font-bold underline">About Page</h1>;
 }

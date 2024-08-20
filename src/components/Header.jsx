@@ -2,9 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BsCart3 } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa6";
-import { RiHomeSmileLine } from "react-icons/ri";
 
 const checkAuthStatus = async () => {
   try {
@@ -45,9 +43,12 @@ const Header = () => {
 
   const getUser = async () => {
     const { email } = exData;
-    const response = await axios.get("http://localhost:3000/api/users/find", {
-      params: { email },
-    });
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+      {
+        params: { email },
+      }
+    );
     const foundUser = await response.data;
     setInfo(foundUser);
   };
@@ -61,10 +62,8 @@ const Header = () => {
   return (
     <div className="main-header">
       <div className="logo"></div>
-      <div className="links">
+      <div className="links text-gray-600 ">
         <Link href="/" className="link">
-          <RiHomeSmileLine />
-          {`  `}
           Home
         </Link>
         <Link href="/about" className="link">
@@ -77,7 +76,6 @@ const Header = () => {
 
         {isAuthenticated ? (
           <Link href="/cart" className="link">
-            <BsCart3 /> {`  `}
             Cart
           </Link>
         ) : (
@@ -87,7 +85,7 @@ const Header = () => {
       <div className="profile">
         {isAuthenticated ? (
           <Link href={`/profile/${name}`} className="link">
-            <FaRegUser />, Welcome {name}
+            <FaRegUser />, {name}
           </Link>
         ) : (
           <Link href="/sign" className="link">

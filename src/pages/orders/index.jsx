@@ -19,9 +19,12 @@ const Orders = ({ orders }) => {
   const getMyOrders = async () => {
     const wholeUser = await checkAuthStatus();
     const { email } = wholeUser;
-    const response = await axios.get("http://localhost:3000/api/users/find", {
-      params: { email },
-    });
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
+      {
+        params: { email },
+      }
+    );
     const foundUser = await response.data;
     const myOrders = orders.filter(
       (order) => order.customerId == foundUser._id
