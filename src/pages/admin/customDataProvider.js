@@ -1,6 +1,6 @@
 // dataProvider.js
 import axios from "axios";
-const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const apiUrl = process.env.NEXT_PUBLIC_BASE_URL_FOR_ADMIN;
 
 const customDataProvider = {
   getList: (resource, params) => {

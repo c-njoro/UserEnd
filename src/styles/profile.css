@@ -1,0 +1,60 @@
+.main-profile-container {
+  @apply bg-blue-100 flex  flex-col gap-4  w-screen min-h-screen  p-4;
+  .inner-container {
+    @apply flex flex-col gap-4;
+    .details-side {
+      @apply bg-inherit;
+      .user-name {
+        @apply font-light text-gray-600 text-xl my-4 font-beauty;
+      }
+
+      .profile-picture {
+        @apply w-11/12 max-w-80;
+        .image {
+          @apply w-full rounded-md shadow-xl mb-4 object-cover max-h-60;
+        }
+      }
+
+      .more-about {
+        @apply font-beauty;
+        .full-name {
+          @apply capitalize font-semibold text-xl text-gray-800 m-2;
+        }
+        .email {
+          @apply font-semibold text-sm text-gray-700 m-2;
+        }
+      }
+    }
+
+    .actions {
+      @apply font-body;
+      .my-orders {
+        @apply flex flex-row items-center gap-4 bg-white w-max min-w-40 px-4 py-2 rounded-full shadow-md my-2 hover:bg-gray-50;
+        .link {
+          @apply font-bold text-sm hover:text-green-400;
+        }
+      }
+      .role {
+        @apply flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 hover:bg-gray-50;
+
+        .role-show {
+          @apply flex flex-row gap-4 items-center hover:text-green-400;
+
+          .link {
+            @apply font-bold text-sm;
+          }
+        }
+      }
+    }
+
+    .danger-zone {
+      @apply font-body  border-t-2 border-gray-300;
+      .logout {
+        @apply flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 text-orange-500 font-semibold text-sm;
+      }
+      .delete {
+        @apply flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 text-red-600 font-semibold text-sm;
+      }
+    }
+  }
+}

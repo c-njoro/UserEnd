@@ -1,0 +1,104 @@
+.main-header-container {
+  @apply bg-blue-50 flex flex-row justify-between w-screen h-[calc(12vh)] items-center  relative rounded-lg shadow-lg;
+  .logo {
+    @apply p-0 w-1/5 min-w-52;
+    .image {
+      @apply w-full object-cover;
+    }
+  }
+  .links {
+    @apply hidden md:flex flex-row gap-4 items-center font-body pr-8;
+    .link {
+      @apply text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full;
+    }
+    .link-profile {
+      @apply flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full;
+    }
+  }
+
+  .drop-down {
+    @apply md:hidden cursor-pointer mr-8 flex justify-center;
+  }
+
+  .drop-down-menu {
+    @apply absolute right-8 top-[calc(12vh)];
+    z-index: 999;
+
+    .links-container {
+      @apply sm:w-[calc(30vw)] h-max flex flex-col gap-4 px-8 justify-center items-end bg-blue-50 rounded-md w-[calc(50vw)];
+
+      .link {
+        @apply text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full;
+      }
+      .link-profile {
+        @apply flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full mb-5;
+      }
+    }
+  }
+}
+
+.main-footer-container {
+  @apply w-screen h-max relative flex flex-col gap-4 justify-center items-center;
+  background-color: rgb(199, 217, 234);
+
+  .newsletter {
+    @apply w-full grid grid-cols-1 place-items-center  py-2 gap-2 shadow-sm md:absolute md:-top-8 md:w-10/12 md:px-8 md:rounded-full md:shadow-xl md:grid-cols-3 bg-blue-50;
+
+    .prompt {
+      @apply md:col-span-1;
+      p {
+        @apply capitalize tracking-wide font-body flex justify-center text-gray-500;
+      }
+
+      h2 {
+        @apply uppercase font-bold font-beauty text-lg text-gray-600 tracking-wider flex justify-center;
+      }
+    }
+
+    .form {
+      @apply w-full flex justify-center md:col-span-2;
+
+      form {
+        @apply w-full flex flex-row gap-2 px-5 justify-between;
+
+        .email {
+          @apply w-4/5 h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md;
+        }
+
+        .email:focus {
+          @apply shadow-2xl;
+          outline: none;
+        }
+
+        .submit {
+          @apply bg-white text-gray-700 font-beauty font-bold tracking-wider py-1 uppercase px-6 
+          w-max h-max shadow-md rounded-lg cursor-pointer;
+        }
+      }
+    }
+  }
+
+  .information {
+    @apply w-full h-max grid grid-cols-1 sm:grid-cols-2 gap-8 place-items-center pb-4 md:mt-16 lg:grid-cols-4;
+
+    .part {
+      @apply w-full flex flex-col gap-1 justify-start pl-8;
+
+      h1 {
+        @apply font-bold capitalize font-body tracking-wider text-lg text-gray-800;
+      }
+
+      p {
+        @apply font-semibold font-body text-gray-600 text-sm;
+      }
+
+      .socials {
+        @apply w-full flex flex-row justify-start gap-3 mt-2;
+
+        h5 {
+          @apply text-xl text-gray-500 bg-blue-100 p-2 rounded-lg shadow-sm;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+.main-cart-container {
+  @apply bg-blue-100 flex flex-col justify-center w-screen min-h-screen font-beauty;
+
+  .heading {
+    @apply flex justify-center sm:flex-row flex-col px-2 w-full items-center mb-4;
+
+    .header {
+      @apply font-bold text-gray-700 text-3xl p-2;
+    }
+  }
+
+  .cart-products {
+    @apply w-full  h-max  flex flex-col justify-center items-center gap-4 py-4 bg-blue-100 rounded-3xl;
+
+    .product {
+      @apply md:w-11/12 w-3/4 grid grid-cols-1 md:grid-cols-8 shadow-lg bg-blue-50 rounded-lg md:py-2 pb-2;
+
+      .icon-side {
+        @apply md:col-span-1 md:flex justify-center items-center hidden;
+
+        .cart-icon {
+          @apply md:w-10 w-6 text-green-500;
+        }
+      }
+      .image-side {
+        @apply md:col-span-3 p-0 md:m-0 w-full rounded-lg overflow-hidden max-h-40 sm:flex md:justify-center hidden ml-4;
+
+        .image {
+          @apply md:w-3/4 md:h-40 object-cover pt-2 md:p-0 m-0 md:rounded-lg rounded-sm w-28 h-28;
+        }
+      }
+
+      .more-side {
+        @apply md:col-span-4 p-4 grid grid-cols-1 gap-2;
+
+        .product-details {
+          @apply w-full h-full overflow-clip;
+
+          .product-name {
+            @apply font-bold capitalize  text-xl text-gray-700 font-body;
+          }
+
+          .product-desc {
+            @apply hidden font-light text-sm text-gray-500 text-wrap;
+          }
+        }
+
+        .algo-part {
+          @apply w-full flex flex-row justify-between items-center;
+
+          .price-side {
+            .the-price {
+              @apply font-bold text-base text-gray-600;
+            }
+          }
+
+          .count-side {
+            @apply flex flex-row justify-end gap-4 items-center;
+
+            .count-btn {
+              @apply bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md;
+            }
+          }
+        }
+
+        .action-part {
+          @apply flex sm:flex-row sm:justify-between items-center flex-col justify-center gap-2 sm:gap-0 mt-2 sm:mt-0;
+
+          .action {
+            @apply bg-gray-100 px-4 py-2 rounded-full text-sm font-bold capitalize text-gray-600 flex flex-row justify-center gap-2 shadow-md;
+          }
+        }
+      }
+    }
+  }
+}
+
+.payment {
+  @apply flex flex-col gap-2 justify-end items-end mx-16 my-4;
+
+  .total {
+    @apply text-lg text-green-500 capitalize font-bold underline;
+  }
+
+  .checkout {
+    @apply text-sm text-green-500 capitalize font-bold bg-gray-100 px-4 py-2 rounded-full flex justify-center items-center gap-2 shadow-md;
+  }
+}
+
+.going-back-to-shop {
+  @apply flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40;
+  .role-show {
+    @apply flex flex-row gap-4 items-center;
+
+    .link {
+      @apply font-bold text-sm;
+    }
+  }
+}

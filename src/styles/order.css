@@ -1,0 +1,34 @@
+.main-order-container {
+  @apply bg-blue-100 flex flex-col  w-screen min-h-screen font-beauty;
+
+  .heading {
+    @apply flex justify-center sm:flex-row flex-col pt-2 w-full items-center mb-4;
+
+    .header {
+      @apply font-bold text-gray-700 text-3xl p-2;
+    }
+  }
+
+  .all-orders {
+    @apply w-full  h-max  flex flex-col justify-center items-center gap-4 py-2 bg-blue-100 rounded-3xl px-2;
+
+    .each-order {
+      @apply grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-2 w-full bg-gray-100 shadow-lg rounded-md px-2 hover:bg-gray-200;
+
+      .detail {
+        @apply flex flex-col justify-start items-start gap-4 border-r-2 border-b pb-2;
+
+        .top {
+          @apply capitalize font-body font-light text-gray-400 underline;
+        }
+        .bottom {
+          @apply capitalize font-beauty text-sm font-bold text-gray-800;
+        }
+
+        .item {
+          @apply flex justify-between flex-row gap-6;
+        }
+      }
+    }
+  }
+}

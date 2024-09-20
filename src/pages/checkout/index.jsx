@@ -55,6 +55,10 @@ export default function Checkout() {
         `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
         {
           params: { email },
+          headers: {
+            Accept: "application/json",
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
       const foundUser = await response.data;
@@ -107,7 +111,7 @@ export default function Checkout() {
       (sum, product) => sum + product.total,
       0
     );
-    setTotal(grandTotal);
+    setTotal(grandTotal.toFixed(2));
   }, [cart]);
 
   const mpesaToggle = () => {
@@ -149,7 +153,13 @@ export default function Checkout() {
       const newStock = co.stock - co.count;
       const updateStock = await axios.put(
         `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/update/${co._id}`,
-        { stock: newStock }
+        { stock: newStock },
+        {
+          headers: {
+            Accept: "application/json",
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
       );
     });
   };
@@ -182,6 +192,10 @@ export default function Checkout() {
       `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
       {
         params: { email },
+        headers: {
+          Accept: "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
       }
     );
     const foundUser = await response.data;
@@ -231,6 +245,12 @@ export default function Checkout() {
         `${process.env.NEXT_PUBLIC_USERS_URL}/update/${foundUser._id}`,
         {
           favoriteProducts: [],
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "ngrok-skip-browser-warning": "true",
+          },
         }
       );
 
@@ -250,117 +270,148 @@ export default function Checkout() {
   };
 
   return (
-    <>
-      <div>
-        <h1>Check Out Your Cart</h1>
-        <p>Totals: {total}</p>
+    <div className="main-checkout-container">
+      <div className="heading">
+        <h1 className="header">Check Out Your Cart</h1>
+      </div>
+
+      <div className="pay-toggle">
+        <p>Totals: Ksh. {total}</p>
         <p>Pay Via: </p>
-        <button onClick={mpesaToggle}>M-Pesa</button>
-        <button onClick={walletToggle}>Wallet</button>
+        <div className="btns">
+          <button onClick={mpesaToggle} className="payment-mthd">
+            M-Pesa
+          </button>
+          <button onClick={walletToggle} className="payment-mthd">
+            Wallet
+          </button>
+        </div>
       </div>
 
-      <div className={mpesa}>
-        <h1>M-Pesa</h1>
-
-        {orderProducts.length > 0 ? (
-          <div>
-            <form method="post" onSubmit={makingTheOrder}>
-              <h1>Fill the following to make the order</h1>
-
-              <label htmlFor="address">
-                <p>Shipping Address</p>
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  required
-                  onChange={handleChange}
-                  value={formData.address}
-                />
-              </label>
-
-              <label htmlFor="phone">
-                <p>Phone Number: </p>
-                <input
-                  type="tel"
-                  pattern="[0-9]{10}"
-                  id="phone"
-                  name="phone"
-                  required
-                  onChange={handleChange}
-                  value={formData.phone}
-                />
-              </label>
-
-              <label htmlFor="payment">
-                <p>Payment Method</p>
-                <select
-                  name="payment"
-                  id="payment"
-                  required
-                  onChange={handleChange}
-                  value={formData.payment}
-                >
-                  <option value="default">-Select Payment Method-</option>
-                  <option value="mpesa">Mpesa</option>
-                  <option value="onDelivery">Pay On Delivery</option>
-                </select>
-              </label>
-
-              <label htmlFor="method">
-                <p>Shipping Method</p>
-                <select
-                  name="method"
-                  id="method"
-                  required
-                  onChange={handleChange}
-                  value={formData.method}
-                >
-                  <option value="default">-Select Shipping Method-</option>
-                  <option value="To be delivered at your home address">
-                    Door Delivery
-                  </option>
-                  <option value="To be collected at pickup station">
-                    Pick Up Station
-                  </option>
-                </select>
-              </label>
-
-              <label htmlFor="note">
-                <p>Note for the delivery personel</p>
-                <input
-                  type="text"
-                  aria-multiline
-                  id="note"
-                  name="note"
-                  onChange={handleChange}
-                  value={formData.note}
-                ></input>
-              </label>
-
-              <input type="submit" value="Place Order Now" />
-            </form>
+      <div className={`${mpesa} method-chosen`}>
+        <div className="mpesa">
+          <div className="mpesa-label">
+            <img
+              src="/images/M-PESA-removebg-preview.png"
+              alt="mpesa image"
+              width="200"
+              height="50"
+              className="image-png"
+            />
           </div>
-        ) : (
-          <div>
-            {cart.length > 0 ? (
-              Object.values(counts).map((pr) => (
-                <div key={pr._id}>
-                  <h2>{pr.name}</h2>
-                  <p>Counts: {pr.count}</p>
+          {orderProducts.length > 0 ? (
+            <div className="mpesa-form">
+              <form method="post" onSubmit={makingTheOrder} className="form">
+                <label htmlFor="address" className="label-input">
+                  <p className="label">Shipping Address</p>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    required
+                    onChange={handleChange}
+                    value={formData.address}
+                    className="input"
+                  />
+                </label>
+
+                <label htmlFor="phone" className="label-input">
+                  <p className="label">Phone Number</p>
+                  <input
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    id="phone"
+                    name="phone"
+                    required
+                    onChange={handleChange}
+                    value={formData.phone}
+                    className="input"
+                  />
+                </label>
+
+                <label htmlFor="payment" className="label-input">
+                  <p className="label">Payment Method</p>
+                  <select
+                    name="payment"
+                    id="payment"
+                    required
+                    onChange={handleChange}
+                    value={formData.payment}
+                    className="input"
+                  >
+                    <option value="default">-Select Payment Method-</option>
+                    <option value="mpesa">Mpesa</option>
+                    <option value="onDelivery">Pay On Delivery</option>
+                  </select>
+                </label>
+
+                <label htmlFor="method" className="label-input">
+                  <p className="label">Shipping Method</p>
+                  <select
+                    name="method"
+                    id="method"
+                    required
+                    onChange={handleChange}
+                    value={formData.method}
+                    className="input"
+                  >
+                    <option value="default">-Select Shipping Method-</option>
+                    <option value="To be delivered at your home address">
+                      Door Delivery
+                    </option>
+                    <option value="To be collected at pickup station">
+                      Pick Up Station
+                    </option>
+                  </select>
+                </label>
+
+                <label htmlFor="note" className="label-input">
+                  <p className="label">Note for the delivery personel</p>
+                  <input
+                    type="text"
+                    aria-multiline
+                    id="note"
+                    name="note"
+                    onChange={handleChange}
+                    value={formData.note}
+                    className="input"
+                  ></input>
+                </label>
+
+                <input
+                  type="submit"
+                  value="Place Order Now"
+                  className="submit-btn"
+                />
+              </form>
+            </div>
+          ) : (
+            <div className="product-confirmation">
+              {cart.length > 0 ? (
+                <div className="product-list">
+                  {Object.values(counts).map((pr) => (
+                    <div key={pr._id} className="product-in-list">
+                      <h2>{pr.name}</h2>
+                      <p>X{pr.count}</p>
+                    </div>
+                  ))}
+                  <button onClick={createProducts} className="confirm-btn">
+                    Confirm Products
+                  </button>
                 </div>
-              ))
-            ) : (
-              <h1>No items in your Cart!!</h1>
-            )}
-            <button onClick={createProducts}>Confirm Products</button>
-          </div>
-        )}
+              ) : (
+                <div>
+                  <h1>Cart Empty!!</h1>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className={wallet}>
+      <div className={`${wallet} method-chosen`}>
         <h1>Wallet</h1>
       </div>
-    </>
+    </div>
   );
 }

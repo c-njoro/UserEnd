@@ -1,74 +1,197 @@
-.main-home {
-  width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 2em;
-  background-color: rgb(224, 236, 247);
+.main-home-container {
+  @apply w-screen min-h-screen bg-blue-100 flex flex-col justify-center items-center gap-10;
 
-  .welcome {
-    width: calc(0.9 * 100vw);
-    height: calc(0.8 * 100vh);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    background-color: rgba(174, 213, 250, 0.11);
-    padding-top: 2em;
-    border-radius: 20px;
+  .topper {
+    @apply w-full h-[calc(70vh)]  relative  shadow-md;
+    background-image: url("https://media.istockphoto.com/id/1437032902/photo/old-laptop-computers-digital-tablets-mobile-phones-many-used-electronic-gadgets-devices-on.jpg?s=1024x1024&w=is&k=20&c=kZUadngJgaU2CgpIUOkWevBbAaOqlJPpFkNaJu7jolw=");
 
-    .catch {
-      width: 45%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 2em;
+    background-size: cover;
 
-      h1 {
-        font-family: "Poppins", monospace;
-        font-weight: 900;
-        font-size: clamp(2em, 4vw, 4vw);
-        letter-spacing: 2px;
+    .overlay {
+      @apply w-full h-full bg-blue-300 absolute;
+
+      opacity: 0.7;
+    }
+    .info {
+      @apply w-full h-full flex flex-col justify-center items-center absolute gap-6;
+      z-index: 1;
+
+      .off {
+        @apply font-bold sm:text-9xl text-7xl  font-body text-gray-700 tracking-wider;
       }
 
       p {
-        font-family: monospace;
-        font-size: 1.3em;
-      }
-      .link {
-        text-decoration: none;
-        color: black;
-        background-color: rgba(240, 39, 39, 0.616);
-        width: 12em;
-        height: 50px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: "Poppins", sans-serif;
-        text-transform: uppercase;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 300ms ease-in-out;
+        @apply font-light font-body tracking-wide capitalize;
       }
 
-      .link:hover {
-        background-color: rgba(180, 2, 2, 0.616);
-        color: white;
-        transform: translateY(3px);
+      .every {
+        @apply font-body font-bold text-gray-800 sm:text-4xl text-3xl tracking-widest uppercase;
+      }
+
+      .shop {
+        @apply bg-white shadow-md w-max px-6 py-3 uppercase font-bold font-beauty text-green-600 tracking-wide rounded-full flex flex-row items-center gap-4 justify-center;
+        transition: all 200ms ease-in-out;
+      }
+      .shop:hover {
+        @apply bg-green-600 text-white;
+      }
+    }
+  }
+
+  .top-products {
+    @apply w-full min-h-[calc(30vh)] h-max flex flex-col items-center justify-center gap-4;
+
+    .sub-heading {
+      @apply w-full h-max flex flex-col justify-start p-4 capitalize font-semibold font-body text-2xl tracking-wide text-gray-700;
+
+      .link {
+        @apply w-full flex justify-center items-center bg-blue-100 shadow-md rounded-full py-3;
+
+        backdrop-filter: opacity(0.5);
       }
     }
 
-    .image {
-      width: 45%;
-      height: 100%;
+    .top-cards {
+      @apply w-full flex justify-center items-center h-max;
+      .the-cards {
+        @apply w-full grid md:grid-cols-4 grid-cols-2 gap-6  place-items-center h-max;
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        .card {
+          @apply lg:w-[calc(18vw)] md:w-[calc(20vw)] w-[calc(40vw)] min-h-[calc(32vh)]  flex flex-col gap-4 bg-blue-50 rounded shadow-lg overflow-hidden;
+
+          .image-holder {
+            @apply w-full h-[calc(25vh)] overflow-hidden;
+
+            .image {
+              @apply w-full h-full object-cover;
+            }
+          }
+
+          .details {
+            @apply pl-4 pb-4 flex flex-col gap-2;
+            .name {
+              @apply font-body font-semibold text-gray-600;
+            }
+            .price {
+              @apply font-beauty font-semibold text-green-600;
+            }
+
+            .price-strike {
+              @apply font-beauty font-semibold text-red-600;
+              text-decoration: line-through;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .new-arrival {
+    @apply w-[calc(80vw)] max-h-[calc(50vh)] grid sm:grid-cols-2  bg-blue-50 rounded-lg shadow-2xl relative;
+    .shop-new {
+      @apply flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)];
+      z-index: 2;
+      .head {
+        @apply capitalize font-bold font-body text-4xl tracking-wider text-gray-800;
+      }
+      .now {
+        @apply bg-white shadow-md w-2/3 px-6 py-3 uppercase font-bold font-beauty text-green-600 
+        tracking-wide rounded-md flex flex-row items-center gap-4 justify-center hover:bg-green-600 hover:text-white;
+
+        transition: all 300ms ease-in-out;
+      }
+    }
+    .new-image {
+      @apply flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)] absolute sm:relative;
+      .image {
+        @apply w-full h-[calc(50vh)] object-cover;
         object-position: top;
+      }
+    }
+  }
+
+  .learn-more {
+    @apply grid lg:grid-cols-2 md:grid-cols-3 w-[calc(95vw)] gap-4 p-4 grid-cols-1 relative;
+    .company-image {
+      .image {
+        @apply lg:w-full lg:h-[calc(65vh)] md:w-[calc(40vh)] md:h-[calc(40vh)] lg:rounded-full object-cover;
+      }
+    }
+    .company-desc {
+      @apply flex flex-col justify-center items-start gap-6 lg:col-span-1 md:col-span-2;
+      z-index: 2;
+
+      .learn {
+        @apply capitalize font-bold font-body text-4xl tracking-wider text-gray-700;
+      }
+
+      .desc {
+        @apply font-beauty font-semibold text-gray-500 tracking-wide;
+        word-spacing: 10px;
+      }
+      .more {
+        @apply bg-white shadow-md w-full px-6 py-3 uppercase font-bold font-beauty
+         text-green-600 tracking-wide rounded-md flex flex-row items-center gap-4 justify-center hover:bg-green-600 hover:text-white;
+
+        transition: all 300ms ease-in-out;
+      }
+    }
+  }
+
+  .integrity-cards {
+    @apply grid grid-cols-1 place-items-center gap-4 w-full h-max md:grid-cols-3 md:w-[calc(80vw)];
+
+    .card {
+      @apply flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5;
+
+      h1 {
+        @apply uppercase font-body font-semibold tracking-wider text-gray-700;
+      }
+
+      p {
+        @apply capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide;
+      }
+    }
+  }
+
+  .client-reviews {
+    @apply w-[calc(95vw)] h-max flex flex-col;
+
+    .sub-heading {
+      @apply w-full h-max flex flex-col justify-start p-4 capitalize font-semibold font-body text-2xl tracking-wide text-gray-700;
+    }
+
+    .the-reviews {
+      @apply w-full h-max grid grid-cols-1 md:grid-cols-2 gap-4;
+
+      .review {
+        @apply w-full grid grid-cols-2 gap-8 h-[calc(35vh)] bg-blue-50 place-items-center rounded-lg shadow-lg p-5;
+
+        .client-info {
+          @apply flex flex-col gap-4 w-full;
+
+          .image {
+            @apply w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover;
+          }
+
+          .name {
+            @apply capitalize font-bold font-body tracking-wide text-gray-600 text-xl pl-5;
+          }
+        }
+
+        .client-rating {
+          @apply w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5;
+
+          .review-msg {
+            @apply w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5;
+
+            .btn {
+              @apply bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white;
+
+              transition: all 300ms ease-in-out;
+            }
+          }
+        }
       }
     }
   }

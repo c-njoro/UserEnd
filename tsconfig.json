@@ -25,7 +25,8 @@
     "src/pages/_app.tsx",
     "src/pages/admin/AdminPanel.jsx",
     "src/pages/admin/index.jsx",
-    "src/components/adminComponents/OrderList.jsx"
+    "src/components/adminComponents/OrderList.jsx",
+    "src/pages/index.jsx"
   ],
   "exclude": ["node_modules"]
 }

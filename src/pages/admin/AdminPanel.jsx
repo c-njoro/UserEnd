@@ -15,21 +15,15 @@ import OrderList from "../../components/adminComponents/OrderList";
 import ProductList from "../../components/adminComponents/ProductList";
 import UserList from "../../components/adminComponents/UsersList";
 
-const theme = createTheme({
-  components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          position: "relative", // Customize the position here
-        },
-      },
-    },
-  },
+import tailwindConfig from "tailwindcss/defaultConfig";
+
+const customTheme = createTheme({
+  ...tailwindConfig.theme,
 });
 
 const Page = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={customTheme}>
       <Admin dataProvider={customDataProvider} layout={CustomLayout}>
         <Resource
           name="products"

@@ -62,6 +62,7 @@ export default async function auth(req, res) {
         async authorize(credentials) {
           try {
             const { email, password } = credentials;
+            console.log(email, password);
             const response = await axios.get(
               `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
               {
@@ -93,6 +94,9 @@ export default async function auth(req, res) {
         },
       }),
     ],
+    pages: {
+      signIn: "/sign", // Path to your custom sign-in page
+    },
 
     callbacks: {
       async jwt({ token, user }) {

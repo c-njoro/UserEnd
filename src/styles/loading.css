@@ -3,6 +3,7 @@ background-color: rgba(174, 213, 250, 0.11);
 background-color: rgba(240, 39, 39, 0.616);*/
 
 .loader {
+  @apply bg-blue-100;
   width: 100vw;
   height: 100vh;
   display: flex;

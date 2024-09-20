@@ -1,0 +1,55 @@
+.main-about-container {
+  @apply w-screen min-h-screen h-max flex flex-col gap-20 bg-blue-100 justify-center items-center pt-8;
+
+  .vision,
+  .professional-workers {
+    @apply w-screen h-max flex flex-col gap-2 md:grid md:grid-cols-2 md:gap-8 md:w-[calc(85vw)];
+
+    .image-side {
+      @apply h-[calc(40vh)] overflow-hidden md:w-full md:h-full;
+      .image {
+        @apply w-full  h-[calc(40vh)]  object-cover rounded-sm shadow-md md:w-full md:h-full;
+      }
+    }
+
+    .detail-side {
+      @apply flex flex-col gap-2 justify-center items-start md:gap-5;
+
+      h1 {
+        @apply capitalize font-bold font-body text-2xl text-gray-700 tracking-wider md:text-4xl;
+      }
+
+      p {
+        @apply capitalize  font-beauty  text-gray-600 tracking-wide;
+      }
+    }
+  }
+
+  .core-values {
+    @apply flex flex-col w-full h-max justify-center items-center md:w-[calc(90vw)];
+
+    h1 {
+      @apply capitalize font-bold font-body text-2xl text-gray-700 tracking-wider md:text-4xl;
+    }
+
+    p {
+      @apply capitalize  font-beauty  text-gray-600 tracking-wide;
+    }
+  }
+
+  .integrity-cards {
+    @apply grid grid-cols-1 place-items-center gap-4 w-full h-max md:grid-cols-3 md:w-[calc(80vw)];
+
+    .card {
+      @apply flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5;
+
+      h1 {
+        @apply uppercase font-body font-semibold tracking-wider text-gray-700;
+      }
+
+      p {
+        @apply capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide;
+      }
+    }
+  }
+}

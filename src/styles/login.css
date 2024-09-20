@@ -1,0 +1,46 @@
+.main-sign-container {
+  @apply bg-blue-100 flex flex-col w-screen h-[calc(88vh)];
+
+  .whole-container {
+    @apply flex flex-col justify-center items-center w-full h-screen;
+
+    .lf {
+      .has-acc-page,
+      .sub-container {
+        @apply bg-blue-50 shadow-lg lg:w-[calc(50vw)] h-max p-6 sm:p-10 md:p-16 rounded-2xl flex flex-col gap-6 justify-center items-center md:w-[calc(70vw)] sm:w-[calc(80vw)] w-[calc(100vw)];
+
+        .sub-heading {
+          @apply text-2xl text-gray-600 capitalize font-body font-semibold tracking-widest;
+        }
+
+        .other-btn {
+          @apply bg-transparent border-2 border-white px-4 py-2 rounded-full font-bold font-body text-sm
+           text-gray-500 shadow-lg flex flex-row gap-2 items-center justify-center capitalize;
+        }
+      }
+    }
+  }
+
+  .form {
+    @apply flex flex-col gap-2 w-full h-max justify-center items-center;
+
+    .label-input {
+      @apply grid grid-cols-3 w-full;
+
+      .label {
+        @apply col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center;
+      }
+      .input {
+        @apply col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md;
+      }
+      .input:focus {
+        @apply shadow-2xl;
+        outline: none;
+      }
+    }
+
+    .submit-btn {
+      @apply bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-max h-max shadow-md rounded-full cursor-pointer;
+    }
+  }
+}
