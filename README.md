@@ -1,40 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+the backend still on this github account called My-Store
 
-## Getting Started
+add .env.local file on the front end and add the following: NEXTAUTH_URL=http://localhost:3001 (the port your front end is running on) NEXTAUTH_SECRET=(generate a random secret key)
 
-First, run the development server:
+NEXT_PUBLIC_BASE_URL=http://localhost:3000 (the port your backend is running on or the backend endpoint)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+NEXT_PUBLIC_PRODUCTS_URL=${NEXT_PUBLIC_BASE_URL}/api/products NEXT_PUBLIC_USERS_URL=${NEXT_PUBLIC_BASE_URL}/api/users NEXT_PUBLIC_ORDERS_URL=${NEXT_PUBLIC_BASE_URL}/api/orders NEXT_PUBLIC_PROFILE_UPLOADER_URL=${NEXT_PUBLIC_BASE_URL}/uploader NEXT_PUBLIC_PROFILE_UPLOAD_URL=${NEXT_PUBLIC_BASE_URL}/upload
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+NEXT_PUBLIC_PRODUCT_IMAGES_UPLOADER_URL=${NEXT_PUBLIC_BASE_URL}/uploadProducts
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+NEXT_PUBLIC_BASE_URL_FOR_ADMIN=${NEXT_PUBLIC_BASE_URL}/api
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+dont run the frontend before running the backend to ensure the database is available when frontend runs
