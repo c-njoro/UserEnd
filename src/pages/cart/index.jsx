@@ -13,7 +13,7 @@ const checkAuthStatus = async () => {
   try {
     const response = await fetch("/api/check-auth");
     const data = await response.json();
-    console.log(data.user);
+
     return data.user;
   } catch (error) {
     console.error("Failed to check authentication status:", error);
