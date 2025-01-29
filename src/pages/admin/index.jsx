@@ -1,9 +1,12 @@
 import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
-const AdminPanel = dynamic(() => import("./AdminPanel"), {
-  ssr: false,
-});
+const AdminPanel = dynamic(
+  () => import("../../components/adminComponents/AdminPanel"),
+  {
+    ssr: false,
+  }
+);
 
 const AdminPage = () => {
   return <AdminPanel />;

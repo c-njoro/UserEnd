@@ -1,19 +1,19 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Admin, Resource } from "react-admin";
-import CustomLayout from "../../components/adminComponents/CustomLayout";
-import OrderEdit from "../../components/adminComponents/OrderEdit";
-import OrderShow from "../../components/adminComponents/OrderShow";
-import ProductCreate from "../../components/adminComponents/ProductCreate";
-import ProductEdit from "../../components/adminComponents/ProductEdit";
-import ProductShow from "../../components/adminComponents/ProductShow";
-import UserEdit from "../../components/adminComponents/UserEdit";
-import UserShow from "../../components/adminComponents/UserShow";
+import CustomLayout from "./CustomLayout";
+import OrderEdit from "./OrderEdit";
+import OrderShow from "./OrderShow";
+import ProductCreate from "./ProductCreate";
+import ProductEdit from "./ProductEdit";
+import ProductShow from "./ProductShow";
+import UserEdit from "./UserEdit";
+import UserShow from "./UserShow";
 
 import customDataProvider from "./customDataProvider";
 
-import OrderList from "../../components/adminComponents/OrderList";
-import ProductList from "../../components/adminComponents/ProductList";
-import UserList from "../../components/adminComponents/UsersList";
+import OrderList from "./OrderList";
+import ProductList from "./ProductList";
+import UserList from "./UsersList";
 
 import tailwindConfig from "tailwindcss/defaultConfig";
 

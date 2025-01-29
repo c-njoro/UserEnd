@@ -82,7 +82,10 @@ const Header = () => {
       const foundUser = await response.data;
 
       setInfo(foundUser);
-    } catch (error) {}
+    } catch (error) {
+      setIsAuthenticated(false);
+      console.log("Error getting user: ", error);
+    }
   };
 
   useEffect(() => {
@@ -131,7 +134,7 @@ const Header = () => {
         )}
 
         {isAuthenticated ? (
-          <Link href={`/profile/${name}`} className="link-profile">
+          <Link href={`/profile/myProfile`} className="link-profile">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
