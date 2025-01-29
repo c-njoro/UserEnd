@@ -486,39 +486,36 @@ export default function OneProduct({ currentData }) {
 }
 
 export async function getStaticPaths() {
-  const productsUrl = process.env.NEXT_PUBLIC_PRODUCTS_URL;
-  const res = await fetch(`${productsUrl}`, {
-    headers: {
-      Accept: "application/json",
-      "ngrok-skip-browser-warning": "true",
-    },
-  });
-  const products = await res.json();
-
-  const allPaths = products.map((pr) => {
-    return {
-      params: {
-        ids: pr._id,
-      },
-    };
-  });
-
+  // We can return empty paths and let fallback handle the generation
   return {
-    paths: allPaths,
-    fallback: false,
+    paths: [], // Don't pre-render any pages at build time
+    fallback: "blocking", // Generate pages on first request
   };
 }
 
 export async function getStaticProps(context) {
-  const productsUrl = process.env.NEXT_PUBLIC_PRODUCTS_URL;
-  const id = context?.params.ids;
-  const res = await fetch(`${productsUrl}`, {
-    headers: {
-      Accept: "application/json",
-      "ngrok-skip-browser-warning": "true",
-    },
-  });
-  const products = await res.json();
-  const currentData = products.find((pr) => pr._id === id);
-  return { props: { currentData } };
+  try {
+    const id = context?.params?.ids;
+    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
+
+    const res = await axios.get(`${frontendUrl}/api/oneProduct?id=${id}`);
+
+    if (res.status !== 200) {
+      return {
+        notFound: true, // This will show your 404 page
+      };
+    }
+
+    const currentData = await res.data;
+
+    return {
+      props: { currentData },
+      revalidate: 60,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      notFound: true,
+    };
+  }
 }

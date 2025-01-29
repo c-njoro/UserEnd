@@ -87,7 +87,6 @@ const ProductsList = ({ data }) => {
   };
 
   useEffect(() => {
-    setLoading(true);
     initialSetUp();
   }, []);
 

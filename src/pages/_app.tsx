@@ -12,6 +12,16 @@ import "@/styles/products.css";
 import "@/styles/profile.css";
 import type { AppProps } from "next/app";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
-  return <Structure children={<Component {...pageProps} />} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Structure>
+        <Component {...pageProps} />
+      </Structure>
+    </QueryClientProvider>
+  );
 }

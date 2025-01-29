@@ -1,15 +1,15 @@
+import useProducts from "@/components/hooks/ProductsHook";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import ReactStars from "react-rating-stars-component";
 
-export default function Home({ products }) {
-  const [initialProducts, setProducts] = useState([]);
-
-  useEffect(() => {
-    setProducts(products);
-  }, []);
-
+export default function Home() {
+  const {
+    data: initialProducts,
+    isLoading: productsLoading,
+    error: productsError,
+    refetch: refetchProducts,
+  } = useProducts();
   return (
     <div className="main-home-container">
       <div className="topper">
@@ -48,7 +48,7 @@ export default function Home({ products }) {
           <h1 className="sub">top products</h1>
         </div>
         <div className="top-cards">
-          {initialProducts.length > 0 ? (
+          {initialProducts ? (
             <div className="the-cards">
               {initialProducts.slice(0, 4).map((pr) => (
                 <motion.div
@@ -94,8 +94,18 @@ export default function Home({ products }) {
                 </motion.div>
               ))}
             </div>
+          ) : productsLoading ? (
+            <div>Loading top products</div>
+          ) : productsError ? (
+            <div>
+              <p>Error while fetching top products</p>
+              <button onClick={() => refetchProducts()}>Retry Fetch</button>
+            </div>
           ) : (
-            <div>No Top Products</div>
+            <div>
+              <p>Could not fetch top products</p>
+              <button onClick={() => refetchProducts()}>Retry Fetch</button>
+            </div>
           )}
         </div>
         <div className="sub-heading">
@@ -352,21 +362,4 @@ export default function Home({ products }) {
       </motion.div>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const productsUrl = process.env.NEXT_PUBLIC_PRODUCTS_URL;
-  const res = await fetch(`${productsUrl}`, {
-    headers: {
-      Accept: "application/json",
-      "ngrok-skip-browser-warning": "true",
-    },
-  });
-  const products = await res.json();
-
-  return {
-    props: {
-      products,
-    },
-  };
 }

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.56.2",
+    "@tanstack/react-query": "^5.65.1",
     "aos": "^2.3.4",
     "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
@@ -26,8 +26,10 @@
     "react-admin": "^5.1.1",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
+    "react-query": "^3.39.3",
     "react-rating-stars-component": "^2.2.0",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "tanstack": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

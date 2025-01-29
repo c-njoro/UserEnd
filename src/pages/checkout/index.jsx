@@ -21,7 +21,7 @@ const checkAuthStatus = async () => {
 export default function Checkout() {
   const router = useRouter();
   const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
@@ -67,7 +67,7 @@ export default function Checkout() {
 
       try {
         const resData = await axios.post(
-          `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/bulk`,
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
           { ids }
         );
 

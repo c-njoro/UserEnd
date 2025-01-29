@@ -68,7 +68,7 @@ export default function Cart({}) {
   useEffect(() => {
     const fetchTheCart = async () => {
       const resData = await axios.post(
-        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/bulk`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
         { ids }
       );
 
