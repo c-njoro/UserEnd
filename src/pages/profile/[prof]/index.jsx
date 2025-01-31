@@ -34,7 +34,7 @@ export default function Profile() {
 
           <div className="more-about">
             <p className="full-name">{userInfo.userData.name}</p>
-            <p className="email">{userInfo.email}</p>
+            <p className="email">{userInfo.userData.email}</p>
           </div>
         </div>
 

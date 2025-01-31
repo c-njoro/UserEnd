@@ -2,7 +2,6 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 type UserInfo = {
   loggedIn: boolean;
-  email: string;
   userData: Record<string, any>; // Can hold any key-value pairs
 };
 
@@ -18,7 +17,6 @@ const UserInfoContext = createContext<UserInfoContextType | undefined>(
 export const UserInfoProvider = ({ children }: { children: ReactNode }) => {
   const [userInfo, setUserInfo] = useState<UserInfo>({
     loggedIn: false,
-    email: "",
     userData: {}, // Default empty object
   });
 

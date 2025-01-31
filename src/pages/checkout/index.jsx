@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useCart from "../../components/hooks/cartHook";
 require("dotenv").config();
 
 const checkAuthStatus = async () => {
@@ -20,9 +21,7 @@ const checkAuthStatus = async () => {
 
 export default function Checkout() {
   const router = useRouter();
-  const [cart, setCart] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
   const [orderProducts, setOrderProducts] = useState([]);
@@ -36,6 +35,46 @@ export default function Checkout() {
     note: "",
   });
 
+  const {
+    data: cart,
+    isLoading: cartLoading,
+    error: cartError,
+    refetch: refetchCart,
+  } = useCart();
+
+  useEffect(() => {
+    if (cart) {
+      const countOccurrences = () => {
+        let tempCounts = {};
+        cart.forEach((obj) => {
+          if (tempCounts[obj._id]) {
+            tempCounts[obj._id].count++;
+          } else {
+            tempCounts[obj._id] = { ...obj, count: 1 };
+          }
+        });
+        setCounts(tempCounts);
+      };
+
+      countOccurrences();
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    if (cart) {
+      const productsWithTotal = cart.map((product) => ({
+        ...product,
+        total: product.price,
+      }));
+      const grandTotal = productsWithTotal.reduce(
+        (sum, product) => sum + product.total,
+        0
+      );
+      const rounded = parseFloat(grandTotal.toFixed(2));
+      setTotal(rounded);
+    }
+  }, [cart]);
+
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -45,74 +84,6 @@ export default function Checkout() {
       [name]: value,
     }));
   };
-
-  const getCart = async () => {
-    try {
-      setLoading(false);
-      const wholeUser = await checkAuthStatus();
-      const { email } = wholeUser;
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-        {
-          params: { email },
-          headers: {
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
-      const foundUser = await response.data;
-      const cartP = await foundUser.favoriteProducts;
-      const ids = [...cartP];
-
-      try {
-        const resData = await axios.post(
-          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
-          { ids }
-        );
-
-        setCart(await resData.data);
-      } catch (error) {
-        console.error("There was an error!", error);
-      }
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getCart();
-  }, []);
-
-  const countOccurrences = () => {
-    let tempCounts = {};
-    cart.forEach((obj) => {
-      if (tempCounts[obj._id]) {
-        tempCounts[obj._id].count++;
-      } else {
-        tempCounts[obj._id] = { ...obj, count: 1 };
-      }
-    });
-    setCounts(tempCounts);
-  };
-
-  useEffect(() => {
-    countOccurrences();
-  }, [cart]);
-
-  useEffect(() => {
-    const productsWithTotal = cart.map((product) => ({
-      ...product,
-      total: product.price,
-    }));
-    const grandTotal = productsWithTotal.reduce(
-      (sum, product) => sum + product.total,
-      0
-    );
-    setTotal(grandTotal.toFixed(2));
-  }, [cart]);
 
   const mpesaToggle = () => {
     if (mpesa === "pay-hide" && wallet === "pay-hide") {
@@ -387,7 +358,7 @@ export default function Checkout() {
             </div>
           ) : (
             <div className="product-confirmation">
-              {cart.length > 0 ? (
+              {cart ? (
                 <div className="product-list">
                   {Object.values(counts).map((pr) => (
                     <div key={pr._id} className="product-in-list">

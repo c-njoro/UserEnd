@@ -2,20 +2,24 @@
 import axios from "axios";
 
 export default async function handler(req, res) {
-  const { method, query } = req;
+  const { method, body } = req;
 
   if (method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Only POST requests are allowed" });
   }
 
-  const { ids } = req.body;
+  const { ids } = body;
 
-  if (!ids) {
-    return res.status(400).json({ error: "Property ID is required" });
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res
+      .status(400)
+      .json({ error: "A non-empty array of Property IDs is required" });
   }
 
   if (!process.env.PRODUCTS_URL) {
-    return res.status(500).json({ error: "PRODUCTS_URL is not defined" });
+    return res.status(500).json({
+      error: "Server configuration error: PRODUCTS_URL is not defined",
+    });
   }
 
   try {
@@ -29,13 +33,19 @@ export default async function handler(req, res) {
         timeout: 10000,
       }
     );
+    console.log("Fetched from backend succesfully");
 
     return res.status(200).json(response.data);
   } catch (error) {
     console.error("API Route Error:", error);
-    return res.status(500).json({
+
+    const status = error.response?.status || 500;
+    const errorMessage =
+      error.response?.data || error.message || "Internal Server Error";
+
+    return res.status(status).json({
       error: "Failed to fetch property details",
-      message: error.message,
+      message: errorMessage,
     });
   }
 }
