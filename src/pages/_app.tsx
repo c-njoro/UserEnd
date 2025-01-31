@@ -1,3 +1,4 @@
+import { UserInfoProvider } from "@/components/GlobalState";
 import Structure from "@/components/Structure";
 import "@/styles/about.css";
 import "@/styles/cart.css";
@@ -19,9 +20,11 @@ const queryClient = new QueryClient();
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <Structure>
-        <Component {...pageProps} />
-      </Structure>
+      <UserInfoProvider>
+        <Structure>
+          <Component {...pageProps} />
+        </Structure>
+      </UserInfoProvider>
     </QueryClientProvider>
   );
 }

@@ -1,24 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useUserInfoProvider } from "./GlobalState";
 const axios = require("axios");
 
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
-
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [exData, setEx] = useState();
-  const [userInfo, setInfo] = useState();
-  const [name, setName] = useState("");
+  const { userInfo } = useUserInfoProvider();
 
   const checkWidth = () => {
     const menu = document.getElementById("menu");
@@ -35,64 +22,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const fetchAuthStatus = async () => {
-      const response = await checkAuthStatus();
-      setIsAuthenticated(response.authenticated);
-      setEx(response.user);
-    };
-
-    fetchAuthStatus();
-
-    if (isAuthenticated) {
-      getUser();
-    }
-  }, []);
-
-  useEffect(() => {
     window.addEventListener("resize", checkWidth);
 
     return () => {
       window.addEventListener("resize", checkWidth);
     };
   }, []);
-
-  useEffect(() => {
-    if (userInfo) {
-      setName(userInfo.username);
-    }
-  }, [userInfo]);
-
-  const getUser = async () => {
-    if (!exData) {
-      return;
-    }
-    const { email } = exData;
-
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-        {
-          params: { email },
-          headers: {
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
-      const foundUser = await response.data;
-
-      setInfo(foundUser);
-    } catch (error) {
-      setIsAuthenticated(false);
-      console.log("Error getting user: ", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated && exData) {
-      getUser();
-    }
-  }, [exData]);
 
   const toggleDrop = () => {
     const menu = document.getElementById("menu");
@@ -125,7 +60,7 @@ const Header = () => {
           Products
         </Link>
 
-        {isAuthenticated ? (
+        {userInfo.loggedIn ? (
           <Link href="/cart" className="link">
             Cart
           </Link>
@@ -133,7 +68,7 @@ const Header = () => {
           ""
         )}
 
-        {isAuthenticated ? (
+        {userInfo.loggedIn ? (
           <Link href={`/profile/myProfile`} className="link-profile">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +122,7 @@ const Header = () => {
             Products
           </Link>
 
-          {isAuthenticated ? (
+          {userInfo.loggedIn ? (
             <Link href="/cart" className="link" onClick={closeIt}>
               Cart
             </Link>
@@ -195,9 +130,9 @@ const Header = () => {
             ""
           )}
 
-          {isAuthenticated ? (
+          {userInfo.loggedIn ? (
             <Link
-              href={`/profile/${name}`}
+              href={`/profile/${userInfo.userData.name}`}
               className="link-profile"
               onClick={closeIt}
             >

@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import ProductsList from "@/components/ProductList";
 import { Inter } from "next/font/google";
 import useProducts from "../../components/hooks/ProductsHook";
@@ -16,7 +17,7 @@ export default function Products() {
       {products ? (
         <ProductsList data={products} />
       ) : productsLoading ? (
-        <h1>Loading products...</h1>
+        <Loading />
       ) : productsError ? (
         <div>
           <h1>Error fetching products</h1>

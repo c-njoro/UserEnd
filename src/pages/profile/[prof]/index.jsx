@@ -1,57 +1,10 @@
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import Loading from "../../../components/Loading";
-
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-    return data.user;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
+import { useUserInfoProvider } from "../../../components/GlobalState";
 
 export default function Profile() {
-  const [userInfo, setInfo] = useState();
-  const [profile, setProfile] = useState("/images/profile.webp");
-  const [loading, setLoading] = useState(false);
-
-  const getUser = async () => {
-    setLoading(true);
-    const userUrl = process.env.NEXT_PUBLIC_USERS_URL;
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-    const response = await axios.get(`${userUrl}/find`, {
-      params: { email },
-      headers: {
-        Accept: "application/json",
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
-    const foundUser = await response.data;
-    setInfo(foundUser);
-
-    if (foundUser.profilePicture) {
-      setProfile(foundUser.profilePicture);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const { userInfo } = useUserInfoProvider();
 
   if (!userInfo) {
-    if (loading) {
-      return (
-        <>
-          <Loading />
-        </>
-      );
-    }
     return <div>No User</div>;
   }
 
@@ -62,12 +15,16 @@ export default function Profile() {
           <div className="user-name">
             <h1>
               Hello, {"   "}
-              {userInfo.username}
+              {userInfo.userData.username}
             </h1>
           </div>
           <div className="profile-picture">
             <img
-              src={`${profile}`}
+              src={
+                userInfo.userData.profilePicture
+                  ? `${userInfo.userData.profilePicture}`
+                  : "/images/profile.webp"
+              }
               alt="Profile Picture"
               width="200"
               height="200"
@@ -76,7 +33,7 @@ export default function Profile() {
           </div>
 
           <div className="more-about">
-            <p className="full-name">{userInfo.name}</p>
+            <p className="full-name">{userInfo.userData.name}</p>
             <p className="email">{userInfo.email}</p>
           </div>
         </div>
@@ -103,7 +60,7 @@ export default function Profile() {
             </Link>
           </div>
           <div className="role">
-            {userInfo.role === "admin" ? (
+            {userInfo.userData.role === "admin" ? (
               <div className="role-show">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

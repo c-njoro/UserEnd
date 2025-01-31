@@ -1,7 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const fetchProducts = async () => {
+  axiosRetry(axios, { retries: 3 });
+
   const response = await axios.get(
     `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/products`
   );

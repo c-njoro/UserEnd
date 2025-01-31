@@ -1,5 +1,6 @@
 // pages/api/properties.js
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 export default async function handler(req, res) {
   try {
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
     const url = `${process.env.PRODUCTS_URL}${
       queryString ? `?${queryString}` : ""
     }`;
-
+    axiosRetry(axios, { retries: 3 });
     const response = await axios.get(url, {
       headers: {
         Accept: "application/json",

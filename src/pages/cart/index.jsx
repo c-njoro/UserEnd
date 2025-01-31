@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserInfoProvider } from "../../components/GlobalState";
 import Loading from "../../components/Loading";
 
 require("dotenv").config();
@@ -24,66 +25,22 @@ const checkAuthStatus = async () => {
 export default function Cart({}) {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
   const [ids, setIds] = useState([]);
-
-  const getCart = async () => {
-    try {
-      const wholeUser = await checkAuthStatus();
-      const email = wholeUser.email;
-
-      try {
-        const findUrl = `${process.env.NEXT_PUBLIC_USERS_URL}/find?email=${email}`;
-        const response = await fetch(findUrl, {
-          headers: {
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-        });
-
-        // If the response is not OK, log the status
-        if (!response.ok) {
-          const errorText = await response.text(); // Get the actual text of the response
-          throw new Error(
-            `HTTP error! status: ${response.status}. Response: ${errorText}`
-          );
-        }
-
-        const foundUser = await response.json();
-
-        const cartP = await foundUser.favoriteProducts;
-        setIds(cartP);
-      } catch (error) {
-        console.error("Fetch error:", error);
-      }
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { userInfo } = useUserInfoProvider();
 
   useEffect(() => {
     const fetchTheCart = async () => {
       const resData = await axios.post(
         `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
-        { ids }
+        { ids: userInfo.userData.favoriteProducts }
       );
 
       setCart(await resData.data);
       setLoading(false);
     };
-
-    if (ids.length > 0) {
-      fetchTheCart();
-    }
-  }, [ids]);
-
-  useEffect(() => {
-    setLoading(true);
-    getCart();
+    fetchTheCart();
   }, []);
 
   useEffect(() => {

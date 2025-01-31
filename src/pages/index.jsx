@@ -10,6 +10,7 @@ export default function Home() {
     error: productsError,
     refetch: refetchProducts,
   } = useProducts();
+
   return (
     <div className="main-home-container">
       <div className="topper">
@@ -311,13 +312,7 @@ export default function Home() {
             </div>
             <div className="client-rating">
               <div className="rating">
-                <ReactStars
-                  count={5}
-                  value={4}
-                  activeColor="#ffd700"
-                  edit={false} // Prevents user from changing the rating
-                  classNames="stars"
-                />
+                <h2>5</h2>
               </div>
               <div className="review-msg">
                 <p>
