@@ -1,6 +1,8 @@
 import useProducts from "@/components/hooks/ProductsHook";
+import useUserInfo from "@/components/hooks/UserHook";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect } from "react";
 import ReactStars from "react-rating-stars-component";
 
 export default function Home() {
@@ -10,6 +12,11 @@ export default function Home() {
     error: productsError,
     refetch: refetchProducts,
   } = useProducts();
+  const { refetch: refetchUser } = useUserInfo();
+
+  useEffect(() => {
+    refetchUser();
+  }, []);
 
   return (
     <div className="main-home-container">

@@ -8,11 +8,15 @@ axiosRetry(axios, { retries: 3 });
 
 const fetchCart = async (ids) => {
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
-      { ids } // Pass the array directly in the request body
-    );
-    return [...response.data];
+    if (ids.length > 0) {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/bulkFetch`,
+        { ids } // Pass the array directly in the request body
+      );
+      return [...response.data];
+    }
+
+    return [];
   } catch (error) {
     console.error("Error fetching cart data:", error);
     return [];

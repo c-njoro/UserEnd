@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserInfoProvider } from "../../components/GlobalState";
 import useCart from "../../components/hooks/cartHook";
 require("dotenv").config();
 
@@ -21,7 +22,7 @@ const checkAuthStatus = async () => {
 
 export default function Checkout() {
   const router = useRouter();
-
+  const { userInfo } = useUserInfoProvider();
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
   const [orderProducts, setOrderProducts] = useState([]);
@@ -119,20 +120,42 @@ export default function Checkout() {
     });
   };
 
+  //update stock after purchase
   const updateStock = () => {
-    Object.values(counts).map(async (co) => {
-      const newStock = co.stock - co.count;
-      const updateStock = await axios.put(
-        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/update/${co._id}`,
-        { stock: newStock },
+    try {
+      Object.values(counts).map(async (co) => {
+        const newStock = co.stock - co.count;
+        const updateStock = await axios.put(
+          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateProducts?id=${co._id}`,
+          { stock: newStock },
+          {
+            headers: {
+              Accept: "application/json",
+              "ngrok-skip-browser-warning": "true",
+            },
+          }
+        );
+      });
+    } catch (error) {
+      console.log("Error while updating stock: ", error);
+    }
+  };
+
+  //clearing the cart after order
+  const clearCart = async () => {
+    try {
+      const clearTheCart = await axios.put(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateUser?id=${userInfo.userData._id}`,
         {
-          headers: {
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
+          favoriteProducts: [],
         }
       );
-    });
+      console.log("Cart cleared");
+      const updatedUser = clearTheCart.data;
+      updatedUser ? refetchCart() : "";
+    } catch (error) {
+      console.log("An error while clearing cart: ", error);
+    }
   };
 
   const makingTheOrder = async (e) => {
@@ -157,39 +180,30 @@ export default function Checkout() {
       return;
     }
 
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-      {
-        params: { email },
-        headers: {
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
-    const foundUser = await response.data;
-
     try {
-      const order = await axios.post(`${process.env.NEXT_PUBLIC_ORDERS_URL}`, {
-        customerId: foundUser._id,
-        shippingAddress: formData.address,
-        contactInfo: {
-          phone: formData.phone,
-          email: foundUser.email,
-        },
-        paymentMethod: formData.payment,
-        transactionId: "TEST_ID",
-        totalAmount: total,
-        products: orderProducts,
-        shippingMethod: formData.method,
-        shippingCost: 5,
-        taxRate: 0.123,
-        taxAmount: 10.08,
-        orderNotes: formData.note,
-        internalNotes: "New customer, verify address first.",
-      });
+      const order = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/makeOrder`,
+        {
+          customerId: userInfo.userData._id,
+          shippingAddress: formData.address,
+          contactInfo: {
+            phone: formData.phone,
+            email: userInfo.userData.email,
+          },
+          paymentMethod: formData.payment,
+          transactionId: "TEST_ID",
+          totalAmount: total,
+          products: orderProducts,
+          shippingMethod: formData.method,
+          shippingCost: 5,
+          taxRate: 0.123,
+          taxAmount: 10.08,
+          orderNotes: formData.note,
+          internalNotes: "New customer, verify address first.",
+        }
+      );
+
+      clearCart();
 
       updateStock();
 
@@ -211,19 +225,6 @@ export default function Checkout() {
         payment: "default",
         note: "",
       });
-
-      const clearTheCart = axios.put(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/update/${foundUser._id}`,
-        {
-          favoriteProducts: [],
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "ngrok-skip-browser-warning": "true",
-          },
-        }
-      );
 
       router.push("/");
     } catch (error) {
