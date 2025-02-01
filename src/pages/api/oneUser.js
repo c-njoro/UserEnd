@@ -14,13 +14,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Property ID is required" });
   }
 
-  if (!process.env.PRODUCTS_URL) {
+  if (!process.env.USERS_URL) {
     return res.status(500).json({ error: "PRODUCTS_URL is not defined" });
   }
 
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/find?email=${email}`,
+      `${process.env.USERS_URL}/find?email=${email}`,
 
       {
         headers: {

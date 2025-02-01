@@ -6,21 +6,12 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserInfoProvider } from "./GlobalState";
 import Loading from "./Loading";
 const axios = require("axios");
 
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-    return data.user;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
-
 const ProductsList = ({ data }) => {
+  const { userInfo } = useUserInfoProvider();
   const [filteredProduct, setProducts] = useState([]);
   const searched = useRef();
   const categories = [
@@ -37,12 +28,10 @@ const ProductsList = ({ data }) => {
   //adding to cart
   const addToCart = async (objectId) => {
     try {
-      const wholeUser = await checkAuthStatus();
-      const { email } = wholeUser;
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/addFavorite`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/addToCart`,
         {
-          email: email,
+          email: userInfo.userData.email,
           id: objectId,
         }
       );

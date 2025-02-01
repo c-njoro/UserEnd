@@ -77,17 +77,8 @@ export default function Cart({}) {
 
   const reduceCount = async (id) => {
     try {
-      const wholeUser = await checkAuthStatus();
-      const { email } = wholeUser;
       let count = 0;
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-        {
-          params: { email },
-        }
-      );
-      const foundUser = await response.data;
-      const cartP = await foundUser.favoriteProducts;
+      const cartP = userInfo.userData.favoriteProducts;
 
       for (let num of cartP) {
         if (num === id) {
@@ -108,40 +99,43 @@ export default function Cart({}) {
         return;
       }
 
-      await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}/reduceFavorite`, {
-        email,
-        id,
-      });
-      getCart();
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/reduceCount`,
+        {
+          email: userInfo.userData.email,
+          id,
+        }
+      );
+      refetchCart();
     } catch (error) {
       console.log("Error: " + error);
     }
   };
 
   const increaseCount = async (id) => {
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-
     try {
-      await axios.put(`${process.env.NEXT_PUBLIC_USERS_URL}/increaseFavorite`, {
-        email,
-        id,
-      });
-      getCart();
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/increaseCount`,
+        {
+          email: userInfo.userData.email,
+          id,
+        }
+      );
+      refetchCart();
     } catch (error) {
       console.log("Error: ", error);
     }
   };
 
   const removeProduct = async (id) => {
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}/removeFavorite`, {
-        email,
-        id,
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/removeFromCart`,
+        {
+          email: userInfo.userData.email,
+          id,
+        }
+      );
 
       toast.warn(`Removed From Cart!`, {
         position: "top-right",
@@ -153,7 +147,7 @@ export default function Cart({}) {
         progress: undefined,
       });
 
-      getCart();
+      refetchCart();
     } catch (error) {
       console.log("Error: ", error);
     }
@@ -336,7 +330,7 @@ export default function Cart({}) {
         </div>
       ) : (
         <div>
-          <h1>Cart fetch did not happen</h1>
+          <h1>No items in your cart</h1>
         </div>
       )}
 
@@ -371,9 +365,13 @@ export default function Cart({}) {
       ) : cartLoading ? (
         <div>Loading totals...</div>
       ) : cartError ? (
-        <div>Error loading cart</div>
+        <div>
+          <button onClick={() => refetchCart()}>Try Refetch</button>
+        </div>
       ) : (
-        <div>did not fetch</div>
+        <div>
+          <button onClick={() => refetchCart()}>Try Refetch</button>
+        </div>
       )}
     </div>
   );
