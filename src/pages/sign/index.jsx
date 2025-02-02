@@ -25,6 +25,7 @@ const UserForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   //page navigation logics
 
@@ -51,6 +52,7 @@ const UserForm = () => {
   //login logics
   const onLoginClick = async (e) => {
     e.preventDefault();
+    setMessage("");
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -58,7 +60,13 @@ const UserForm = () => {
         password,
         callbackUrl: "/",
       });
-      window.location.replace("/?redirected=true");
+
+      if (result?.error) {
+        setMessage("Wrong Credentials");
+        console.log("error login in");
+      } else {
+        window.location.replace("/?redirected=true");
+      }
     } catch (error) {
       console.log("error:", error);
     }
@@ -289,6 +297,11 @@ const UserForm = () => {
 
               <p>New Account</p>
             </button>
+            <div className="h-max flex flex-row justify-center items-center">
+              <p className="font-body tracking-wider text-red-500 capitalize">
+                {message}
+              </p>
+            </div>
           </div>
         </div>
 
