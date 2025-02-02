@@ -69,7 +69,10 @@ const Header = () => {
         )}
 
         {userInfo.loggedIn ? (
-          <Link href={`/profile/myProfile`} className="link-profile">
+          <Link
+            href={`/profile/${userInfo.userData.username}`}
+            className="link-profile"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

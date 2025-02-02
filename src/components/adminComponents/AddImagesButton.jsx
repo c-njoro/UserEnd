@@ -44,7 +44,7 @@ const AddProductImagesButton = () => {
       }
 
       const addImagesResponse = await axios.post(
-        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/addImages`,
+        `${process.env.NEXT_PUBLIC_PRODUCT_IMAGES_URL}`,
         {
           id: record._id,
           images: uploadedImages,

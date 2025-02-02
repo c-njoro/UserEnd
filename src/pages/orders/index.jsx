@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useUserInfoProvider } from "../../components/GlobalState";
 import Loading from "../../components/Loading";
 const axios = require("axios");
 
@@ -13,27 +14,16 @@ const checkAuthStatus = async () => {
   }
 };
 
-const Orders = ({ orders }) => {
+const Orders = () => {
   const [allOrders, setAllOrders] = useState([]);
+  const { userInfo } = useUserInfoProvider();
   const [loading, setLoading] = useState(true);
 
   const getMyOrders = async () => {
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-      {
-        params: { email },
-        headers: {
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/fetchOrders?customerId=${userInfo.userData._id}`
     );
-    const foundUser = await response.data;
-    const myOrders = orders.filter(
-      (order) => order.customerId == foundUser._id
-    );
+    const myOrders = await res.data;
     setAllOrders(myOrders);
     setLoading(false);
   };
@@ -42,11 +32,6 @@ const Orders = ({ orders }) => {
     setLoading(true);
     getMyOrders();
   }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    getMyOrders();
-  }, [orders]);
 
   if (loading == true) {
     return <Loading />;
@@ -115,19 +100,3 @@ const Orders = ({ orders }) => {
 };
 
 export default Orders;
-
-export async function getServerSideProps() {
-  const ordersUrl = process.env.NEXT_PUBLIC_ORDERS_URL;
-  const res = await fetch(`${ordersUrl}`, {
-    headers: {
-      Accept: "application/json",
-      "ngrok-skip-browser-warning": "true",
-    },
-  });
-  const orders = await res.json();
-  return {
-    props: {
-      orders,
-    },
-  };
-}

@@ -64,10 +64,7 @@ export default async function auth(req, res) {
             const { email, password } = credentials;
             console.log(email, password);
             const response = await axios.get(
-              `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-              {
-                params: { email },
-              }
+              `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/oneUser?email=${email}`
             );
 
             const foundUser = response.data;

@@ -85,14 +85,17 @@ const UserForm = () => {
 
     try {
       const hashedPass = bcrypt.hashSync(formData.password, 10);
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_USERS_URL}`, {
-        name: formData.name,
-        email: formData.email,
-        username: formData.username,
-        password: hashedPass,
-        dateOfBirth: formData.dob,
-        profilePicture: "",
-      });
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/signUser`,
+        {
+          name: formData.name,
+          email: formData.email,
+          username: formData.username,
+          password: hashedPass,
+          dateOfBirth: formData.dob,
+          profilePicture: "",
+        }
+      );
       toast.success(`${formData.username} Account Created!`, {
         position: "top-right",
         autoClose: 2000,
@@ -102,6 +105,18 @@ const UserForm = () => {
         draggable: true,
         progress: undefined,
       });
+      toast.success(
+        `Use your set password and email to login to your account now.`,
+        {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
       console.log(res.data);
       setId(res.data._id);
       setFormData({
@@ -111,7 +126,7 @@ const UserForm = () => {
         dob: "",
         password: "",
       });
-      signToProfile();
+      signToLogin();
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
@@ -179,7 +194,7 @@ const UserForm = () => {
     try {
       console.log(newId);
       const completeUser = await axios.put(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/update/${newId}`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateUser/${newId}`,
         {
           profilePicture: uploadedProfile,
         },

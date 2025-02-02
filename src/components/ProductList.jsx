@@ -27,6 +27,19 @@ const ProductsList = ({ data }) => {
 
   //adding to cart
   const addToCart = async (objectId) => {
+    if (!userInfo.loggedIn) {
+      toast.warn(`Login or signup first to add items to your cart.`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      return;
+    }
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/addToCart`,

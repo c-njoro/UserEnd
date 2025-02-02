@@ -2,9 +2,9 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ReactStars from "react-rating-stars-component";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useUserInfoProvider } from "../../../components/GlobalState";
 
 const checkAuthStatus = async () => {
   try {
@@ -18,6 +18,7 @@ const checkAuthStatus = async () => {
 };
 
 export default function OneProduct({ currentData }) {
+  const { userInfo } = useUserInfoProvider();
   const [photos, setPhotos] = useState([]);
   const [formData, setFormData] = useState({
     phone: "",
@@ -25,6 +26,7 @@ export default function OneProduct({ currentData }) {
     address: "",
     payment: "",
     note: "",
+    quantity: 1,
   });
   const [quickOrder, setQuickOrder] = useState("hide");
   const [counter, setCounter] = useState(0);
@@ -51,61 +53,84 @@ export default function OneProduct({ currentData }) {
   const orderTheProduct = async (e) => {
     e.preventDefault();
 
+    if (!userInfo.loggedIn) {
+      toast.warn("Login or signup in order to make this order.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
     if (
       !formData.address ||
       !formData.phone ||
       !formData.payment ||
       !formData.method ||
-      !formData.note
+      !formData.note ||
+      !formData.quantity ||
+      formData.quantity <= 0
     ) {
-      alert("NO Full Data");
+      if (formData.quantity <= 0) {
+        toast.warn("Quantity cannot be less than 1", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+      toast.warn("Order form not correctly or completely filled.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
 
-    const wholeUser = await checkAuthStatus();
-    const { email } = wholeUser;
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_USERS_URL}/find`,
-      {
-        params: { email },
-        headers: {
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
-      }
-    );
-    const foundUser = await response.data;
-
     try {
-      const order = await axios.post(`${process.env.NEXT_PUBLIC_ORDERS_URL}`, {
-        customerId: foundUser._id,
-        shippingAddress: formData.address,
-        contactInfo: {
-          phone: formData.phone,
-          email: "bigiie@gmail.com",
-        },
-        paymentMethod: formData.payment,
-        transactionId: "RESAOUN",
-        totalAmount: currentData.price,
-        products: [
-          {
-            productId: currentData._id,
-            productName: currentData.name,
-            quantity: 1,
-            unitPrice: currentData.price,
-            totalPrice: currentData.price,
+      const order = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/makeOrder`,
+        {
+          customerId: userInfo.userData._id,
+          shippingAddress: formData.address,
+          contactInfo: {
+            phone: formData.phone,
+            email: "bigiie@gmail.com",
           },
-        ],
-        shippingMethod: formData.method,
-        shippingCost: 5,
-        taxRate: 0.123,
-        taxAmount: 10.08,
-        orderNotes: formData.note,
-        internalNotes: "New customer, verify address first.",
-      });
-      const newStock = currentData.stock - 1;
+          paymentMethod: formData.payment,
+          transactionId: "RESAOUN",
+          totalAmount: currentData.price * formData.quantity,
+          products: [
+            {
+              productId: currentData._id,
+              productName: currentData.name,
+              quantity: formData.quantity,
+              unitPrice: currentData.price,
+              totalPrice: currentData.price * formData.quantity,
+            },
+          ],
+          shippingMethod: formData.method,
+          shippingCost: 5,
+          taxRate: 0.123,
+          taxAmount: 10.08,
+          orderNotes: formData.note,
+          internalNotes: "New customer, verify address first.",
+        }
+      );
+      const newStock = currentData.stock - formData.quantity;
       const updateStock = await axios.put(
-        `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/update/${currentData._id}`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateProducts?id=${currentData._id}`,
         { stock: newStock }
       );
       toast.success("Your Order Was Placed Successfully", {
@@ -123,6 +148,7 @@ export default function OneProduct({ currentData }) {
         address: "",
         payment: "default",
         note: "",
+        quantity: 1,
       });
     } catch (error) {
       toast.error("Error placing order, Try Again", {
@@ -140,17 +166,28 @@ export default function OneProduct({ currentData }) {
 
   //adding to cart
   const addToCart = async (objectId) => {
+    if (!userInfo.loggedIn) {
+      toast.warn(`Login or signup first to add items to your cart.`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      return;
+    }
     try {
-      const wholeUser = await checkAuthStatus();
-      const { email } = wholeUser;
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_USERS_URL}/addFavorite`,
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/addToCart`,
         {
-          email: email,
+          email: userInfo.userData.email,
           id: objectId,
         }
       );
-      toast.success(`${currentData.name} added to Cart!`, {
+      toast.success(`Added item to Cart!`, {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: true,
@@ -161,7 +198,7 @@ export default function OneProduct({ currentData }) {
       });
     } catch (error) {
       if (error.response.status == 408) {
-        toast.warn(`${currentData.name} already to Cart!`, {
+        toast.warn(`Item already in your Cart!`, {
           position: "top-right",
           autoClose: 2000,
           hideProgressBar: true,
@@ -267,13 +304,7 @@ export default function OneProduct({ currentData }) {
         </div>
         <div className="rating-sharing">
           <div className="rating">
-            <ReactStars
-              count={5}
-              value={4}
-              activeColor="#ffd700"
-              edit={false} // Prevents user from changing the rating
-              classNames="stars"
-            />
+            <h1>5 rating</h1>
           </div>
           <div className="sharing">
             <svg
@@ -385,6 +416,19 @@ export default function OneProduct({ currentData }) {
       <div className={`${quickOrder} quick-order`}>
         <form method="post" onSubmit={orderTheProduct} className="order-form">
           <h1 className="form-heading">Quick Order</h1>
+
+          <label htmlFor="quantity" className="input text">
+            <p className="label">Quantity</p>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              required
+              onChange={handleChange}
+              value={formData.quantity}
+              className="input-box"
+            />
+          </label>
 
           <label htmlFor="address" className="input text">
             <p className="label">Shipping Address</p>
