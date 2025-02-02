@@ -91,6 +91,7 @@ export default async function auth(req, res) {
         },
       }),
     ],
+    secret: process.env.NEXTAUTH_SECRET,
     pages: {
       signIn: "/sign", // Path to your custom sign-in page
     },
