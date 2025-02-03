@@ -27,7 +27,8 @@
     "src/pages/admin/index.jsx",
     "src/components/adminComponents/OrderList.jsx",
     "src/pages/index.jsx",
-    "src/components/hooks/UserHook.js"
+    "src/components/hooks/UserHook.js",
+    "src/components/MainHeader.jsx"
   ],
   "exclude": ["node_modules"]
 }

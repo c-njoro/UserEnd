@@ -6,7 +6,7 @@ import { FiFacebook } from "react-icons/fi";
 const Footer = () => {
   return (
     <div
-      className="main-footer-container w-screen h-max relative flex flex-col gap-4 justify-center items-center"
+      className="main-footer-container w-[calc(100vw)] h-max relative flex flex-col gap-4 justify-center items-center"
       style={{ backgroundColor: "rgb(199, 217, 234)" }}
     >
       <div className="newsletter w-full grid grid-cols-1 place-items-center  py-2 gap-2 shadow-sm md:absolute md:-top-8 md:w-10/12 md:px-8 md:rounded-full md:shadow-xl md:grid-cols-3 bg-blue-50">

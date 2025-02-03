@@ -6,18 +6,6 @@ import { useUserInfoProvider } from "./GlobalState";
 import Header from "./Header";
 import useUserInfo from "./hooks/UserHook";
 
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
-
 const Structure = ({ children }) => {
   const { userInfo, setUserInfo } = useUserInfoProvider();
 
@@ -35,16 +23,17 @@ const Structure = ({ children }) => {
   }, [userDetails]);
 
   return (
-    <div className="bg-blue-100">
-      <div className="fixed top-0 left-0 z-50">
+    <div className="relative w-full overflow-hidden h-max">
+      <div className="fixed top-0 left-0 z-50 sm:bg-transparent bg-header">
         <Header />
       </div>
-      <div className="pt-[calc(12vh)] pb-5 md:mb-12">{children}</div>
+      <div className="w-full pt-[calc(12vh)]">{children}</div>
       <div>
         <Footer />
       </div>
-
-      <ToastContainer />
+      <div>
+        <ToastContainer />
+      </div>
     </div>
   );
 };

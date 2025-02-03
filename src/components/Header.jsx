@@ -1,148 +1,47 @@
 "use client";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useUserInfoProvider } from "./GlobalState";
-const axios = require("axios");
 
 const Header = () => {
+  const router = useRouter();
   const { userInfo } = useUserInfoProvider();
+  const [menuClass, setMenuClass] = useState("hide");
 
-  const checkWidth = () => {
-    const menu = document.getElementById("menu");
-    if (window.innerWidth > 768) {
-      if (!menu.classList.contains("hide")) {
-        menu.classList.add("hide");
-      }
+  const toggleDrop = () => {
+    if (menuClass === "hide") {
+      setMenuClass("menu-show");
+    } else {
+      setMenuClass("hide");
     }
-  };
-
-  const closeIt = () => {
-    const menu = document.getElementById("menu");
-    menu.classList.add("hide");
   };
 
   useEffect(() => {
-    window.addEventListener("resize", checkWidth);
-
-    return () => {
-      window.addEventListener("resize", checkWidth);
-    };
-  }, []);
-
-  const toggleDrop = () => {
-    const menu = document.getElementById("menu");
-
-    if (menu.classList.contains("hide")) {
-      menu.classList.remove("hide");
-    } else {
-      menu.classList.add("hide");
-    }
-  };
+    // Set menu to hide on route change
+    setMenuClass("hide");
+  }, [router.asPath]);
 
   return (
-    <div className="main-header-container bg-blue-50 flex flex-row justify-between w-screen h-[calc(12vh)] items-center  relative rounded-lg shadow-lg">
-      <div className="logo  p-0 w-1/5 min-w-52">
-        <img
-          src="/images/storeLogo-removebg-preview.png"
-          alt="c-techs logo"
-          className="image w-full object-cover"
-        />
-      </div>
-      <div className="links hidden md:flex flex-row gap-4 items-center font-body pr-8">
-        <Link
-          href="/"
-          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-        >
-          Home
-        </Link>
-        <Link
-          href="/about"
-          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-        >
-          About
-        </Link>
-
-        <Link
-          href="/product"
-          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-        >
-          Products
-        </Link>
-
-        {userInfo.loggedIn ? (
-          <Link
-            href="/cart"
-            className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-          >
-            Cart
-          </Link>
-        ) : (
-          ""
-        )}
-
-        {userInfo.loggedIn ? (
-          <Link
-            href={`/profile/${userInfo.userData.username}`}
-            className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-              />
-            </svg>
-          </Link>
-        ) : (
-          <Link href="/sign" className="link-sign">
-            Login / SignUp
-          </Link>
-        )}
-      </div>
-
-      <div
-        className="drop-down md:hidden cursor-pointer mr-8 flex justify-center"
-        onClick={toggleDrop}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-8"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+    <div className="bg-blue-50 w-screen h-max flex flex-col">
+      <div className="bg-blue-50 flex flex-row justify-between p-4 items-center w-[calc(100vw)] h-[calc(10vh)] fixed z-10">
+        <div className="logo  p-0 w-1/5 min-w-52">
+          <img
+            src="/images/storeLogo-removebg-preview.png"
+            alt="c-techs logo"
+            className="image w-full object-cover"
           />
-        </svg>
-      </div>
-
-      <div
-        className="drop-down-menu hide absolute right-8 top-[calc(12vh)] z-10"
-        id="menu"
-      >
-        <div className="links-container sm:w-[calc(30vw)] h-max flex flex-col gap-4 px-8 justify-center items-end bg-blue-50 rounded-md w-[calc(50vw)]">
+        </div>
+        <div className="links hidden md:flex flex-row gap-4 items-center font-body pr-8">
           <Link
             href="/"
             className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-            onClick={closeIt}
           >
             Home
           </Link>
           <Link
             href="/about"
             className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-            onClick={closeIt}
           >
             About
           </Link>
@@ -150,7 +49,6 @@ const Header = () => {
           <Link
             href="/product"
             className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-            onClick={closeIt}
           >
             Products
           </Link>
@@ -159,7 +57,6 @@ const Header = () => {
             <Link
               href="/cart"
               className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
-              onClick={closeIt}
             >
               Cart
             </Link>
@@ -169,9 +66,8 @@ const Header = () => {
 
           {userInfo.loggedIn ? (
             <Link
-              href={`/profile/${userInfo.userData.name}`}
-              className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full mb-5"
-              onClick={closeIt}
+              href={`/profile/${userInfo.userData.username}`}
+              className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -189,14 +85,96 @@ const Header = () => {
               </svg>
             </Link>
           ) : (
-            <Link
-              href="/sign"
-              className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full mb-5"
-              onClick={closeIt}
-            >
+            <Link href="/sign" className="link-sign">
               Login / SignUp
             </Link>
           )}
+        </div>
+
+        <div
+          className="drop-down md:hidden cursor-pointer mr-8 flex justify-center"
+          onClick={toggleDrop}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-8"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div className={`${menuClass}`}>
+        <div
+          className="w-screen h-[calc(100vh)]  grid lg:grid-cols-2 grid-cols-1 text-foreground bg-blue-50"
+          id="menu"
+        >
+          <div className="w-full h-full flex flex-col justify-center items-center gap-8 relative">
+            <Link
+              href="/"
+              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+            >
+              Home
+            </Link>
+            <Link
+              href="/about"
+              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+            >
+              About
+            </Link>
+
+            <Link
+              href="/product"
+              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+            >
+              Products
+            </Link>
+
+            {userInfo.loggedIn ? (
+              <Link
+                href="/cart"
+                className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+              >
+                Cart
+              </Link>
+            ) : (
+              ""
+            )}
+
+            {userInfo.loggedIn ? (
+              <Link
+                href={`/profile/${userInfo.userData.username}`}
+                className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                  />
+                </svg>
+              </Link>
+            ) : (
+              <Link href="/sign" className="link-sign">
+                Login / SignUp
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
