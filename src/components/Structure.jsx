@@ -23,11 +23,11 @@ const Structure = ({ children }) => {
   }, [userDetails]);
 
   return (
-    <div className="relative w-full overflow-hidden h-max">
+    <div className="relative w-full overflow-hidden h-max bg-blue-100">
       <div className="fixed top-0 left-0 z-50 sm:bg-transparent bg-header">
         <Header />
       </div>
-      <div className="w-full pt-[calc(12vh)]">{children}</div>
+      <div className="w-full pt-[calc(10vh)] pb-8">{children}</div>
       <div>
         <Footer />
       </div>

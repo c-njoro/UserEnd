@@ -19,14 +19,28 @@ export default function Products() {
       ) : productsLoading ? (
         <Loading />
       ) : productsError ? (
-        <div>
-          <h1>Error fetching products</h1>
-          <button onClick={() => refetchProducts}>Refetch</button>
+        <div className="w-screen min-h-[calc(90vh)] flex flex-col justify-center items-center">
+          <h1 className="text-5xl uppercase text-red-600 font-bold font-beauty">
+            Server error fetching products
+          </h1>
+          <button
+            onClick={() => refetchProducts}
+            className="bg-black text-white px-5 py-3 rounded-full shadow-lg"
+          >
+            Try Again
+          </button>
         </div>
       ) : (
-        <div>
-          <h1>Product fetch didnt happen</h1>
-          <button onClick={() => refetchProducts}>Refetch</button>
+        <div className="w-screen min-h-[calc(90vh)] flex flex-col justify-center items-center">
+          <h1 className="text-5xl uppercase text-red-600 font-bold font-beauty">
+            Could not fetch products
+          </h1>
+          <button
+            onClick={() => refetchProducts}
+            className="bg-black text-white px-5 py-3 rounded-full shadow-lg"
+          >
+            Try Again
+          </button>
         </div>
       )}
     </div>

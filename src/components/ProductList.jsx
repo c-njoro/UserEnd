@@ -180,26 +180,29 @@ const ProductsList = ({ data }) => {
     <div className="bg-gray-200">
       {data.length > 0 ? (
         filteredProduct.length > 0 ? (
-          <div className="main-products-container">
-            <div className="filters-container">
-              <div className="search-bar">
+          <div className="main-products-container md:flex md:flex-row overflow-scroll relative w-screen min-h-screen font-body bg-blue-100">
+            <div className="filters-container md:pt-2 md:w-60 md:flex md:flex-col gap-2 pl-2 relative flex flex-col md:fixed md:left-0 justify-center md:justify-start pt-4">
+              <div className="search-bar w-full flex justify-center">
                 <input
                   type="text"
                   ref={searched}
                   style={{ color: "black" }}
                   onChange={handleSearch}
                   placeholder="Search..."
-                  className="input"
+                  className="input md:w-full h-7 bg-gray-50 pl-2 rounded-full text-sm font-light text-gray-500 w-full"
                 />
-                <p className="non-found hide" id="message">
+                <p
+                  className="non-found hide text-sm font-light text-red-400"
+                  id="message"
+                >
                   Showing relatable to the search
                 </p>
               </div>
 
-              <div className="category-bar">
+              <div className="category-bar grid grid-cols-3 md:flex md:flex-col gap-2 font-light text-gray-600 text-sm  md:justify-start justify-center">
                 {categories.map((category) => (
                   <div key={category} className="categories">
-                    <label htmlFor={category} className="radio">
+                    <label htmlFor={category} className="radio md:ml-8 ml-2">
                       <input
                         type="radio"
                         value={category}
@@ -209,31 +212,42 @@ const ProductsList = ({ data }) => {
                         id={category}
                         className=""
                       />
-                      <p className="label">{category}</p>
+                      <p className="label inline-block md:ml-2 ml-1 text-sm sm:text-base">
+                        {category}
+                      </p>
                     </label>
                   </div>
                 ))}
               </div>
-              <div className="btn">
-                <button onClick={clearFilters} className="clear">
+              <div className="btn flex justify-center">
+                <button
+                  onClick={clearFilters}
+                  className="clear bg-gray-300 rounded-full p-1 font-bold text-gray-500 text-sm w-fit px-8"
+                >
                   Clear Searches
                 </button>
               </div>
             </div>
 
-            <div className="products-container">
+            <div className="products-container w-screen min-h-screen grid lg:grid-cols-3 sm:grid-cols-2 gap-6 p-8 justify-center md:ml-60 md:pt-4">
               {filteredProduct?.map((product) => (
-                <div key={product._id} className="each-product">
+                <div
+                  key={product._id}
+                  className="each-product bg-green-50 m-0 p-0 rounded-xl overflow-hidden max-h-[calc(75vh)] relative max-w-md sm:max-w-lg"
+                >
                   {product.images.length > 0 ? (
                     <img
                       src={`${product.images[0].url}`}
                       alt="Profile Picture"
-                      className="image"
+                      className="image h-72 m-0 p-0 w-full object-cover"
                     />
                   ) : (
                     ""
                   )}
-                  <Link href={`/product/${product._id}`} className="link-tag">
+                  <Link
+                    href={`/product/${product._id}`}
+                    className="link-tag w-full h-full relative"
+                  >
                     {" "}
                     <motion.div
                       initial={{ opacity: 0, x: 50 }}
@@ -244,22 +258,26 @@ const ProductsList = ({ data }) => {
                         type: "spring",
                         stiffness: 100,
                       }}
-                      className="product-info"
+                      className="product-info m-4"
                     >
-                      <h2 className="product-name">{product.name}</h2>
-                      <p className="product-description">
+                      <h2 className="product-name font-bold text-gray-500 mb-4 font-body">
+                        {product.name}
+                      </h2>
+                      <p className="product-description font-light text-gray-800 mb-2 font-beauty text-sm md:text-base">
                         {product.description}
                       </p>
                     </motion.div>
                   </Link>
-                  <p className="price-tag">Ksh. {product.price}</p>
+                  <p className="price-tag absolute top-0 left-0 font-light text-gray-700 bg-blue-50  rounded-full p-2 py-1 ml-2 mt-2">
+                    Ksh. {product.price}
+                  </p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="cart-btn"
+                    className="cart-btn bg-blue-50 absolute top-0 right-0 text-3xl text-gray-500 mr-2 mt-2  cursor-pointer w-10 h-8 rounded-full p-1"
                     onClick={() => {
                       addToCart(product._id);
                     }}

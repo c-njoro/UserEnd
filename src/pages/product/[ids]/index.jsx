@@ -2,20 +2,10 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ReactStars from "react-rating-stars-component";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserInfoProvider } from "../../../components/GlobalState";
-
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-    return data.user;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
 
 export default function OneProduct({ currentData }) {
   const { userInfo } = useUserInfoProvider();
@@ -34,8 +24,16 @@ export default function OneProduct({ currentData }) {
   const toggleQuickOrder = () => {
     if (quickOrder === "hide") {
       setQuickOrder("quick-order");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } else {
       setQuickOrder("hide");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -245,8 +243,8 @@ export default function OneProduct({ currentData }) {
   };
 
   return (
-    <div className="one-product-container">
-      <div className="images-slider">
+    <div className="one-product-container relative w-screen pb-6 h-max md:h-[calc(90vh)] bg-blue-100 grid md:grid-cols-2 grid-cols-1 place-items-center px-3 gap-8">
+      <div className="images-slider w-full h-max md:h-[calc(90vh)] relative flex flex-col justify-center items-center ">
         {photos.length > 0 ? (
           <div className="image-container">
             <img
@@ -255,7 +253,7 @@ export default function OneProduct({ currentData }) {
               width="300"
               height="300"
               key={photos[counter]._id}
-              className="image"
+              className="image w-[calc(95vw)] md:w-[calc(48vw)] h-[calc(50vh)] md:h-[calc(70vh)] object-cover"
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +261,7 @@ export default function OneProduct({ currentData }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="next"
+              className="next size-10 bg-blue-50 p-2 rounded-full absolute top-1/2 right-0"
               onClick={nextImage}
             >
               <path
@@ -278,7 +276,7 @@ export default function OneProduct({ currentData }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="previous"
+              className="previous  size-10 bg-blue-50 p-2 rounded-full absolute top-1/2 left-0"
               onClick={previousImage}
             >
               <path
@@ -298,21 +296,29 @@ export default function OneProduct({ currentData }) {
           />
         )}
       </div>
-      <div className="product-details">
-        <div className="name">
-          <h1 className="the-name">{currentData.name}</h1>
+      <div className="product-details w-full h-full flex flex-col justify-center items-start gap-8">
+        <div className="name w-full h-max flex flex-row justify-start items-center py-4">
+          <h1 className="the-name xl:text-5xl md:text-4xl text-3xl font-bold font-body tracking-wider ">
+            {currentData.name}
+          </h1>
         </div>
-        <div className="rating-sharing">
+        <div className="rating-sharing w-full h-max flex flex-row justify-between px-4 items-center">
           <div className="rating">
-            <h1>5 rating</h1>
+            <ReactStars
+              count={5}
+              value={4}
+              activeColor="#ffd700"
+              edit={false} // Prevents user from changing the rating
+              className="stars text-lg"
+            />
           </div>
-          <div className="sharing">
+          <div className="sharing  flex flex-row justify-start items-center gap-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
+              fill="yellow"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="currentColor"
+              stroke="green"
               className="size-8"
             >
               <path
@@ -324,11 +330,11 @@ export default function OneProduct({ currentData }) {
 
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="none"
+              fill="red"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-8"
+              stroke="red"
+              className="size-10"
             >
               <path
                 strokeLinecap="round"
@@ -341,18 +347,20 @@ export default function OneProduct({ currentData }) {
         <div className="text-gray-700 font-bold">
           <p>@Ksh. {currentData.price}</p>
         </div>
-        <div className="text-gray-700 font-bold">
+        <div className="text-gray-700 font-bold ">
           <p>In Stock. {currentData.stock}</p>
         </div>
-        <div className="description">
-          <p>{currentData.description}</p>
+        <div className="description w-full h-max ">
+          <p className="font-body tracking-wide text-gray-700">
+            {currentData.description}
+          </p>
         </div>
-        <div className="actions">
+        <div className="actions w-full h-max  flex xl:flex-row flex-col xl:justify-between gap-3">
           <button
             onClick={() => {
               addToCart(currentData._id);
             }}
-            className="cart-button"
+            className="cart-button flex flex-row justify-center bg-blue-200 px-10 py-2 rounded-full shadow-lg items-center text-gray-800 font-semibold"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -360,7 +368,7 @@ export default function OneProduct({ currentData }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6 text-orange-400"
+              className="size-6 text-orange-600 mr-5"
             >
               <path
                 strokeLinecap="round"
@@ -372,14 +380,17 @@ export default function OneProduct({ currentData }) {
             <p>Add To Cart</p>
           </button>
           {quickOrder === "hide" ? (
-            <button onClick={toggleQuickOrder} className="order-button">
+            <button
+              onClick={toggleQuickOrder}
+              className="order-button  flex flex-row justify-center bg-blue-200 px-10 py-2 rounded-full shadow-lg items-center text-gray-800 font-semibold"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="size-6 text-green-600"
+                className="size-6 text-green-600 mr-4"
               >
                 <path
                   strokeLinecap="round"
@@ -388,142 +399,185 @@ export default function OneProduct({ currentData }) {
                 />
               </svg>
 
-              <p>Make Quick Order</p>
+              <p>Place An Order</p>
             </button>
           ) : (
-            <button onClick={toggleQuickOrder} className="order-button">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6 text-red-600"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
-
-              <p>Quit Order</p>
-            </button>
+            ""
           )}
         </div>
       </div>
 
-      <div className={`${quickOrder} quick-order`}>
-        <form method="post" onSubmit={orderTheProduct} className="order-form">
-          <h1 className="form-heading">Quick Order</h1>
-
-          <label htmlFor="quantity" className="input text">
-            <p className="label">Quantity</p>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              required
-              onChange={handleChange}
-              value={formData.quantity}
-              className="input-box"
-            />
-          </label>
-
-          <label htmlFor="address" className="input text">
-            <p className="label">Shipping Address</p>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              required
-              onChange={handleChange}
-              value={formData.address}
-              className="input-box"
-            />
-          </label>
-
-          <label htmlFor="phone" className="input text">
-            <p className="label">Phone Number </p>
-            <input
-              type="tel"
-              pattern="[0-9]{10}"
-              id="phone"
-              name="phone"
-              required
-              onChange={handleChange}
-              value={formData.phone}
-              className="input-box"
-            />
-          </label>
-
-          <label htmlFor="payment" className="input select">
-            <p className="label">Payment Method</p>
-            <select
-              name="payment"
-              id="payment"
-              required
-              onChange={handleChange}
-              value={formData.payment}
-              className="input-box"
+      <div
+        className={`${quickOrder} quick-order absolute w-[calc(100vw)] md:h-[calc(100vh)] h-full place-items-center`}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+      >
+        <div className="w-full h-full  flex flex-col justify-center items-center px-1">
+          <div className="xl:w-1/2 lg:w-2/3 w-4/5 h-max bg-blue-50 p-5 rounded-lg shadow-lg flex flex-col gap-8">
+            <div className="flex flex-row justify-between items-center">
+              <h1 className="form-heading font-semibold font-body tracking-wide text-green-500">
+                Quick Order
+              </h1>{" "}
+              <button onClick={toggleQuickOrder} className="order-button">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-10 text-red-600"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <form
+              method="post"
+              onSubmit={orderTheProduct}
+              className="order-form w-full h-max flex flex-col justify-start items-center gap-5"
             >
-              <option value="default">-Select Payment Method-</option>
-              <option value="mpesa">Mpesa</option>
-              <option value="onDelivery">Pay On Delivery</option>
-            </select>
-          </label>
+              <label
+                htmlFor="quantity"
+                className="input text w-full h-max grid grid-cols-1 md:grid-cols-4"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Quantity
+                </p>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  required
+                  onChange={handleChange}
+                  value={formData.quantity}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                />
+              </label>
 
-          <label htmlFor="method" className="input select">
-            <p className="label">Shipping Method</p>
-            <select
-              name="method"
-              id="method"
-              required
-              onChange={handleChange}
-              value={formData.method}
-              className="input-box"
-            >
-              <option value="default">-Select Shipping Method-</option>
-              <option value="To be delivered at your home address">
-                Door Delivery
-              </option>
-              <option value="To be collected at pickup station">
-                Pick Up Station
-              </option>
-            </select>
-          </label>
+              <label
+                htmlFor="address"
+                className="input text w-full h-max grid md:grid-cols-4 grid-cols-1"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Shipping Address
+                </p>
+                <input
+                  type="text"
+                  id="address"
+                  name="address"
+                  required
+                  onChange={handleChange}
+                  value={formData.address}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                />
+              </label>
 
-          <label htmlFor="note" className="input text-area">
-            <p className="label">Note for the delivery personel</p>
-            <input
-              type="text"
-              aria-multiline
-              id="note"
-              name="note"
-              onChange={handleChange}
-              value={formData.note}
-              className="input-box"
-            ></input>
-          </label>
+              <label
+                htmlFor="phone"
+                className="input text w-full h-max grid grid-cols-1 md:grid-cols-4"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Phone Number{" "}
+                </p>
+                <input
+                  type="tel"
+                  pattern="[0-9]{10}"
+                  id="phone"
+                  name="phone"
+                  required
+                  onChange={handleChange}
+                  value={formData.phone}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                />
+              </label>
 
-          <div className="submit-button">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-6 text-green-600"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"
-              />
-            </svg>
-            <input type="submit" value="Place Order Now" />
+              <label
+                htmlFor="payment"
+                className="input select w-full h-max grid-cols-1 grid md:grid-cols-4"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Payment Method
+                </p>
+                <select
+                  name="payment"
+                  id="payment"
+                  required
+                  onChange={handleChange}
+                  value={formData.payment}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                >
+                  <option value="default">-Select Payment Method-</option>
+                  <option value="mpesa">Mpesa</option>
+                  <option value="onDelivery">Pay On Delivery</option>
+                </select>
+              </label>
+
+              <label
+                htmlFor="method"
+                className="input select w-full h-max grid grid-cols-1 md:grid-cols-4"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Shipping Method
+                </p>
+                <select
+                  name="method"
+                  id="method"
+                  required
+                  onChange={handleChange}
+                  value={formData.method}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                >
+                  <option value="default">-Select Shipping Method-</option>
+                  <option value="To be delivered at your home address">
+                    Door Delivery
+                  </option>
+                  <option value="To be collected at pickup station">
+                    Pick Up Station
+                  </option>
+                </select>
+              </label>
+
+              <label
+                htmlFor="note"
+                className="input text-area w-full h-max grid grid-cols-1 md:grid-cols-4"
+              >
+                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                  Note for the delivery personel
+                </p>
+                <input
+                  type="text"
+                  aria-multiline
+                  id="note"
+                  name="note"
+                  onChange={handleChange}
+                  value={formData.note}
+                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
+                ></input>
+              </label>
+
+              <div className="submit-button flex flex-row justify-center bg-blue-200 px-10 py-2 rounded-full shadow-lg items-center text-gray-800 font-semibold">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6 text-green-600 mr-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z"
+                  />
+                </svg>
+                <input type="submit" value="Submit Order" />
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

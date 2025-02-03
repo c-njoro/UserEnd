@@ -102,16 +102,16 @@ export default function Home() {
                     href={`/product/${pr._id}`}
                     className="details pl-4 pb-4 flex flex-col gap-2"
                   >
-                    <p className="name font-body font-semibold text-gray-600">
+                    <p className="name font-body font-semibold text-gray-600 text-sm sm:text-base">
                       {pr.name}
                     </p>
                     <p
-                      className="price-strike font-beauty font-semibold text-red-600"
+                      className="price-strike font-beauty font-semibold text-red-600 text-sm sm:text-base"
                       style={{ textDecoration: "line-through" }}
                     >
                       {(pr.price + pr.price * 0.1).toFixed(2)}
                     </p>
-                    <p className="price font-beauty font-semibold text-green-600">
+                    <p className="price font-beauty font-semibold text-green-600 text-sm sm:text-base">
                       Ksh. {pr.price}
                     </p>
                   </Link>
@@ -174,7 +174,7 @@ export default function Home() {
             stiffness: 100,
             delay: 0.2,
           }}
-          className="shop-new flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)]"
+          className="shop-new flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)] z-20 px-1"
         >
           <h1 className="head capitalize font-bold font-body text-4xl tracking-wider text-gray-800">
             Shop New Arrivals
@@ -227,10 +227,10 @@ export default function Home() {
           }}
           className="company-desc flex flex-col justify-center items-start gap-6 lg:col-span-1 md:col-span-2 z-20"
         >
-          <h2 className="learn capitalize font-bold font-body text-4xl tracking-wider text-gray-700">
+          <h2 className="learn capitalize font-bold font-body text-2xl sm:text-4xl tracking-wider text-gray-700">
             learn more about c-techs
           </h2>
-          <p className="desc font-beauty font-semibold text-gray-500 tracking-wide">
+          <p className="desc font-beauty font-semibold text-gray-500 tracking-wide sm:text-base text-sm">
             HP Envy 6055e All-in-One Printer The HP Envy 6055e is an all-in-one
             printer that offers printing, scanning, and copying capabilities. It
             features wireless connectivity, high-quality prints, and easy setup,
@@ -273,10 +273,10 @@ export default function Home() {
             />
           </svg>
 
-          <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
+          <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700 ">
             fast delivery
           </h1>
-          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide text-sm sm:text-base">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -290,7 +290,7 @@ export default function Home() {
             type: "spring",
             stiffness: 100,
           }}
-          className="card flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5"
+          className="card flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +310,7 @@ export default function Home() {
           <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
             affordable prices
           </h1>
-          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide text-sm sm:text-base">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -344,7 +344,7 @@ export default function Home() {
           <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
             quality products
           </h1>
-          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide text-sm sm:text-base">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -373,7 +373,7 @@ export default function Home() {
                 alt="client-profile-image"
                 className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
-              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 text-xl pl-5">
+              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 sm:text-xl text-base pl-5">
                 Client name
               </p>
             </div>
@@ -381,13 +381,13 @@ export default function Home() {
               <div className="rating">
                 <h2>5</h2>
               </div>
-              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
+              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5 text-sm sm:text-base">
                 <p>
                   This company gives 5 star customer follow up and warranty
                   services
                 </p>
 
-                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white">
+                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white text-sm sm:text-base">
                   view client
                 </button>
               </div>
@@ -400,7 +400,7 @@ export default function Home() {
                 alt="client-profile-image"
                 className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
-              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 text-xl pl-5">
+              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 sm:text-xl text-base pl-5">
                 Client name
               </p>
             </div>
@@ -414,13 +414,13 @@ export default function Home() {
                   classNames="stars"
                 />
               </div>
-              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
+              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5 text-sm sm:text-base">
                 <p>
                   This company gives 5 star customer follow up and warranty
                   services
                 </p>
 
-                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white">
+                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white text-sm sm:text-base">
                   view client
                 </button>
               </div>
