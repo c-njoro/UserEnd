@@ -40,28 +40,40 @@ const Header = () => {
   };
 
   return (
-    <div className="main-header-container">
-      <div className="logo">
+    <div className="main-header-container bg-blue-50 flex flex-row justify-between w-screen h-[calc(12vh)] items-center  relative rounded-lg shadow-lg">
+      <div className="logo  p-0 w-1/5 min-w-52">
         <img
           src="/images/storeLogo-removebg-preview.png"
           alt="c-techs logo"
-          className="image"
+          className="image w-full object-cover"
         />
       </div>
-      <div className="links">
-        <Link href="/" className="link">
+      <div className="links hidden md:flex flex-row gap-4 items-center font-body pr-8">
+        <Link
+          href="/"
+          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+        >
           Home
         </Link>
-        <Link href="/about" className="link">
+        <Link
+          href="/about"
+          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+        >
           About
         </Link>
 
-        <Link href="/product" className="link">
+        <Link
+          href="/product"
+          className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+        >
           Products
         </Link>
 
         {userInfo.loggedIn ? (
-          <Link href="/cart" className="link">
+          <Link
+            href="/cart"
+            className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+          >
             Cart
           </Link>
         ) : (
@@ -71,7 +83,7 @@ const Header = () => {
         {userInfo.loggedIn ? (
           <Link
             href={`/profile/${userInfo.userData.username}`}
-            className="link-profile"
+            className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -95,7 +107,10 @@ const Header = () => {
         )}
       </div>
 
-      <div className="drop-down" onClick={toggleDrop}>
+      <div
+        className="drop-down md:hidden cursor-pointer mr-8 flex justify-center"
+        onClick={toggleDrop}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -112,21 +127,40 @@ const Header = () => {
         </svg>
       </div>
 
-      <div className="drop-down-menu hide" id="menu">
-        <div className="links-container">
-          <Link href="/" className="link" onClick={closeIt}>
+      <div
+        className="drop-down-menu hide absolute right-8 top-[calc(12vh)] z-10"
+        id="menu"
+      >
+        <div className="links-container sm:w-[calc(30vw)] h-max flex flex-col gap-4 px-8 justify-center items-end bg-blue-50 rounded-md w-[calc(50vw)]">
+          <Link
+            href="/"
+            className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+            onClick={closeIt}
+          >
             Home
           </Link>
-          <Link href="/about" className="link" onClick={closeIt}>
+          <Link
+            href="/about"
+            className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+            onClick={closeIt}
+          >
             About
           </Link>
 
-          <Link href="/product" className="link" onClick={closeIt}>
+          <Link
+            href="/product"
+            className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+            onClick={closeIt}
+          >
             Products
           </Link>
 
           {userInfo.loggedIn ? (
-            <Link href="/cart" className="link" onClick={closeIt}>
+            <Link
+              href="/cart"
+              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full"
+              onClick={closeIt}
+            >
               Cart
             </Link>
           ) : (
@@ -136,7 +170,7 @@ const Header = () => {
           {userInfo.loggedIn ? (
             <Link
               href={`/profile/${userInfo.userData.name}`}
-              className="link-profile"
+              className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full mb-5"
               onClick={closeIt}
             >
               <svg
@@ -155,7 +189,11 @@ const Header = () => {
               </svg>
             </Link>
           ) : (
-            <Link href="/sign" className="link-profile" onClick={closeIt}>
+            <Link
+              href="/sign"
+              className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full mb-5"
+              onClick={closeIt}
+            >
               Login / SignUp
             </Link>
           )}

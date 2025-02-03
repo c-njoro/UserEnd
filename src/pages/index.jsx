@@ -19,19 +19,28 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="main-home-container">
-      <div className="topper">
-        <div className="overlay"></div>
+    <div className="main-home-container w-screen min-h-screen bg-blue-100 flex flex-col justify-center items-center gap-10">
+      <div className="topper w-full h-[calc(70vh)]  relative  shadow-md">
+        <div className="overlay w-full h-full bg-blue-300 absolute opacity-70"></div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, ease: "easeInOut" }}
-          className="info"
+          className="info w-full h-full flex flex-col justify-center items-center absolute gap-6 z-10"
         >
-          <h1 className="off">10% OFF</h1>
-          <h3 className="every">On everything</h3>
-          <p>Shop Technology here at C-Techs</p>
-          <Link href="/product" className="shop">
+          <h1 className="off font-bold sm:text-9xl text-7xl  font-body text-gray-700 tracking-wider">
+            10% OFF
+          </h1>
+          <h3 className="every font-body font-bold text-gray-800 sm:text-4xl text-3xl tracking-widest uppercase">
+            On everything
+          </h3>
+          <p className="font-light font-body tracking-wide capitalize">
+            Shop Technology here at C-Techs
+          </p>
+          <Link
+            href="/product"
+            className="shop bg-white shadow-md w-max px-6 py-3 uppercase font-bold font-beauty text-green-600 tracking-wide rounded-full flex flex-row items-center gap-4 justify-center hover:text-white hover:bg-green-600"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -51,37 +60,37 @@ export default function Home() {
         </motion.div>
       </div>
 
-      <div className="top-products">
-        <div className="sub-heading">
+      <div className="top-products  w-full min-h-[calc(30vh)] h-max flex flex-col items-center justify-center gap-4">
+        <div className="sub-heading w-full h-max flex flex-col justify-start p-4 capitalize font-semibold font-body text-2xl tracking-wide text-gray-700">
           <h1 className="sub">top products</h1>
         </div>
-        <div className="top-cards">
+        <div className="top-cards w-full flex justify-center items-center h-max">
           {initialProducts ? (
-            <div className="the-cards">
+            <div className="the-cards w-full grid md:grid-cols-4 grid-cols-2 gap-6  place-items-center h-max">
               {initialProducts.slice(0, 4).map((pr) => (
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, ease: "easeInOut" }}
                   key={pr._id}
-                  className="card"
+                  className="card lg:w-[calc(18vw)] md:w-[calc(20vw)] w-[calc(40vw)] min-h-[calc(32vh)]  flex flex-col gap-4 bg-blue-50 rounded shadow-lg overflow-hidden"
                 >
-                  <div className="image-holder">
+                  <div className="image-holder w-full h-[calc(25vh)] overflow-hidden">
                     {pr.images.length > 0 ? (
                       <img
                         src={`${pr.images[0].url}`}
                         alt="Product Picture"
-                        className="image"
+                        className="image w-full h-full object-cover"
                       />
                     ) : (
                       <img
                         src="/images/noImage.webp"
                         alt="Product Picture"
-                        className="image"
+                        className="image w-full h-full object-cover"
                       />
                     )}
                   </div>
-                  <motion.Link
+                  <Link
                     initial={{ opacity: 0, x: 50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{
@@ -91,33 +100,59 @@ export default function Home() {
                       stiffness: 100,
                     }}
                     href={`/product/${pr._id}`}
-                    className="details"
+                    className="details pl-4 pb-4 flex flex-col gap-2"
                   >
-                    <p className="name">{pr.name}</p>
-                    <p className="price-strike">
+                    <p className="name font-body font-semibold text-gray-600">
+                      {pr.name}
+                    </p>
+                    <p
+                      className="price-strike font-beauty font-semibold text-red-600"
+                      style={{ textDecoration: "line-through" }}
+                    >
                       {(pr.price + pr.price * 0.1).toFixed(2)}
                     </p>
-                    <p className="price">Ksh. {pr.price}</p>
-                  </motion.Link>
+                    <p className="price font-beauty font-semibold text-green-600">
+                      Ksh. {pr.price}
+                    </p>
+                  </Link>
                 </motion.div>
               ))}
             </div>
           ) : productsLoading ? (
-            <div>Loading top products</div>
+            <div className="w-full h-max flex flex-col justify-center items-center">
+              <p className="font-bold font-body tracking-widest ">Loading...</p>
+            </div>
           ) : productsError ? (
-            <div>
-              <p>Error while fetching top products</p>
-              <button onClick={() => refetchProducts()}>Retry Fetch</button>
+            <div className="w-full h-max flex flex-col justify-center items-center">
+              <p className="text-red-500 font-body font-bold tracking-wider">
+                Server Error while fetching top products
+              </p>
+              <button
+                onClick={() => refetchProducts()}
+                className="bg-black text-white w-max h-max py-3 px-5 rounded-full shadow-lg uppercase text-sm tracking-wider"
+              >
+                Retry Fetch
+              </button>
             </div>
           ) : (
-            <div>
-              <p>Could not fetch top products</p>
-              <button onClick={() => refetchProducts()}>Retry Fetch</button>
+            <div className="w-full h-max flex flex-col justify-center items-center">
+              <p className="text-red-500 font-body font-bold tracking-wider">
+                Problem occured on products fetch
+              </p>
+              <button
+                onClick={() => refetchProducts()}
+                className="bg-black text-white w-max h-max py-3 px-5 rounded-full shadow-lg uppercase text-sm tracking-wider"
+              >
+                Retry Fetch
+              </button>
             </div>
           )}
         </div>
-        <div className="sub-heading">
-          <Link href="/product" className="link">
+        <div className="sub-heading w-full">
+          <Link
+            href="/product"
+            className="link w-full flex justify-center items-center bg-blue-100 shadow-md rounded-full py-3 font-body font-semibold uppercase tracking-widest"
+          >
             View All
           </Link>
         </div>
@@ -127,7 +162,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1, ease: "easeInOut", delay: 0.1 }}
-        className="new-arrival"
+        className="new-arrival w-[calc(80vw)] max-h-[calc(50vh)] grid sm:grid-cols-2  bg-blue-50 rounded-lg shadow-2xl relative"
       >
         <motion.div
           initial={{ opacity: 0, y: -100 }}
@@ -139,19 +174,30 @@ export default function Home() {
             stiffness: 100,
             delay: 0.2,
           }}
-          className="shop-new"
+          className="shop-new flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)]"
         >
-          <h1 className="head">Shop New Arrivals</h1>
-          <Link href="/product" className="now">
+          <h1 className="head capitalize font-bold font-body text-4xl tracking-wider text-gray-800">
+            Shop New Arrivals
+          </h1>
+          <Link
+            href="/product"
+            className="now bg-white shadow-md w-2/3 px-6 py-3 uppercase font-bold font-beauty text-green-600 
+        tracking-wide rounded-md flex flex-row items-center gap-4 justify-center hover:bg-green-600 hover:text-white"
+          >
             Shop Now
           </Link>
         </motion.div>
-        <div className="new-image">
-          <img src="/images/intro.png" alt="company image" className="image" />
+        <div className="new-image flex flex-col gap-4 items-center justify-center w-full h-[calc(50vh)] absolute sm:relative">
+          <img
+            src="/images/intro.png"
+            alt="company image"
+            className="image w-full h-[calc(50vh)] object-cover"
+            style={{ objectPosition: "top" }}
+          />
         </div>
       </motion.div>
 
-      <div className="learn-more">
+      <div className="learn-more grid lg:grid-cols-2 md:grid-cols-3 w-[calc(95vw)] gap-4 p-4 grid-cols-1 relative">
         <motion.div
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -166,7 +212,7 @@ export default function Home() {
           <img
             src="/images/storeLogo-removebg-preview.png"
             alt="company image"
-            className="image"
+            className="image lg:w-full lg:h-[calc(65vh)] md:w-[calc(40vh)] md:h-[calc(40vh)] lg:rounded-full object-cover"
           />
         </motion.div>
         <motion.div
@@ -179,22 +225,28 @@ export default function Home() {
             stiffness: 100,
             delay: 0.2,
           }}
-          className="company-desc"
+          className="company-desc flex flex-col justify-center items-start gap-6 lg:col-span-1 md:col-span-2 z-20"
         >
-          <h2 className="learn">learn more about c-techs</h2>
-          <p className="desc">
+          <h2 className="learn capitalize font-bold font-body text-4xl tracking-wider text-gray-700">
+            learn more about c-techs
+          </h2>
+          <p className="desc font-beauty font-semibold text-gray-500 tracking-wide">
             HP Envy 6055e All-in-One Printer The HP Envy 6055e is an all-in-one
             printer that offers printing, scanning, and copying capabilities. It
             features wireless connectivity, high-quality prints, and easy setup,
             making it ideal for home offices.
           </p>
-          <Link href="/about" className="more">
+          <Link
+            href="/about"
+            className="more  bg-white shadow-md w-full px-6 py-3 uppercase font-bold font-beauty
+         text-green-600 tracking-wide rounded-md flex flex-row items-center gap-4 justify-center hover:bg-green-600 hover:text-white"
+          >
             Learn More
           </Link>
         </motion.div>
       </div>
 
-      <div className="integrity-cards">
+      <div className="integrity-cards grid grid-cols-1 place-items-center gap-4 w-full h-max md:grid-cols-3 md:w-[calc(80vw)]">
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -204,7 +256,7 @@ export default function Home() {
             type: "spring",
             stiffness: 100,
           }}
-          className="card"
+          className="card flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -221,8 +273,10 @@ export default function Home() {
             />
           </svg>
 
-          <h1>fast delivery</h1>
-          <p>
+          <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
+            fast delivery
+          </h1>
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -236,7 +290,7 @@ export default function Home() {
             type: "spring",
             stiffness: 100,
           }}
-          className="card"
+          className="card flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -253,8 +307,10 @@ export default function Home() {
             />
           </svg>
 
-          <h1>affordable prices</h1>
-          <p>
+          <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
+            affordable prices
+          </h1>
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -268,7 +324,7 @@ export default function Home() {
             type: "spring",
             stiffness: 100,
           }}
-          className="card"
+          className="card flex flex-col gap-2 justify-center items-center w-11/12 bg-blue-50 rounded-lg shadow-lg px-2 py-5"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -285,8 +341,10 @@ export default function Home() {
             />
           </svg>
 
-          <h1>quality products</h1>
-          <p>
+          <h1 className="uppercase font-body font-semibold tracking-wider text-gray-700">
+            quality products
+          </h1>
+          <p className="capitalize font-beauty text-gray-600 flex justify-center items-center tracking-wide">
             We ensure that what you ordered arrives at the desired destination
             in time and in the utmost desired state.
           </p>
@@ -302,45 +360,51 @@ export default function Home() {
           type: "spring",
           stiffness: 100,
         }}
-        className="client-reviews"
+        className="client-reviews w-[calc(95vw)] h-max flex flex-col"
       >
-        <div className="sub-heading">
+        <div className="sub-heading w-full h-max flex flex-col justify-start p-4 capitalize font-semibold font-body text-2xl tracking-wide text-gray-700">
           <h1>Client reviews</h1>
         </div>
-        <div className="the-reviews">
-          <div className="review">
-            <div className="client-info">
+        <div className="the-reviews w-full h-max grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="review w-full grid grid-cols-2 gap-8 h-[calc(35vh)] bg-blue-50 place-items-center rounded-lg shadow-lg p-5">
+            <div className="client-info flex flex-col gap-4 w-full">
               <img
                 src="/images/profile.webp"
                 alt="client-profile-image"
-                className="image"
+                className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
-              <p className="name">Client name</p>
+              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 text-xl pl-5">
+                Client name
+              </p>
             </div>
-            <div className="client-rating">
+            <div className="client-rating w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
               <div className="rating">
                 <h2>5</h2>
               </div>
-              <div className="review-msg">
+              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
                 <p>
                   This company gives 5 star customer follow up and warranty
                   services
                 </p>
 
-                <button className="btn">view client</button>
+                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white">
+                  view client
+                </button>
               </div>
             </div>
           </div>
-          <div className="review">
-            <div className="client-info">
+          <div className="review w-full grid grid-cols-2 gap-8 h-[calc(35vh)] bg-blue-50 place-items-center rounded-lg shadow-lg p-5">
+            <div className="client-info flex flex-col gap-4 w-full">
               <img
                 src="/images/profile.webp"
                 alt="client-profile-image"
-                className="image"
+                className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
-              <p className="name">Client name</p>
+              <p className="name capitalize font-bold font-body tracking-wide text-gray-600 text-xl pl-5">
+                Client name
+              </p>
             </div>
-            <div className="client-rating">
+            <div className="client-rating w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
               <div className="rating">
                 <ReactStars
                   count={5}
@@ -350,13 +414,15 @@ export default function Home() {
                   classNames="stars"
                 />
               </div>
-              <div className="review-msg">
+              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
                 <p>
                   This company gives 5 star customer follow up and warranty
                   services
                 </p>
 
-                <button className="btn">view client</button>
+                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white">
+                  view client
+                </button>
               </div>
             </div>
           </div>
