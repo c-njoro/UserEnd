@@ -21,20 +21,22 @@ export default function Home() {
   return (
     <div className="main-home-container w-screen min-h-screen bg-blue-100 flex flex-col justify-center items-center gap-10">
       <div className="topper w-full h-[calc(70vh)]  relative  shadow-md">
-        <div className="overlay w-full h-full bg-blue-300 absolute opacity-70"></div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, ease: "easeInOut" }}
-          className="info w-full h-full flex flex-col justify-center items-center absolute gap-6 z-10"
+          className="info w-full h-full flex flex-col justify-center items-center absolute gap-6"
+          style={{
+            backgroundColor: "rgba(173, 216, 230, 0.4)",
+          }}
         >
-          <h1 className="off font-bold sm:text-9xl text-7xl  font-body text-gray-700 tracking-wider">
+          <h1 className="off font-bold sm:text-9xl text-7xl  font-body text-white tracking-wider">
             10% OFF
           </h1>
-          <h3 className="every font-body font-bold text-gray-800 sm:text-4xl text-3xl tracking-widest uppercase">
+          <h3 className="every font-body font-bold text-white sm:text-4xl text-3xl tracking-widest uppercase">
             On everything
           </h3>
-          <p className="font-light font-body tracking-wide capitalize">
+          <p className="font-light font-body tracking-wide capitalize text-white">
             Shop Technology here at C-Techs
           </p>
           <Link

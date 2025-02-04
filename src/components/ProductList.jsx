@@ -189,7 +189,7 @@ const ProductsList = ({ data }) => {
                   style={{ color: "black" }}
                   onChange={handleSearch}
                   placeholder="Search..."
-                  className="input md:w-full h-7 bg-gray-50 pl-2 rounded-full text-sm font-light text-gray-500 w-full"
+                  className="input md:w-full h-7 bg-gray-50 pl-2 rounded-full text-sm font-light text-gray-500 w-full z-20"
                 />
                 <p
                   className="non-found hide text-sm font-light text-red-400"

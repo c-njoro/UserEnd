@@ -246,14 +246,25 @@ const UserForm = () => {
   }
 
   return (
-    <div className="main-sign-container">
-      <div className="whole-container">
+    <div className="main-sign-container bg-blue-100 flex flex-col w-screen h-[calc(88vh)]">
+      <div className="whole-container flex flex-col justify-center items-center w-full h-screen">
         <div className={`${loginForm} lf`}>
-          <div className="has-acc-page sub-container">
-            <h4 className="sub-heading">Sign In</h4>
-            <form method="post" onSubmit={onLoginClick} className="form">
-              <label htmlFor="login-email" className="label-input">
-                <p className="label">Email</p>
+          <div className="has-acc-page sub-container  bg-blue-50 shadow-lg lg:w-[calc(50vw)] h-max p-6 sm:p-10 md:p-16 rounded-2xl flex flex-col gap-6 justify-center items-center md:w-[calc(70vw)] sm:w-[calc(80vw)] w-[calc(100vw)] ">
+            <h4 className="sub-heading text-2xl text-gray-600 capitalize font-body font-semibold tracking-widest">
+              Sign In
+            </h4>
+            <form
+              method="post"
+              onSubmit={onLoginClick}
+              className="form flex flex-col gap-2 w-full h-max justify-center items-center;"
+            >
+              <label
+                htmlFor="login-email"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Email
+                </p>
                 <input
                   type="email"
                   name="email"
@@ -261,25 +272,38 @@ const UserForm = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
-              <label htmlFor="login-password" className="label-input">
-                <p className="label">Password</p>
+              <label
+                htmlFor="login-password"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Password
+                </p>
                 <input
                   type="password"
                   name="password"
                   id="login-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
               <br />
-              <input type="submit" value="Login" className="submit-btn" />
+              <input
+                type="submit"
+                value="Login"
+                className="submit-btn flex flex-row justify-center items-center bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-full h-max shadow-md rounded-full cursor-pointer"
+              />
             </form>
-            <button onClick={logToSign} className="other-btn">
+            <button
+              onClick={logToSign}
+              className="other-btn bg-transparent border-2 border-white px-4 py-2 rounded-full font-bold font-body text-sm
+           text-gray-500 shadow-lg flex flex-row gap-2 items-center justify-center capitalize"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -306,11 +330,22 @@ const UserForm = () => {
         </div>
 
         <div className={`${signUpForm} lf`}>
-          <div className="no-acc-page sub-container">
-            <h4 className="sub-heading">Sign Up</h4>
-            <form method="post" onSubmit={handleSubmit} className="form">
-              <label htmlFor="name" className="label-input">
-                <p className="label">Full Name</p>
+          <div className="no-acc-page sub-container  bg-blue-50 shadow-lg lg:w-[calc(50vw)] h-max p-6 sm:p-10 md:p-16 rounded-2xl flex flex-col gap-6 justify-center items-center md:w-[calc(70vw)] sm:w-[calc(80vw)] w-[calc(100vw)]">
+            <h4 className="sub-heading text-2xl text-gray-600 capitalize font-body font-semibold tracking-widest">
+              Sign Up
+            </h4>
+            <form
+              method="post"
+              onSubmit={handleSubmit}
+              className="form flex flex-col gap-2 w-full h-max justify-center items-center;"
+            >
+              <label
+                htmlFor="name"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Full Name
+                </p>
                 <input
                   type="text"
                   id="name"
@@ -318,12 +353,17 @@ const UserForm = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
-              <label htmlFor="username" className="label-input">
-                <p className="label">User Name</p>{" "}
+              <label
+                htmlFor="username"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  User Name
+                </p>{" "}
                 <input
                   type="text"
                   id="username"
@@ -331,24 +371,35 @@ const UserForm = () => {
                   required
                   value={formData.username}
                   onChange={handleChange}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
-              <label htmlFor="dob" className="label-input">
-                <p className="label"> DOB: (optional)</p>{" "}
+              <label
+                htmlFor="dob"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  {" "}
+                  DOB: (optional)
+                </p>{" "}
                 <input
                   type="date"
                   id="dob"
                   name="dob"
                   value={formData.dob}
                   onChange={handleChange}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
-              <label htmlFor="email" className="label-input">
-                <p className="label">Email</p>{" "}
+              <label
+                htmlFor="email"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Email
+                </p>{" "}
                 <input
                   type="email"
                   id="email"
@@ -356,12 +407,17 @@ const UserForm = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
-              <label htmlFor="password" className="label-input">
-                <p className="label">Password</p>{" "}
+              <label
+                htmlFor="password"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Password
+                </p>{" "}
                 <input
                   type="password"
                   id="password"
@@ -369,7 +425,7 @@ const UserForm = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
 
@@ -378,10 +434,14 @@ const UserForm = () => {
                 type="submit"
                 value="SignUp"
                 onClick={handleSubmit}
-                className="submit-btn"
+                className="submit-btn flex flex-col justify-center items-center bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-full h-max shadow-md rounded-full cursor-pointer"
               />
             </form>
-            <button onClick={signToLogin} className="other-btn">
+            <button
+              onClick={signToLogin}
+              className="other-btn bg-transparent border-2 border-white px-4 py-2 rounded-full font-bold font-body text-sm
+           text-gray-500 shadow-lg flex flex-row gap-2 items-center justify-center capitalize"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -402,23 +462,42 @@ const UserForm = () => {
         </div>
 
         <div className={`${profileForm} lf`}>
-          <div className="set-profile-form sub-container">
-            <h4 className="sub-heading">Set Profile Picture</h4>
-            <form method="post" onSubmit={setUserProfile} className="form">
-              <label htmlFor="profilePicture" className="label-input">
-                <p className="label">Upload Photo</p>
+          <div className="set-profile-form sub-container  bg-blue-50 shadow-lg lg:w-[calc(50vw)] h-max p-6 sm:p-10 md:p-16 rounded-2xl flex flex-col gap-6 justify-center items-center md:w-[calc(70vw)] sm:w-[calc(80vw)] w-[calc(100vw)]">
+            <h4 className="sub-heading text-2xl text-gray-600 capitalize font-body font-semibold tracking-widest">
+              Set Profile Picture
+            </h4>
+            <form
+              method="post"
+              onSubmit={setUserProfile}
+              className="form flex flex-col gap-2 w-full h-max justify-center items-center;"
+            >
+              <label
+                htmlFor="profilePicture"
+                className="label-input grid grid-cols-3 w-full"
+              >
+                <p className="label col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center">
+                  Upload Photo
+                </p>
                 <input
                   type="file"
                   name="profilePicture"
                   id="profilePicture"
                   onChange={onUpload}
                   ref={imageRef}
-                  className="input"
+                  className="input col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                 />
               </label>
-              <input type="submit" value="Set Picture" className="submit-btn" />
+              <input
+                type="submit"
+                value="Set Picture"
+                className="submit-btn bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-max h-max shadow-md rounded-full cursor-pointer"
+              />
             </form>
-            <button onClick={profileToLogin} className="other-btn">
+            <button
+              onClick={profileToLogin}
+              className="other-btn bg-transparent border-2 border-white px-4 py-2 rounded-full font-bold font-body text-sm
+           text-gray-500 shadow-lg flex flex-row gap-2 items-center justify-center capitalize"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

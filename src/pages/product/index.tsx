@@ -13,7 +13,7 @@ export default function Products() {
     refetch: refetchProducts,
   } = useProducts();
   return (
-    <div>
+    <div className="w-screen min-h-[calc(90vh)]">
       {products ? (
         <ProductsList data={products} />
       ) : productsLoading ? (

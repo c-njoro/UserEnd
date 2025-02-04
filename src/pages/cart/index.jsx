@@ -7,29 +7,15 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserInfoProvider } from "../../components/GlobalState";
 import Loading from "../../components/Loading";
-import useUserInfo from "../../components/hooks/UserHook";
 import useCart from "../../components/hooks/cartHook";
 
 require("dotenv").config();
-
-const checkAuthStatus = async () => {
-  try {
-    const response = await fetch("/api/check-auth");
-    const data = await response.json();
-
-    return data.user;
-  } catch (error) {
-    console.error("Failed to check authentication status:", error);
-    return false;
-  }
-};
 
 export default function Cart({}) {
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
   const { userInfo } = useUserInfoProvider();
-  const { refetch: refetchUser } = useUserInfo();
 
   const {
     data: cart,
@@ -161,26 +147,31 @@ export default function Cart({}) {
     );
 
   return (
-    <div className="main-cart-container">
-      <div className="heading">
+    <div className="main-cart-container bg-blue-100 flex flex-col justify-start items-center w-screen min-h-screen font-beauty py-10">
+      <div className="heading flex justify-center sm:flex-row flex-col px-2 w-full items-center mb-4">
         <div>
-          <h1 className="header">My Cart</h1>
+          <h1 className="header font-bold text-gray-700 text-3xl p-2">
+            My Cart
+          </h1>
         </div>
       </div>
 
       {cart ? (
-        <div className="cart-products">
+        <div className="cart-products w-full  h-max  flex flex-col justify-center items-center gap-4 py-4 bg-blue-100 rounded-3xl">
           {cart.length > 0 ? (
             Object.values(counts).map((pr) => (
-              <div key={pr._id} className="product">
-                <div className="icon-side">
+              <div
+                key={pr._id}
+                className="product md:w-11/12 w-3/4 grid grid-cols-1 md:grid-cols-8 shadow-lg bg-blue-50 rounded-lg md:py-2 pb-2"
+              >
+                <div className="icon-side md:col-span-1 md:flex justify-center items-center hidden">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="cart-icon"
+                    className="cart-icon md:w-10 w-6 text-green-500"
                     onClick={() => {
                       addToCart(product._id);
                     }}
@@ -193,35 +184,41 @@ export default function Cart({}) {
                   </svg>
                 </div>
 
-                <div className="image-side">
+                <div className="image-side md:col-span-3 p-0 md:m-0 w-full rounded-lg overflow-hidden max-h-40 sm:flex md:justify-center hidden ml-4">
                   {pr.images.length > 0 ? (
                     <img
                       src={`${pr.images[0].url}`}
                       alt="Profile Picture"
                       width="200"
                       height="200"
-                      className="image"
+                      className="image md:w-3/4 md:h-40 object-cover pt-2 md:p-0 m-0 md:rounded-lg rounded-sm w-28 h-28"
                     />
                   ) : (
                     ""
                   )}
                 </div>
 
-                <div className="more-side">
-                  <div className="product-details">
-                    <h2 className="product-name">{pr.name}</h2>
-                    <p className="product-desc">{pr.description}</p>
+                <div className="more-side md:col-span-4 p-4 grid grid-cols-1 gap-2">
+                  <div className="product-details w-full h-full overflow-clip">
+                    <h2 className="product-name font-bold capitalize  text-xl text-gray-700 font-body">
+                      {pr.name}
+                    </h2>
+                    <p className="product-desc hidden font-light text-sm text-gray-500 text-wrap">
+                      {pr.description}
+                    </p>
                   </div>
 
-                  <div className="algo-part">
+                  <div className="algo-part w-full flex flex-row justify-between items-center">
                     <div className="price-side">
-                      <p className="the-price">@Ksh. {pr.price}</p>
+                      <p className="the-price font-bold text-base text-gray-600">
+                        @Ksh. {pr.price}
+                      </p>
                     </div>
 
-                    <div className="count-side">
+                    <div className="count-side flex flex-row justify-end gap-4 items-center">
                       <button
                         onClick={() => increaseCount(pr._id)}
-                        className="count-btn"
+                        className="count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -243,7 +240,7 @@ export default function Cart({}) {
                         onClick={() => {
                           reduceCount(pr._id);
                         }}
-                        className="count-btn"
+                        className="count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -263,15 +260,18 @@ export default function Cart({}) {
                     </div>
                   </div>
 
-                  <div className="action-part">
-                    <Link href={`/product/${pr._id}`} className="action">
+                  <div className="action-part flex sm:flex-row sm:justify-between items-center flex-col justify-center gap-2 sm:gap-0 mt-2 sm:mt-0">
+                    <Link
+                      href={`/product/${pr._id}`}
+                      className="action bg-gray-100 px-4 py-2 rounded-full text-sm font-bold capitalize text-gray-600 flex flex-row justify-center gap-2 shadow-md"
+                    >
                       View More...
                     </Link>
                     <button
                       onClick={() => {
                         removeProduct(pr._id);
                       }}
-                      className="action"
+                      className="action bg-gray-100 px-4 py-2 rounded-full text-sm font-bold capitalize text-gray-600 flex flex-row justify-center gap-2 shadow-md"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -294,10 +294,12 @@ export default function Cart({}) {
               </div>
             ))
           ) : (
-            <div>
-              <h1>No items in your Cart!!</h1>
-              <div className="going-back-to-shop">
-                <div className="role-show">
+            <div className="w-full h-full flex flex-col justify-center items-center gap-12">
+              <h1 className=" font-body font-bold uppercase text-gray-500">
+                oops, No items in your Cart!!
+              </h1>
+              <div className="going-back-to-shop flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40">
+                <div className="role-show flex flex-row gap-4 items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -312,7 +314,7 @@ export default function Cart({}) {
                       d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
                     />
                   </svg>
-                  <Link href="/product" className="link">
+                  <Link href="/product" className="link font-bold text-sm">
                     Back to shop
                   </Link>
                 </div>
@@ -321,25 +323,36 @@ export default function Cart({}) {
           )}
         </div>
       ) : cartLoading ? (
-        <div>
-          <h1>Loading cart...</h1>
+        <div className="w-full h-4/5 flex flex-col justify-center items-center">
+          <h1 className="text-green-600 font-body font-semibold tracking-widest">
+            Loading cart...
+          </h1>
         </div>
       ) : cartError ? (
-        <div>
-          <h1>Error fetching cart</h1>
+        <div className="w-full h-4/5 flex flex-col justify-center items-center">
+          <h1 className="text-red-600 uppercase font-bold ">
+            Error fetching cart
+          </h1>
         </div>
       ) : (
-        <div>
-          <h1>No items in your cart</h1>
+        <div className="w-full h-4/5 flex flex-col justify-center items-center">
+          <h1 className="text-gray-700 font-semibold font-body">
+            No items in your cart
+          </h1>
         </div>
       )}
 
       {cart ? (
-        <div>
+        <div className="w-full h-max">
           {cart.length > 0 ? (
-            <div className="payment">
-              <p className="total">Totals: Ksh. {total}</p>
-              <Link href="/checkout" className="checkout">
+            <div className="payment  flex flex-col gap-2 justify-end items-end mx-16 my-4">
+              <p className="total text-lg text-green-500 capitalize font-bold underline">
+                Totals: Ksh. {total}
+              </p>
+              <Link
+                href="/checkout"
+                className="checkout text-sm text-green-500 capitalize font-bold bg-gray-100 px-4 py-2 rounded-full flex justify-center items-center gap-2 shadow-md"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -363,7 +376,7 @@ export default function Cart({}) {
           )}
         </div>
       ) : cartLoading ? (
-        <div>Loading totals...</div>
+        ""
       ) : cartError ? (
         <div>
           <button onClick={() => refetchCart()}>Try Refetch</button>

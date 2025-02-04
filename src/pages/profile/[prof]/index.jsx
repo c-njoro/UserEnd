@@ -9,16 +9,16 @@ export default function Profile() {
   }
 
   return (
-    <div className="main-profile-container">
-      <div className="inner-container">
-        <div className="details-side">
-          <div className="user-name">
+    <div className="main-profile-container bg-blue-100 flex  flex-col gap-4  w-screen min-h-screen  p-4;">
+      <div className="inner-container  flex flex-col gap-4">
+        <div className="details-side bg-inherit">
+          <div className="user-name font-light text-gray-600 text-xl my-4 font-beauty">
             <h1>
               Hello, {"   "}
               {userInfo.userData.username}
             </h1>
           </div>
-          <div className="profile-picture">
+          <div className="profile-picture w-11/12 max-w-80">
             <img
               src={
                 userInfo.userData.profilePicture
@@ -28,18 +28,22 @@ export default function Profile() {
               alt="Profile Picture"
               width="200"
               height="200"
-              className="image"
+              className="image w-full rounded-md shadow-xl mb-4 object-cover max-h-60"
             />
           </div>
 
-          <div className="more-about">
-            <p className="full-name">{userInfo.userData.name}</p>
-            <p className="email">{userInfo.userData.email}</p>
+          <div className="more-about font-beauty">
+            <p className="full-name capitalize font-semibold text-xl text-gray-800 m-2">
+              {userInfo.userData.name}
+            </p>
+            <p className="email font-semibold text-sm text-gray-700 m-2">
+              {userInfo.userData.email}
+            </p>
           </div>
         </div>
 
-        <div className="actions">
-          <div className="my-orders">
+        <div className="actions font-body">
+          <div className="my-orders flex flex-row items-center gap-4 bg-white w-max min-w-40 px-4 py-2 rounded-full shadow-md my-2 hover:bg-gray-50">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -54,14 +58,17 @@ export default function Profile() {
                 d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
               />
             </svg>
-            <Link href="/orders" className="link">
+            <Link
+              href="/orders"
+              className="link font-bold text-sm hover:text-green-400"
+            >
               {" "}
               My Orders
             </Link>
           </div>
-          <div className="role">
+          <div className="role flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 hover:bg-gray-50">
             {userInfo.userData.role === "admin" ? (
-              <div className="role-show">
+              <div className="role-show flex flex-row gap-4 items-center hover:text-green-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -76,13 +83,13 @@ export default function Profile() {
                     d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
                   />
                 </svg>
-                <Link href="/admin" className="link">
+                <Link href="/admin" className="link font-bold text-sm;">
                   {" "}
                   Manager
                 </Link>
               </div>
             ) : (
-              <div className="role-show">
+              <div className="role-show flex flex-row gap-4 items-center hover:text-green-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -97,7 +104,7 @@ export default function Profile() {
                     d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
                   />
                 </svg>
-                <Link href="/product" className="link">
+                <Link href="/product" className="link font-bold text-sm;">
                   Back to shop
                 </Link>
               </div>
@@ -105,8 +112,8 @@ export default function Profile() {
           </div>
         </div>
 
-        <div className="danger-zone">
-          <div className="logout">
+        <div className="danger-zone font-body  border-t-2 border-gray-300">
+          <div className="logout flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 text-orange-500 font-semibold text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -124,7 +131,7 @@ export default function Profile() {
 
             <Link href="/api/auth/signout?callbackUrl=/">Log Out</Link>
           </div>
-          <div className="delete">
+          <div className="delete flex flex-row items-center gap-4 bg-white w-max px-4 py-2 rounded-full shadow-md my-2 min-w-40 text-red-600 font-semibold text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

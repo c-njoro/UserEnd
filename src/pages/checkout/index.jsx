@@ -242,27 +242,37 @@ export default function Checkout() {
   };
 
   return (
-    <div className="main-checkout-container">
-      <div className="heading">
-        <h1 className="header">Check Out Your Cart</h1>
+    <div className="main-checkout-container bg-blue-100 flex flex-col p-4 w-screen min-h-[calc(88vh)] font-beauty">
+      <div className="heading flex justify-center sm:flex-row flex-col px-2 w-full items-center mb-4">
+        <h1 className="header font-bold text-gray-700 text-3xl p-2">
+          Check Out Your Cart
+        </h1>
       </div>
 
-      <div className="pay-toggle">
+      <div className="pay-toggle flex flex-col justify-center items-center text-base text-gray-500 font-bold font-beauty">
         <p>Totals: Ksh. {total}</p>
         <p>Pay Via: </p>
-        <div className="btns">
-          <button onClick={mpesaToggle} className="payment-mthd">
+        <div className="btns flex flex-row">
+          <button
+            onClick={mpesaToggle}
+            className="payment-mthd text-sm text-green-500 capitalize font-bold bg-gray-100 px-4 py-2  flex justify-center items-center gap-2 shadow-md border-r-2 border-l-2 border-gray-300"
+          >
             M-Pesa
           </button>
-          <button onClick={walletToggle} className="payment-mthd">
+          <button
+            onClick={walletToggle}
+            className="payment-mthd text-sm text-orange-500 capitalize font-bold bg-gray-100 px-4 py-2  flex justify-center items-center gap-2 shadow-md border-r-2 border-l-2 border-gray-300"
+          >
             Wallet
           </button>
         </div>
       </div>
 
-      <div className={`${mpesa} method-chosen`}>
-        <div className="mpesa">
-          <div className="mpesa-label">
+      <div
+        className={`${mpesa} method-chosen w-full h-max justify-center pt-8`}
+      >
+        <div className="mpesa bg-blue-50 rounded-3xl shadow-lg lg:w-1/2 md:w-2/3 sm:w-4/5 w-11/12 flex flex-col gap-4 p-8">
+          <div className="mpesa-label w-full flex justify-center items-center h-max">
             <img
               src="/images/M-PESA-removebg-preview.png"
               alt="mpesa image"
@@ -272,10 +282,19 @@ export default function Checkout() {
             />
           </div>
           {orderProducts.length > 0 ? (
-            <div className="mpesa-form">
-              <form method="post" onSubmit={makingTheOrder} className="form">
-                <label htmlFor="address" className="label-input">
-                  <p className="label">Shipping Address</p>
+            <div className="mpesa-form w-full ">
+              <form
+                method="post"
+                onSubmit={makingTheOrder}
+                className="form flex flex-col gap-2 w-full h-max justify-center items-center"
+              >
+                <label
+                  htmlFor="address"
+                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
+                >
+                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
+                    Shipping Address
+                  </p>
                   <input
                     type="text"
                     id="address"
@@ -283,12 +302,17 @@ export default function Checkout() {
                     required
                     onChange={handleChange}
                     value={formData.address}
-                    className="input"
+                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   />
                 </label>
 
-                <label htmlFor="phone" className="label-input">
-                  <p className="label">Phone Number</p>
+                <label
+                  htmlFor="phone"
+                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
+                >
+                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
+                    Phone Number
+                  </p>
                   <input
                     type="tel"
                     pattern="[0-9]{10}"
@@ -297,19 +321,24 @@ export default function Checkout() {
                     required
                     onChange={handleChange}
                     value={formData.phone}
-                    className="input"
+                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   />
                 </label>
 
-                <label htmlFor="payment" className="label-input">
-                  <p className="label">Payment Method</p>
+                <label
+                  htmlFor="payment"
+                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
+                >
+                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
+                    Payment Method
+                  </p>
                   <select
                     name="payment"
                     id="payment"
                     required
                     onChange={handleChange}
                     value={formData.payment}
-                    className="input"
+                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   >
                     <option value="default">-Select Payment Method-</option>
                     <option value="mpesa">Mpesa</option>
@@ -317,15 +346,20 @@ export default function Checkout() {
                   </select>
                 </label>
 
-                <label htmlFor="method" className="label-input">
-                  <p className="label">Shipping Method</p>
+                <label
+                  htmlFor="method"
+                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
+                >
+                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
+                    Shipping Method
+                  </p>
                   <select
                     name="method"
                     id="method"
                     required
                     onChange={handleChange}
                     value={formData.method}
-                    className="input"
+                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   >
                     <option value="default">-Select Shipping Method-</option>
                     <option value="To be delivered at your home address">
@@ -337,8 +371,13 @@ export default function Checkout() {
                   </select>
                 </label>
 
-                <label htmlFor="note" className="label-input">
-                  <p className="label">Note for the delivery personel</p>
+                <label
+                  htmlFor="note"
+                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
+                >
+                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
+                    Note for the delivery personel
+                  </p>
                   <input
                     type="text"
                     aria-multiline
@@ -346,34 +385,42 @@ export default function Checkout() {
                     name="note"
                     onChange={handleChange}
                     value={formData.note}
-                    className="input"
+                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   ></input>
                 </label>
 
                 <input
                   type="submit"
                   value="Place Order Now"
-                  className="submit-btn"
+                  className="submit-btn bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-max h-max shadow-md rounded-full cursor-pointer"
                 />
               </form>
             </div>
           ) : (
-            <div className="product-confirmation">
+            <div className="product-confirmation w-full">
               {cart ? (
-                <div className="product-list">
+                <div className="product-list w-full flex flex-col justify-center items-center gap-4">
                   {Object.values(counts).map((pr) => (
-                    <div key={pr._id} className="product-in-list">
+                    <div
+                      key={pr._id}
+                      className="product-in-list flex flex-row w-full justify-between m-2 font-beauty text-gray-600 font-semibold"
+                    >
                       <h2>{pr.name}</h2>
                       <p>X{pr.count}</p>
                     </div>
                   ))}
-                  <button onClick={createProducts} className="confirm-btn">
+                  <button
+                    onClick={createProducts}
+                    className="confirm-btn  bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-max h-max shadow-md rounded-full cursor-pointer"
+                  >
                     Confirm Products
                   </button>
                 </div>
               ) : (
-                <div>
-                  <h1>Cart Empty!!</h1>
+                <div className="w-full h-maf flex flex-col justify-center items-center">
+                  <h1 className="font-body font-semibold uppercase">
+                    Ooops, seems your cart is empty, nothing to checkout!!
+                  </h1>
                 </div>
               )}
             </div>
