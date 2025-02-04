@@ -147,7 +147,7 @@ export default function Cart({}) {
     );
 
   return (
-    <div className="main-cart-container bg-blue-100 flex flex-col justify-start items-center w-screen min-h-screen font-beauty py-10">
+    <div className="main-cart-container bg-blue-100 flex flex-col justify-start items-center w-screen min-h-[calc(90vh)] font-beauty py-10">
       <div className="heading flex justify-center sm:flex-row flex-col px-2 w-full items-center mb-4">
         <div>
           <h1 className="header font-bold text-gray-700 text-3xl p-2">
@@ -162,7 +162,7 @@ export default function Cart({}) {
             Object.values(counts).map((pr) => (
               <div
                 key={pr._id}
-                className="product md:w-11/12 w-3/4 grid grid-cols-1 md:grid-cols-8 shadow-lg bg-blue-50 rounded-lg md:py-2 pb-2"
+                className="product md:w-11/12 sm:w-3/4 w-full grid grid-cols-1 md:grid-cols-8 shadow-lg bg-blue-50 rounded-lg md:py-2 pb-2"
               >
                 <div className="icon-side md:col-span-1 md:flex justify-center items-center hidden">
                   <svg
@@ -260,7 +260,7 @@ export default function Cart({}) {
                     </div>
                   </div>
 
-                  <div className="action-part flex sm:flex-row sm:justify-between items-center flex-col justify-center gap-2 sm:gap-0 mt-2 sm:mt-0">
+                  <div className="action-part flex flex-row justify-between items-center  gap-2 sm:gap-0 mt-2 sm:mt-0">
                     <Link
                       href={`/product/${pr._id}`}
                       className="action bg-gray-100 px-4 py-2 rounded-full text-sm font-bold capitalize text-gray-600 flex flex-row justify-center gap-2 shadow-md"
@@ -345,7 +345,7 @@ export default function Cart({}) {
       {cart ? (
         <div className="w-full h-max">
           {cart.length > 0 ? (
-            <div className="payment  flex flex-col gap-2 justify-end items-end mx-16 my-4">
+            <div className="payment  flex flex-col gap-2 justify-end items-end mx-1 sm:mx-16 my-4">
               <p className="total text-lg text-green-500 capitalize font-bold underline">
                 Totals: Ksh. {total}
               </p>

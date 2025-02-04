@@ -120,20 +120,20 @@ const Header = () => {
           <div className="w-full h-full flex flex-col justify-center items-center gap-8 relative">
             <Link
               href="/"
-              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+              className="link text-gray-950 font-body font-semibold tracking-wide px-4 py-1 shadow rounded-full w-full flex flex-row justify-center items-center"
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+              className="link text-gray-950 font-body font-semibold tracking-wide px-4 py-1 shadow rounded-full w-full flex flex-row justify-center items-center"
             >
               About
             </Link>
 
             <Link
               href="/product"
-              className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+              className="link text-gray-950 font-body font-semibold tracking-wide px-4 py-1 shadow rounded-full w-full flex flex-row justify-center items-center"
             >
               Products
             </Link>
@@ -141,7 +141,7 @@ const Header = () => {
             {userInfo.loggedIn ? (
               <Link
                 href="/cart"
-                className="link text-gray-950 bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+                className="link text-gray-950 font-body font-semibold tracking-wide px-4 py-1 shadow rounded-full w-full flex flex-row justify-center items-center"
               >
                 Cart
               </Link>
@@ -152,15 +152,15 @@ const Header = () => {
             {userInfo.loggedIn ? (
               <Link
                 href={`/profile/${userInfo.userData.username}`}
-                className="link-profile flex items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full w-full"
+                className="link-profile flex flex-row items-center justify-center bg-blue-50 px-4 py-1 shadow rounded-full w-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
+                  stroke="orange"
+                  className="size-6 mr-5"
                 >
                   <path
                     strokeLinecap="round"
@@ -168,9 +168,15 @@ const Header = () => {
                     d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                   />
                 </svg>
+                <p className="font-semibold font-body tracking-wide text-orange-500">
+                  My Profile
+                </p>
               </Link>
             ) : (
-              <Link href="/sign" className="link-sign">
+              <Link
+                href="/sign"
+                className="link-sign link text-orange-950 font-body font-semibold tracking-wide px-4 py-1 shadow rounded-full w-full flex flex-row justify-center items-center"
+              >
                 Login / SignUp
               </Link>
             )}

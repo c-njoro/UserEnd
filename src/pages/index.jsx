@@ -1,9 +1,9 @@
 import useProducts from "@/components/hooks/ProductsHook";
 import useUserInfo from "@/components/hooks/UserHook";
+import Rating from "@mui/material/Rating";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect } from "react";
-import ReactStars from "react-rating-stars-component";
 
 export default function Home() {
   const {
@@ -19,15 +19,15 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="main-home-container w-screen min-h-screen bg-blue-100 flex flex-col justify-center items-center gap-10">
-      <div className="topper w-full h-[calc(70vh)]  relative  shadow-md">
+    <div className="main-home-container w-screen min-h-screen bg-blue-100 flex flex-col justify-center items-center gap-10 pb-12">
+      <div className="topper w-full h-[calc(60vh)]  relative  shadow-md">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, ease: "easeInOut" }}
           className="info w-full h-full flex flex-col justify-center items-center absolute gap-6"
           style={{
-            backgroundColor: "rgba(173, 216, 230, 0.4)",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
           }}
         >
           <h1 className="off font-bold sm:text-9xl text-7xl  font-body text-white tracking-wider">
@@ -265,7 +265,7 @@ export default function Home() {
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke="currentColor"
+            stroke="orange"
             className="icon size-12"
           >
             <path
@@ -299,7 +299,7 @@ export default function Home() {
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke="currentColor"
+            stroke="green"
             className="size-12"
           >
             <path
@@ -333,7 +333,7 @@ export default function Home() {
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
-            stroke="currentColor"
+            stroke="blue"
             className="icon size-12"
           >
             <path
@@ -367,64 +367,64 @@ export default function Home() {
         <div className="sub-heading w-full h-max flex flex-col justify-start p-4 capitalize font-semibold font-body text-2xl tracking-wide text-gray-700">
           <h1>Client reviews</h1>
         </div>
-        <div className="the-reviews w-full h-max grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="the-reviews w-full h-max grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div className="review w-full grid grid-cols-2 gap-8 h-[calc(35vh)] bg-blue-50 place-items-center rounded-lg shadow-lg p-5">
             <div className="client-info flex flex-col gap-4 w-full">
               <img
-                src="/images/profile.webp"
+                src="https://images.pexels.com/photos/11093561/pexels-photo-11093561.jpeg"
                 alt="client-profile-image"
                 className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
               <p className="name capitalize font-bold font-body tracking-wide text-gray-600 sm:text-xl text-base pl-5">
-                Client name
+                Michael Boston
               </p>
             </div>
             <div className="client-rating w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
               <div className="rating">
-                <h2>5</h2>
+                <Rating
+                  name="rating"
+                  value={4}
+                  readOnly
+                  precision={0.5}
+                  size="medium" // Available sizes: small, medium, large
+                />
               </div>
-              <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5 text-sm sm:text-base">
-                <p>
-                  This company gives 5 star customer follow up and warranty
-                  services
+              <div className="review-msg w-full h-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5 text-sm sm:text-base">
+                <p className="font-thin h-1/2 overflow-hidden">
+                  The customer service was fantastic! My questions were answered
+                  promptly, and they even helped me choose the best product for
+                  my needs. I'll definitely shop here again!
                 </p>
-
-                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white text-sm sm:text-base">
-                  view client
-                </button>
               </div>
             </div>
           </div>
           <div className="review w-full grid grid-cols-2 gap-8 h-[calc(35vh)] bg-blue-50 place-items-center rounded-lg shadow-lg p-5">
             <div className="client-info flex flex-col gap-4 w-full">
               <img
-                src="/images/profile.webp"
+                src="https://images.pexels.com/photos/30446434/pexels-photo-30446434/free-photo-of-profile-of-a-thoughtful-man-outdoors.jpeg"
                 alt="client-profile-image"
                 className="image w-10/12 h-[calc(20vh)] rounded-lg shadow-lg object-cover"
               />
               <p className="name capitalize font-bold font-body tracking-wide text-gray-600 sm:text-xl text-base pl-5">
-                Client name
+                Jack Burrow
               </p>
             </div>
             <div className="client-rating w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5">
               <div className="rating">
-                <ReactStars
-                  count={5}
+                <Rating
+                  name="rating"
                   value={4}
-                  activeColor="#ffd700"
-                  edit={false} // Prevents user from changing the rating
-                  classNames="stars"
+                  readOnly
+                  precision={0.5}
+                  size="medium" // Available sizes: small, medium, large
                 />
               </div>
               <div className="review-msg w-full text-gray-500 font-bold tracking-wide font-beauty flex flex-col gap-5 text-sm sm:text-base">
-                <p>
-                  This company gives 5 star customer follow up and warranty
-                  services
+                <p className="font-thin">
+                  I was amazed by how quickly my order arrived! The packaging
+                  was secure, and the product was exactly as described. Highly
+                  recommend this store!
                 </p>
-
-                <button className="btn bg-white w-full py-2 rounded-lg shadow-xl uppercase hover:bg-green-600 hover:text-white text-sm sm:text-base">
-                  view client
-                </button>
               </div>
             </div>
           </div>

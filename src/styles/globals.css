@@ -57,4 +57,5 @@ input:focus {
   background-image: url("https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg");
 
   background-size: cover;
+  background-position: center;
 }

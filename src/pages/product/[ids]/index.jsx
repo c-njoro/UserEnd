@@ -1,8 +1,8 @@
 "use client";
 
+import Rating from "@mui/material/Rating";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ReactStars from "react-rating-stars-component";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserInfoProvider } from "../../../components/GlobalState";
@@ -296,26 +296,26 @@ export default function OneProduct({ currentData }) {
           />
         )}
       </div>
-      <div className="product-details w-full h-full flex flex-col justify-center items-start gap-8">
+      <div className="product-details w-full h-full flex flex-col justify-center items-start gap-4 md:gap-8">
         <div className="name w-full h-max flex flex-row justify-start items-center py-4">
-          <h1 className="the-name xl:text-5xl md:text-4xl text-3xl font-bold font-body tracking-wider ">
+          <h1 className="the-name xl:text-5xl md:text-4xl sm:text-3xl text-2xl text-gray-700 font-bold font-body tracking-wider ">
             {currentData.name}
           </h1>
         </div>
         <div className="rating-sharing w-full h-max flex flex-row justify-between px-4 items-center">
           <div className="rating">
-            <ReactStars
-              count={5}
+            <Rating
+              name="rating"
               value={4}
-              activeColor="#ffd700"
-              edit={false} // Prevents user from changing the rating
-              className="stars text-lg"
+              readOnly
+              precision={0.5}
+              size="large" // Available sizes: small, medium, large
             />
           </div>
           <div className="sharing  flex flex-row justify-start items-center gap-8">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              fill="yellow"
+              fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="green"
@@ -351,7 +351,7 @@ export default function OneProduct({ currentData }) {
           <p>In Stock. {currentData.stock}</p>
         </div>
         <div className="description w-full h-max ">
-          <p className="font-body tracking-wide text-gray-700">
+          <p className="font-body tracking-wide text-gray-700 text-sm sm:text-base">
             {currentData.description}
           </p>
         </div>
@@ -412,7 +412,7 @@ export default function OneProduct({ currentData }) {
         style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
       >
         <div className="w-full h-full  flex flex-col justify-center items-center px-1">
-          <div className="xl:w-1/2 lg:w-2/3 w-4/5 h-max bg-blue-50 p-5 rounded-lg shadow-lg flex flex-col gap-8">
+          <div className="xl:w-1/2 lg:w-2/3 sm:w-4/5 w-11/12 h-max bg-blue-50 p-5 rounded-lg shadow-lg flex flex-col gap-8">
             <div className="flex flex-row justify-between items-center">
               <h1 className="form-heading font-semibold font-body tracking-wide text-green-500">
                 Quick Order
@@ -437,13 +437,13 @@ export default function OneProduct({ currentData }) {
             <form
               method="post"
               onSubmit={orderTheProduct}
-              className="order-form w-full h-max flex flex-col justify-start items-center gap-5"
+              className="order-form w-full h-max flex flex-col justify-start items-center gap-5 text-sm sm:text-base"
             >
               <label
                 htmlFor="quantity"
                 className="input text w-full h-max grid grid-cols-1 md:grid-cols-4"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Quantity
                 </p>
                 <input
@@ -461,7 +461,7 @@ export default function OneProduct({ currentData }) {
                 htmlFor="address"
                 className="input text w-full h-max grid md:grid-cols-4 grid-cols-1"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Shipping Address
                 </p>
                 <input
@@ -479,7 +479,7 @@ export default function OneProduct({ currentData }) {
                 htmlFor="phone"
                 className="input text w-full h-max grid grid-cols-1 md:grid-cols-4"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Phone Number{" "}
                 </p>
                 <input
@@ -498,7 +498,7 @@ export default function OneProduct({ currentData }) {
                 htmlFor="payment"
                 className="input select w-full h-max grid-cols-1 grid md:grid-cols-4"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Payment Method
                 </p>
                 <select
@@ -519,7 +519,7 @@ export default function OneProduct({ currentData }) {
                 htmlFor="method"
                 className="input select w-full h-max grid grid-cols-1 md:grid-cols-4"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Shipping Method
                 </p>
                 <select
@@ -544,7 +544,7 @@ export default function OneProduct({ currentData }) {
                 htmlFor="note"
                 className="input text-area w-full h-max grid grid-cols-1 md:grid-cols-4"
               >
-                <p className="label md:col-span-1 font-semibold uppercase text-sm font-beauty">
+                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
                   Note for the delivery personel
                 </p>
                 <input
