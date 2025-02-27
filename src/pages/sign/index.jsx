@@ -157,6 +157,16 @@ const UserForm = () => {
             draggable: true,
             progress: undefined,
           });
+        } else if (error.response.status === 422) {
+          toast.error(`The username already exists`, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         } else {
           toast.error(`Error occured while creating acc`, {
             position: "top-right",

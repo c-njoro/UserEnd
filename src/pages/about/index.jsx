@@ -10,7 +10,7 @@ const StatsCard = ({ icon: Icon, number, text }) => (
 
 const About = () => {
   return (
-    <div className="bg-blue-100 min-h-screen">
+    <div className="bg-blue-100 min-h-screen font-body">
       {/* Hero Section */}
       <div className="relative h-[400px] md:h-[500px] overflow-hidden">
         <img
