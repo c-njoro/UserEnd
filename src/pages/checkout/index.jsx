@@ -190,7 +190,7 @@ export default function Checkout() {
             phone: formData.phone,
             email: userInfo.userData.email,
           },
-          paymentMethod: formData.payment,
+          paymentMethod: "Pay while ordering",
           transactionId: "TEST_ID",
           totalAmount: total,
           products: orderProducts,
@@ -241,6 +241,58 @@ export default function Checkout() {
     }
   };
 
+  const makePayment = async (e) => {
+    e.preventDefault();
+    if (
+      !formData.address ||
+      !formData.phone ||
+      !formData.payment ||
+      !formData.method ||
+      !formData.note
+    ) {
+      toast.error("Please fill ot the form correctly", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    localStorage.setItem("formData", JSON.stringify(formData));
+    localStorage.setItem("orderProducts", JSON.stringify(orderProducts));
+
+    try {
+      console.log("clicked: ", userInfo.userData.name, userInfo.userData.email);
+      const response = await axios.post(
+        "/api/sendPayment",
+        {
+          amount: total,
+          name: userInfo.userData.name,
+          email: userInfo.userData.email,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      console.log(response.data);
+
+      if (response.status === 200 && response.data) {
+        console.log("Payment response: ", response.data.checkout_url);
+        window.location.href = response.data.checkout_url; // Redirect user to payment page
+      } else {
+        alert("Payment failed: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("Checkout error:", error);
+      alert("Something went wrong!");
+    }
+  };
+
   return (
     <div className="main-checkout-container bg-blue-100 flex flex-col p-4 w-screen min-h-[calc(88vh)] font-beauty">
       <div className="heading flex justify-center sm:flex-row flex-col px-2 w-full items-center mb-4">
@@ -285,7 +337,7 @@ export default function Checkout() {
             <div className="mpesa-form w-full ">
               <form
                 method="post"
-                onSubmit={makingTheOrder}
+                onSubmit={makePayment}
                 className="form flex flex-col gap-2 w-full h-max justify-center items-center"
               >
                 <label
