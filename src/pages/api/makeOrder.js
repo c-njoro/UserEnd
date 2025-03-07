@@ -14,9 +14,6 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "ORDERS_URL is not defined" });
   }
 
-  console.log(`${process.env.ORDERS_URL}`);
-  console.log(newOrder);
-
   try {
     console.log("trying making");
     const response = await axios.post(`${process.env.ORDERS_URL}`, newOrder);
