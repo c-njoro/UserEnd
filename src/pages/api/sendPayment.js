@@ -10,7 +10,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: "Amount is required" });
   }
 
-  console.log("Email", email);
+  console.log("Received email type:", typeof req.body.email);
+  console.log("Received email value:", req.body.email);
 
   try {
     let intasend = new IntaSend(
@@ -23,7 +24,7 @@ export default async function handler(req, res) {
     const response = await collection.charge({
       first_name: name,
       last_name: "Doe",
-      email: "mwanikic314@gmail.com",
+      email: email.trim(),
       host: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
       amount: amount,
       currency: "KES",

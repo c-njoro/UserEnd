@@ -26,13 +26,10 @@ export default function Checkout() {
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({});
   const [orderProducts, setOrderProducts] = useState([]);
-  const [mpesa, setMpesa] = useState("pay-hide");
-  const [wallet, setWallet] = useState("pay-hide");
   const [formData, setFormData] = useState({
     phone: "",
     method: "",
     address: "",
-    payment: "",
     note: "",
   });
 
@@ -86,24 +83,6 @@ export default function Checkout() {
     }));
   };
 
-  const mpesaToggle = () => {
-    if (mpesa === "pay-hide" && wallet === "pay-hide") {
-      setMpesa("mpesa");
-    } else if (mpesa === "pay-hide" && wallet !== "pay-hide") {
-      setMpesa("mpesa");
-      setWallet("pay-hide");
-    }
-  };
-
-  const walletToggle = () => {
-    if (mpesa === "pay-hide" && wallet === "pay-hide") {
-      setWallet("wallet");
-    } else if (mpesa !== "pay-hide" && wallet === "pay-hide") {
-      setWallet("wallet");
-      setMpesa("pay-hide");
-    }
-  };
-
   //setting products to be in the order
   const createProducts = () => {
     Object.values(counts).map((co) => {
@@ -120,133 +99,13 @@ export default function Checkout() {
     });
   };
 
-  //update stock after purchase
-  const updateStock = () => {
-    try {
-      Object.values(counts).map(async (co) => {
-        const newStock = co.stock - co.count;
-        const updateStock = await axios.put(
-          `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateProducts?id=${co._id}`,
-          { stock: newStock },
-          {
-            headers: {
-              Accept: "application/json",
-              "ngrok-skip-browser-warning": "true",
-            },
-          }
-        );
-      });
-    } catch (error) {
-      console.log("Error while updating stock: ", error);
-    }
-  };
-
-  //clearing the cart after order
-  const clearCart = async () => {
-    try {
-      const clearTheCart = await axios.put(
-        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateUser?id=${userInfo.userData._id}`,
-        {
-          favoriteProducts: [],
-        }
-      );
-      console.log("Cart cleared");
-      const updatedUser = clearTheCart.data;
-      updatedUser ? refetchCart() : "";
-    } catch (error) {
-      console.log("An error while clearing cart: ", error);
-    }
-  };
-
-  const makingTheOrder = async (e) => {
-    e.preventDefault();
-
-    if (
-      !formData.address ||
-      !formData.phone ||
-      !formData.payment ||
-      !formData.method ||
-      !formData.note
-    ) {
-      toast.error("Please fill ot the form correctly", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      return;
-    }
-
-    try {
-      const order = await axios.post(
-        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/makeOrder`,
-        {
-          customerId: userInfo.userData._id,
-          shippingAddress: formData.address,
-          contactInfo: {
-            phone: formData.phone,
-            email: userInfo.userData.email,
-          },
-          paymentMethod: "Pay while ordering",
-          transactionId: "TEST_ID",
-          totalAmount: total,
-          products: orderProducts,
-          shippingMethod: formData.method,
-          shippingCost: 5,
-          taxRate: 0.123,
-          taxAmount: 10.08,
-          orderNotes: formData.note,
-          internalNotes: "New customer, verify address first.",
-        }
-      );
-
-      clearCart();
-
-      updateStock();
-
-      setOrderProducts([]);
-
-      toast.success("Your Order Was Placed Successfully", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      setFormData({
-        phone: "",
-        method: "default",
-        address: "",
-        payment: "default",
-        note: "",
-      });
-
-      router.push("/");
-    } catch (error) {
-      toast.error("An error occured, Please Try Again!!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log("Error placing order", error);
-    }
-  };
+  //make payment
 
   const makePayment = async (e) => {
     e.preventDefault();
     if (
       !formData.address ||
       !formData.phone ||
-      !formData.payment ||
       !formData.method ||
       !formData.note
     ) {
@@ -303,30 +162,21 @@ export default function Checkout() {
 
       <div className="pay-toggle flex flex-col justify-center items-center text-base text-gray-500 font-bold font-beauty">
         <p>Totals: Ksh. {total}</p>
-        <p>Pay Via: </p>
+
         <div className="btns flex flex-row">
-          <button
-            onClick={mpesaToggle}
-            className="payment-mthd text-sm text-green-500 capitalize font-bold bg-gray-100 px-4 py-2  flex justify-center items-center gap-2 shadow-md border-r-2 border-l-2 border-gray-300"
-          >
-            M-Pesa
-          </button>
-          <button
-            onClick={walletToggle}
-            className="payment-mthd text-sm text-orange-500 capitalize font-bold bg-gray-100 px-4 py-2  flex justify-center items-center gap-2 shadow-md border-r-2 border-l-2 border-gray-300"
-          >
-            Wallet
+          <button className="payment-mthd text-sm text-green-500 capitalize font-bold bg-gray-100 px-4 py-2  flex justify-center items-center gap-2 shadow-md border-r-2 border-l-2 border-gray-300">
+            Creating Your Order
           </button>
         </div>
       </div>
 
       <div
-        className={`${mpesa} method-chosen w-full h-max justify-center pt-8`}
+        className={` method-chosen w-full h-max flex flex-row justify-center pt-8`}
       >
         <div className="mpesa bg-blue-50 rounded-3xl shadow-lg lg:w-1/2 md:w-2/3 sm:w-4/5 w-11/12 flex flex-col gap-4 p-8">
           <div className="mpesa-label w-full flex justify-center items-center h-max">
             <img
-              src="/images/M-PESA-removebg-preview.png"
+              src="/images/storeLogo-removebg-preview.png"
               alt="mpesa image"
               width="200"
               height="50"
@@ -375,27 +225,6 @@ export default function Checkout() {
                     value={formData.phone}
                     className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
                   />
-                </label>
-
-                <label
-                  htmlFor="payment"
-                  className="label-input grid sm:grid-cols-3 w-full grid-cols-1"
-                >
-                  <p className="label sm:col-span-1 font-beauty font-semibold text-gray-600 flex justify-start items-center lg:text-base text-sm">
-                    Payment Method
-                  </p>
-                  <select
-                    name="payment"
-                    id="payment"
-                    required
-                    onChange={handleChange}
-                    value={formData.payment}
-                    className="input sm:col-span-2 w-full h-9 bg-blue-100 rounded-full pl-4 font-beauty text-sm text-gray-700 tracking-wider pr-2 shadow-md"
-                  >
-                    <option value="default">-Select Payment Method-</option>
-                    <option value="mpesa">Mpesa</option>
-                    <option value="onDelivery">Pay On Delivery</option>
-                  </select>
                 </label>
 
                 <label
@@ -478,10 +307,6 @@ export default function Checkout() {
             </div>
           )}
         </div>
-      </div>
-
-      <div className={`${wallet} method-chosen`}>
-        <h1>Wallet</h1>
       </div>
     </div>
   );

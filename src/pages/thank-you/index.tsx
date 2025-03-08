@@ -22,7 +22,6 @@ const ThankyouPage = () => {
     phone: "",
     method: "",
     address: "",
-    payment: "",
     note: "",
   });
 
@@ -67,7 +66,6 @@ const ThankyouPage = () => {
     if (
       !formData.address ||
       !formData.phone ||
-      !formData.payment ||
       !formData.method ||
       !formData.note
     ) {
@@ -130,7 +128,6 @@ const ThankyouPage = () => {
         phone: "",
         method: "",
         address: "",
-        payment: "",
         note: "",
       });
 
