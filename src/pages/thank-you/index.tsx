@@ -1,5 +1,6 @@
 import { useUserInfoProvider } from "@/components/GlobalState";
 import axios from "axios";
+import confetti from "canvas-confetti";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -30,6 +31,14 @@ const ThankyouPage = () => {
   const [orderProducts, setOrderProducts] = useState<orderProduct[]>([]);
   const [creatingOrder, setCreatingOrder] = useState(true);
   const [continueTry, setContinueTry] = useState(true);
+
+  const fireConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -114,6 +123,7 @@ const ThankyouPage = () => {
       clearCart();
 
       setOrderProducts([]);
+      fireConfetti();
 
       toast.success("Your Order Was Placed Successfully", {
         position: "top-right",
