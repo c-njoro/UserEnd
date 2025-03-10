@@ -132,6 +132,7 @@ export default function Checkout() {
           amount: total,
           name: userInfo.userData.name,
           email: userInfo.userData.email,
+          redirect: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/thank-you`,
         },
         {
           headers: { "Content-Type": "application/json" },

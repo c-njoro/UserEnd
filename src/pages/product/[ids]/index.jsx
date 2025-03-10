@@ -14,7 +14,6 @@ export default function OneProduct({ currentData }) {
     phone: "",
     method: "",
     address: "",
-    payment: "",
     note: "",
     quantity: 1,
   });
@@ -47,10 +46,9 @@ export default function OneProduct({ currentData }) {
     }));
   };
 
-  //finding the current user
-  const orderTheProduct = async (e) => {
+  //make payment to trigger order creation
+  const makePayment = async (e) => {
     e.preventDefault();
-
     if (!userInfo.loggedIn) {
       toast.warn("Login or signup in order to make this order.", {
         position: "top-right",
@@ -67,7 +65,6 @@ export default function OneProduct({ currentData }) {
     if (
       !formData.address ||
       !formData.phone ||
-      !formData.payment ||
       !formData.method ||
       !formData.note ||
       !formData.quantity ||
@@ -96,69 +93,46 @@ export default function OneProduct({ currentData }) {
       return;
     }
 
-    try {
-      const order = await axios.post(
-        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/makeOrder`,
+    localStorage.setItem("formData", JSON.stringify(formData));
+    localStorage.setItem(
+      "orderProducts",
+      JSON.stringify([
         {
-          customerId: userInfo.userData._id,
-          shippingAddress: formData.address,
-          contactInfo: {
-            phone: formData.phone,
-            email: "bigiie@gmail.com",
-          },
-          paymentMethod: formData.payment,
-          transactionId: "RESAOUN",
-          totalAmount: currentData.price * formData.quantity,
-          products: [
-            {
-              productId: currentData._id,
-              productName: currentData.name,
-              quantity: formData.quantity,
-              unitPrice: currentData.price,
-              totalPrice: currentData.price * formData.quantity,
-            },
-          ],
-          shippingMethod: formData.method,
-          shippingCost: 5,
-          taxRate: 0.123,
-          taxAmount: 10.08,
-          orderNotes: formData.note,
-          internalNotes: "New customer, verify address first.",
+          productId: currentData._id,
+          productName: currentData.name,
+          quantity: formData.quantity,
+          unitPrice: currentData.price,
+          totalPrice: (currentData.price * formData.quantity).toFixed(2),
+        },
+      ])
+    );
+
+    try {
+      console.log("clicked: ", userInfo.userData.name, userInfo.userData.email);
+      const response = await axios.post(
+        "/api/sendPayment",
+        {
+          amount: (currentData.price * formData.quantity).toFixed(2),
+          name: userInfo.userData.name,
+          email: userInfo.userData.email,
+          redirect: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/success`,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
         }
       );
-      const newStock = currentData.stock - formData.quantity;
-      const updateStock = await axios.put(
-        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateProducts?id=${currentData._id}`,
-        { stock: newStock }
-      );
-      toast.success("Your Order Was Placed Successfully", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      setFormData({
-        phone: "",
-        method: "default",
-        address: "",
-        payment: "default",
-        note: "",
-        quantity: 1,
-      });
+
+      console.log(response.data);
+
+      if (response.status === 200 && response.data) {
+        console.log("Payment response: ", response.data.checkout_url);
+        window.location.href = response.data.checkout_url;
+      } else {
+        alert("Payment failed: " + response.data.message);
+      }
     } catch (error) {
-      toast.error("Error placing order, Try Again", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log("Error placing order", error);
+      console.error("Checkout error:", error);
+      alert("Something went wrong!");
     }
   };
 
@@ -436,7 +410,7 @@ export default function OneProduct({ currentData }) {
             </div>
             <form
               method="post"
-              onSubmit={orderTheProduct}
+              onSubmit={makePayment}
               className="order-form w-full h-max flex flex-col justify-start items-center gap-5 text-sm sm:text-base"
             >
               <label
@@ -492,27 +466,6 @@ export default function OneProduct({ currentData }) {
                   value={formData.phone}
                   className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
                 />
-              </label>
-
-              <label
-                htmlFor="payment"
-                className="input select w-full h-max grid-cols-1 grid md:grid-cols-4"
-              >
-                <p className="label md:col-span-1 font-semibold uppercase tracking-wider  text-gray-500 sm:text-sm font-beauty text-xs">
-                  Payment Method
-                </p>
-                <select
-                  name="payment"
-                  id="payment"
-                  required
-                  onChange={handleChange}
-                  value={formData.payment}
-                  className="input-box col-span-3 h-8 w-full bg-blue-100 px-5 rounded-full shadow-md"
-                >
-                  <option value="default">-Select Payment Method-</option>
-                  <option value="mpesa">Mpesa</option>
-                  <option value="onDelivery">Pay On Delivery</option>
-                </select>
               </label>
 
               <label

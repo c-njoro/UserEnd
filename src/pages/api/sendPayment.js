@@ -1,13 +1,15 @@
 import IntaSend from "intasend-node";
 
 export default async function handler(req, res) {
-  const { amount, name, email } = req.body;
+  const { amount, name, email, redirect } = req.body;
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  if (!amount || !name || !email) {
-    return res.status(400).json({ message: "Amount is required" });
+  if (!amount || !name || !email || !redirect) {
+    return res
+      .status(400)
+      .json({ message: "All body requirements were not provided on request" });
   }
 
   console.log("Received email type:", typeof req.body.email);
@@ -22,14 +24,12 @@ export default async function handler(req, res) {
 
     let collection = intasend.collection();
     const response = await collection.charge({
-      first_name: name,
-      last_name: "Doe",
       email: email.trim(),
       host: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
       amount: amount,
       currency: "KES",
       api_ref: "test",
-      redirect_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/thank-you`,
+      redirect_url: redirect,
     });
 
     res
