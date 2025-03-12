@@ -199,12 +199,12 @@ export default function Cart({}) {
                 </div>
 
                 <div className="more-side md:col-span-4 p-4 grid grid-cols-1 gap-2">
-                  <div className="product-details w-full h-full overflow-clip">
+                  <div className="product-details w-full h-full overflow-clip flex sm:flex-row sm:justify-between flex-col  gap-3 pb-3">
                     <h2 className="product-name font-bold capitalize  text-xl text-gray-700 font-body">
                       {pr.name}
                     </h2>
-                    <p className="product-desc hidden font-light text-sm text-gray-500 text-wrap">
-                      {pr.description}
+                    <p className="product-description font-light text-gray-500 font-beauty text-sm md:text-base bg-blue-100 w-max px-5 shadow-md rounded-full">
+                      In Stock: {pr.stock}
                     </p>
                   </div>
 
@@ -218,7 +218,10 @@ export default function Cart({}) {
                     <div className="count-side flex flex-row justify-end gap-4 items-center">
                       <button
                         onClick={() => increaseCount(pr._id)}
-                        className="count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md"
+                        className={`count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md ${
+                          pr.count >= pr.stock ? "cursor-not-allowed" : ""
+                        }`}
+                        disabled={pr.count >= pr.stock}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -240,7 +243,7 @@ export default function Cart({}) {
                         onClick={() => {
                           reduceCount(pr._id);
                         }}
-                        className="count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md"
+                        className={`count-btn bg-gray-100 font-bold text-sm p-1 rounded hover:bg-slate-400 shadow-md`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

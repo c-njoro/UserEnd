@@ -59,7 +59,12 @@ const SuccessPage = () => {
       (value) => typeof value === "string" && value.trim() !== ""
     );
 
-    if (isFormDataComplete && orderProducts.length >= 1 && continueTry) {
+    if (
+      isFormDataComplete &&
+      orderProducts.length >= 1 &&
+      continueTry &&
+      userInfo.userData
+    ) {
       const retry = setTimeout(() => {
         console.log("Retrying order creation...");
         makeTheOrder();
@@ -67,8 +72,9 @@ const SuccessPage = () => {
 
       return () => clearTimeout(retry); // Cleanup to prevent multiple calls
     }
-  }, [formData, orderProducts, continueTry]); // ✅ Add continueTry to prevent unnecessary loops
+  }, [formData, orderProducts, continueTry, userInfo.userData]); // ✅ Add continueTry to prevent unnecessary loops
 
+  //create the order
   const makeTheOrder = async () => {
     setCreatingOrder(true);
 
@@ -120,6 +126,10 @@ const SuccessPage = () => {
         }
       );
 
+      orderProducts.map(async (product) => {
+        updateStock(product.productId, product.quantity);
+      });
+
       setOrderProducts([]);
       fireConfetti();
 
@@ -157,20 +167,18 @@ const SuccessPage = () => {
     }
   };
 
-  //clearing the cart after order
-  const clearCart = async () => {
+  //updating the stock after order
+  const updateStock = async (productId: string, quantity: number) => {
     try {
-      const clearTheCart = await axios.put(
-        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateUser?id=${userInfo.userData._id}`,
+      const updatedStock = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateStock`,
         {
-          favoriteProducts: [],
+          id: productId,
+          quantity: quantity,
         }
       );
-      console.log("Cart cleared");
-      const updatedUser = clearTheCart.data;
-      updatedUser ? refetchCart() : "";
     } catch (error) {
-      console.log("An error while clearing cart: ", error);
+      console.log("An error while updating stock: ", error);
     }
   };
 

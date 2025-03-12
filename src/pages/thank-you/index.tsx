@@ -59,7 +59,12 @@ const ThankyouPage = () => {
       (value) => value.trim() !== ""
     );
 
-    if (isFormDataComplete && orderProducts.length >= 1 && continueTry) {
+    if (
+      isFormDataComplete &&
+      orderProducts.length >= 1 &&
+      continueTry &&
+      userInfo.userData
+    ) {
       const retry = setTimeout(() => {
         console.log("Retrying order creation...");
         makeTheOrder();
@@ -67,7 +72,7 @@ const ThankyouPage = () => {
 
       return () => clearTimeout(retry); // Cleanup to prevent multiple calls
     }
-  }, [formData, orderProducts, continueTry]); // ✅ Add continueTry to prevent unnecessary loops
+  }, [formData, orderProducts, continueTry, userInfo.userData]); // ✅ Add continueTry to prevent unnecessary loops
 
   const makeTheOrder = async () => {
     setCreatingOrder(true);
@@ -119,6 +124,10 @@ const ThankyouPage = () => {
           internalNotes: "New customer, verify address first.",
         }
       );
+
+      orderProducts.map(async (product) => {
+        updateStock(product.productId, product.quantity);
+      });
 
       clearCart();
 
@@ -173,6 +182,21 @@ const ThankyouPage = () => {
       updatedUser ? refetchCart() : "";
     } catch (error) {
       console.log("An error while clearing cart: ", error);
+    }
+  };
+
+  //updating the stock after order
+  const updateStock = async (productId: string, quantity: number) => {
+    try {
+      const updatedStock = await axios.post(
+        `${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/updateStock`,
+        {
+          id: productId,
+          quantity: quantity,
+        }
+      );
+    } catch (error) {
+      console.log("An error while updating stock: ", error);
     }
   };
 

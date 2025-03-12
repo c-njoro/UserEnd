@@ -266,6 +266,9 @@ const ProductsList = ({ data }) => {
                       <p className="product-description font-light text-gray-800 mb-2 font-beauty text-sm md:text-base">
                         {product.description}
                       </p>
+                      <p className="product-description font-light text-gray-500 font-beauty text-sm md:text-base bg-blue-100 w-max px-5 shadow-md rounded-full">
+                        In Stock: {product.stock}
+                      </p>
                     </motion.div>
                   </Link>
                   <p className="price-tag absolute top-0 left-0 font-light text-gray-700 bg-blue-50  rounded-full p-2 py-1 ml-2 mt-2">
