@@ -276,6 +276,11 @@ export default function Checkout() {
                   value="Place Order Now"
                   className="submit-btn bg-white text-gray-500 font-beauty font-bold tracking-wider py-2 px-6 w-max h-max shadow-md rounded-full cursor-pointer"
                 />
+                <p>
+                  This is a TEST environment, on the next page use card number
+                  4242424242424242 to initiate payment. Use any date of the
+                  future on expiry date and any 3 numbers for CVC.
+                </p>
               </form>
             </div>
           ) : (
